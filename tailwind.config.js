@@ -18,5 +18,22 @@ export default {
     extend: {
 
     },
+  },
+  daisyui: {
+    themes: [
+      {
+        arweave: {
+          "primary": "#FF8500",
+          "secondary": "#ff72d2",
+          "accent": "#e2315e",
+          "neutral": "#f2f3f4",
+          "base-100": "#293241",
+          "info": "#81A5D5",
+          "success": "#21BA82",
+          "warning": "#DAA60B",
+          "error": "#F16F55",
+        },
+      },
+    ],
   }
 }
