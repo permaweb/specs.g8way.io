@@ -49,7 +49,8 @@
         {
           name: "publish",
           action: () => {
-            showPublish = true;
+            send({ type: "save", md: editor.value() });
+            //showPublish = true;
           },
           className: "fa fa-cloud-upload",
           text: "Publish ",
@@ -77,6 +78,13 @@
     send({ type: "save", md: editor.value() });
     // router.goto("/specs");
   }
+
+  $: {
+    if (current === "confirm") {
+      console.log(context);
+      router.goto("/");
+    }
+  }
 </script>
 
 <div class="py-8 mx-8">
@@ -84,5 +92,5 @@
 </div>
 
 <textarea id="editor" />
-<Publish {doc} bind:open={showPublish} on:publish={handlePublish} />
+<!-- <Publish {doc} bind:open={showPublish} on:publish={handlePublish} /> -->
 <Config bind:open={showConfig} />

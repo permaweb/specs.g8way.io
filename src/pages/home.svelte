@@ -1,6 +1,11 @@
 <script>
   import Sidebar from "../components/sidebar.svelte";
   import Item from "../components/item.svelte";
+  import service from "./home";
+
+  const send = $service.send;
+  $: current = $service.machine.current;
+  $: context = $service.context;
 
   const items = [
     {
@@ -53,11 +58,20 @@
           </svg>
         </div>
       </nav>
-      <div class=" overflow-hidden">
-        {#each items as item}
-          <Item {...item} />
-        {/each}
-      </div>
+      {#if current === "loading"}
+        <div class="grid items-center">
+          <img
+            src="https://arweave.net/IkMJRqi_0Xx_QhstK4WE3rsQqQxC07n84UagPgqGXfc"
+            alt="loading"
+          />
+        </div>
+      {:else if current === "ready"}
+        <div class=" overflow-hidden">
+          {#each context.specs as item}
+            <Item {...item} />
+          {/each}
+        </div>
+      {/if}
     </div>
   </div>
   <div class="drawer-side">

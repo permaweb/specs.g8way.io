@@ -5,8 +5,9 @@
     avatar:
       "https://arweave.net:443/fYmFNZbRCbPhBWqmOJLNiJFoLFiFchIBSZNI6jRwWaI",
   };
+  export let id = "";
   export let title = "Asset Discoverability - ANS-110";
-  export let date = "32s";
+  export let height = "pending";
 </script>
 
 <div class="mt-4">

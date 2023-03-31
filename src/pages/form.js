@@ -4,17 +4,19 @@ import { useMachine } from 'svelte-robot-factory';
 import services from '../services'
 import Api from '../lib'
 
-const api = Api(services)
+const api = Api.init(services)
 
 const machine = createMachine({
   ready: state(
     transition('save', 'save', reduce((ctx, ev) => ({ ...ctx, md: ev.md })))
   ),
   save: invoke(
-    (ctx) => api.create(ctx.md).toPromise(),
+    (ctx) => api.save(ctx.md).map(({ id }) => ({ ...ctx, id })).toPromise(),
     transition('done', 'confirm'),
     transition('error', 'error')
-  )
+  ),
+  confirm: state(),
+  error: state()
 })
 
 const service = useMachine(machine, () => ({}))
