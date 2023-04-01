@@ -21,8 +21,9 @@ export default {
       return Async.fromPromise(services.gql)(buildSpecListQuery())
         .map(path(['data', 'transactions', 'edges']))
         .map(map(compose(toItem, prop('node'))))
+        .map(x => (console.log(x), x))
     },
-    get: (id) => Promise.resolve(''), // return markdown
+    get: (id) => Async.fromPromise(services.get)(id),
     related: (id) => Promise.resolve([])
   })
 }

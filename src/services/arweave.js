@@ -7,6 +7,8 @@ const arweave = import.meta.env.MODE === 'development' ?
 
 export const gql = async (query) => arweave.api.post('graphql', { query }).then(prop('data'))
 
+export const get = async (tx) => arweave.api.get(tx).then(prop('data'))
+
 export const post = async ({ data, tags }) => {
   try {
     const tx = await arweave.createTransaction({ data })
