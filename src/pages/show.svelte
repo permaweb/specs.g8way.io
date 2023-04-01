@@ -6,6 +6,13 @@
   const send = $service.send;
   $: current = $service.machine.current;
   $: context = $service.context;
+
+  $: {
+    if (current === "idle") {
+      console.log(tx);
+      send({ type: "load", tx });
+    }
+  }
 </script>
 
 {#if current === "loading"}

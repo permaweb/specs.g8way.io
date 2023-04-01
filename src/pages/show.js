@@ -7,11 +7,17 @@ import services from '../services'
 const api = Api.init(services)
 
 const machine = createMachine({
+  idle: state(
+    transition('load', 'loading', reduce((ctx, ev) => ({ ...ctx, tx: ev.tx })))
+  ),
   loading: invoke(
-    ctx => api.get(ctx.tx).map(md => {
-      console.log(md)
-      return ({ md })
-    }).toPromise(),
+    ctx => {
+      console.log(ctx)
+      return api.get(ctx.tx).map(md => {
+        console.log(md)
+        return ({ md })
+      }).toPromise()
+    },
     transition('done', 'ready', reduce((ctx, ev) => {
       console.log(ev)
       return ({ ...ctx, spec: ev.data.md })

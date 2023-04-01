@@ -14,7 +14,7 @@
 
 <Announcer />
 <Transition>
-  <Route path="/">
+  <Route path="/" let:meta>
     {#if tx}
       <Show {tx} />
     {:else}
