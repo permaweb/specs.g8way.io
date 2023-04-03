@@ -24,4 +24,7 @@
   <Route path="/create">
     <Form />
   </Route>
+  <Route path="/view" let:meta>
+    <Show tx={meta.query.tx} />
+  </Route>
 </Transition>

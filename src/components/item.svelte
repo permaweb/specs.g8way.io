@@ -33,7 +33,7 @@
           <h1 class="pl-8 text-xl text-primary">
             {title}
           </h1>
-          <a class="btn btn-sm" href="/?tx={id}">View Spec</a>
+          <a class="btn btn-sm" href="/view?tx={id}">View Spec</a>
         </div>
       </div>
       <div>

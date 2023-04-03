@@ -1,5 +1,9 @@
 import { createMachine, state, transition, invoke, reduce } from 'robot3';
 import { set, lensProp } from 'ramda';
+
+import fm from "front-matter";
+import { marked } from "marked";
+
 import { useMachine } from 'svelte-robot-factory';
 import Api from '../lib'
 import services from '../services'
@@ -12,15 +16,18 @@ const machine = createMachine({
   ),
   loading: invoke(
     ctx => {
-      console.log(ctx)
-      return api.get(ctx.tx).map(md => {
-        console.log(md)
-        return ({ md })
-      }).toPromise()
+      return api.get(ctx.tx)
+        .map(fm)
+        .map(({ body, attributes }) => ({
+          body,
+          ...attributes,
+          html: marked(body)
+        }))
+        .toPromise()
     },
     transition('done', 'ready', reduce((ctx, ev) => {
       console.log(ev)
-      return ({ ...ctx, spec: ev.data.md })
+      return ({ ...ctx, spec: ev.data })
     })),
     transition('error', 'error')
   ),

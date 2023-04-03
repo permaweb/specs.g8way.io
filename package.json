@@ -19,10 +19,12 @@
     "vite": "^4.2.0"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.9",
     "arweave": "^1.13.5",
     "arweave-wallet-connector": "^1.0.1",
     "crocks": "^0.12.4",
     "front-matter": "^4.0.2",
+    "marked": "^4.3.0",
     "ramda": "^0.28.0",
     "robot3": "^0.4.0",
     "svelte-robot-factory": "^2.0.5",
