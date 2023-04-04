@@ -15,7 +15,8 @@ const machine = createMachine({
     transition('done', 'ready', reduce((ctx, ev) => ({ ...ctx, markdown: ev.data })))
   ),
   ready: state(
-    transition('save', 'save', reduce((ctx, ev) => ({ ...ctx, md: ev.md })))
+    transition('save', 'save', reduce((ctx, ev) => ({ ...ctx, md: ev.md }))),
+    transition('reset', 'idle')
   ),
   save: invoke(
     (ctx) => api.save(ctx.md).map(({ id }) => ({ ...ctx, id })).toPromise(),

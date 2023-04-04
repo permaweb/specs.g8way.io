@@ -17,16 +17,28 @@
 {#if current === "loading"}
   <div>Loading...</div>
 {:else if current === "ready"}
-  <div class="flex flex-col min-h-screen">
-    <div class="hero-content ">
-      <div class="flex w-full">
+  <div class="drawer drawer-mobile drawer-end">
+    <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content flex flex-col items-center justify-start">
+      <div class="flex w-full pl-16">
         <div class="flex flex-col flex-1">
+          <nav class="flex py-4 px-4 sticky top-0 items-center justify-between">
+            <label for="my-drawer-2" class="btn btn-ghost text-lg drawer-button"
+              ><span class="text-primary">Info</span></label
+            >
+          </nav>
           <h3 class="text-2xl text-[#ff8500]">Specification</h3>
           <div class="prose">
             {@html context.spec.html}
           </div>
         </div>
-        <div class="w-1/4">
+      </div>
+    </div>
+    <div class="drawer-side">
+      <label for="my-drawer-2" class="drawer-overlay" />
+      <!-- w-1/4 border-r border-slate-300 bg-white hidden md:block -->
+      <div class="menu bg-base-100 block">
+        <div class="py-2 space-y-3 sticky top-0 w-[500px]">
           <div class="card">
             <div class="card-body">
               <div class="card-title">Information</div>

@@ -19,6 +19,7 @@
   console.log("tx", tx);
 
   onMount(async () => {
+    console.log("mount: ", current);
     editor = new EasyMDE({
       element: document.getElementById("editor"),
       minHeight: "85vh",
@@ -60,13 +61,17 @@
         },
         {
           name: "cancel",
-          action: () => router.goto("/"),
+          action: () => {
+            send("reset");
+            router.goto("/");
+          },
           className: "fa fa-ban",
           text: "Cancel ",
           title: "Cancel Spec",
         },
       ],
     });
+    editor.value("");
     send({ type: "init", tx });
   });
 
