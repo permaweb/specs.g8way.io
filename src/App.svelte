@@ -27,4 +27,7 @@
   <Route path="/view" let:meta>
     <Show tx={meta.query.tx} />
   </Route>
+  <Route path="/remix/:tx" let:meta>
+    <Form tx={meta.params.tx} />
+  </Route>
 </Transition>

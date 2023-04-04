@@ -7,6 +7,7 @@
   };
   export let id = "";
   export let title = "Asset Discoverability - ANS-110";
+  export let groupId = "ANS-110";
   export let height = "pending";
 </script>
 
@@ -31,24 +32,24 @@
           >
           <span class="text-secondary">{date}</span> -->
           <h1 class="pl-8 text-xl text-primary">
-            {title}
+            {title} ({groupId})
           </h1>
-          <a class="btn btn-sm" href="/view?tx={id}">View Spec</a>
         </div>
       </div>
       <div>
-        <span class="text-lg text-gray-600"><i class="fa fa-ellipsis-h" /></span
+        <a class="btn btn-sm btn-ghost float-right" href="/view?tx={id}"
+          >View Spec</a
         >
+        <!-- <span class="text-lg text-gray-600"><i class="fa fa-ellipsis-h" /></span
+        > -->
       </div>
     </div>
 
     <div class="flex mt-2 space-x-10 text-gray-500 justify-evenly">
-      <span class="flex items-center"
-        ><img class="h-4 w-4" src="stamp.png" alt="stamps" />15 (8)</span
-      >
-      <span class="flex items-center space-x-2">+1</span>
-      <span class="flex items-center space-x-2">+3</span>
-      <span class="flex items-center space-x-2">+5</span>
+      <span class="flex items-center">Stamps: (8)</span>
+      <span class="flex items-center space-x-2">Height: 1000</span>
+      <!-- <span class="flex items-center space-x-2">+3</span>
+      <span class="flex items-center space-x-2">+5</span> -->
     </div>
   </div>
 </div>

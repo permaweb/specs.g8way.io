@@ -1,4 +1,5 @@
 <script>
+  import LoadingComponent from "./loading.svelte";
   import service from "./related.js";
 
   const send = $service.send;
@@ -6,7 +7,9 @@
   $: context = $service.context;
 </script>
 
-{#if current === "loading"}{:else if current === "ready"}
+{#if current === "loading"}
+  <LoadingComponent />
+{:else if current === "ready"}
   <div class="hero min-h-screen">
     <div class="hero-content">
       <div class="flex flex-col">

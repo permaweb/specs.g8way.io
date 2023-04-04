@@ -3,10 +3,10 @@
   import { router } from "tinro";
   import service from "./form.js";
 
-  import Publish from "../components/publish-dialog.svelte";
-  import Config from "../components/config-dialog.svelte";
+  //import Publish from "../components/publish-dialog.svelte";
+  //import Config from "../components/config-dialog.svelte";
 
-  export let asset = "";
+  export let tx = null;
 
   let editor = null;
   let showPublish = false;
@@ -15,6 +15,8 @@
   const send = $service.send;
   $: current = $service.machine.current;
   $: context = $service.context;
+
+  console.log("tx", tx);
 
   onMount(async () => {
     editor = new EasyMDE({
@@ -37,15 +39,15 @@
         "preview",
         "side-by-side",
         "|",
-        {
-          name: "config",
-          action: () => {
-            showConfig = true;
-          },
-          className: "fa fa-gear",
-          text: "Config ",
-          title: "Config Editor",
-        },
+        // {
+        //   name: "config",
+        //   action: () => {
+        //     showConfig = true;
+        //   },
+        //   className: "fa fa-gear",
+        //   text: "Config ",
+        //   title: "Config Editor",
+        // },
         {
           name: "publish",
           action: () => {
@@ -65,13 +67,7 @@
         },
       ],
     });
-    // if (asset !== "") {
-    //   const s = await $app.get(asset);
-    //   doc.title = s.title;
-    //   doc.description = s.description;
-    //   doc.topics = s.topics.join(", ");
-    //   editor.value(s.content);
-    // }
+    send({ type: "init", tx });
   });
 
   async function handlePublish(e) {
@@ -80,6 +76,11 @@
   }
 
   $: {
+    if (current === "ready") {
+      setTimeout(() => {
+        editor.value(context.markdown);
+      }, 100);
+    }
     if (current === "confirm") {
       console.log(context);
       router.goto("/");
@@ -93,4 +94,4 @@
 
 <textarea id="editor" />
 <!-- <Publish {doc} bind:open={showPublish} on:publish={handlePublish} /> -->
-<Config bind:open={showConfig} />
+<!-- <Config bind:open={showConfig} /> -->
