@@ -26,8 +26,8 @@
             {@html context.spec.html}
           </div>
         </div>
-        <div class="">
-          <h3 class="text-2xl text-[#ff8500]">SPEC Details</h3>
+        <div class="w-[300px]">
+          <h3 class="text-2xl text-[#ff8500]">Information</h3>
 
           <div class="card">
             <div class="card-body">
@@ -54,24 +54,15 @@
                 >(stamping the specification is a vote towards standardization
                 for this version, you must be vouched to STAMP)</small
               >
-              5 Vouched
+              5
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="card-title">Actions</div>
               <button class="btn btn-sm btn-outline">STAMP</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <div class="card-title">Related</div>
               <button class="btn btn-sm btn-outline">View Related</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
-              <div class="card-title">Recommend Improvement</div>
               <button class="btn btn-sm btn-outline">Remix</button>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-body">
               <a href="/" class="btn btn-sm btn-outline">Home</a>
             </div>
           </div>
