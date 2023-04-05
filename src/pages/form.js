@@ -19,7 +19,12 @@ const machine = createMachine({
     transition('reset', 'idle')
   ),
   save: invoke(
-    (ctx) => api.save(ctx.md).map(({ id }) => ({ ...ctx, id })).toPromise(),
+    (ctx) => api.save(ctx.md).map(({ id }) => ({ ...ctx, id })).toPromise()
+      .catch(e => {
+        console.log(e)
+        return Promise.reject(e)
+      })
+    ,
     transition('done', 'confirm'),
     transition('error', 'error')
   ),

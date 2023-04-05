@@ -17,18 +17,25 @@
 {#if current === "loading"}
   <div>Loading...</div>
 {:else if current === "ready"}
-  <div class="drawer drawer-mobile drawer-end">
+  <div class="drawer drawer-end">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content flex flex-col items-center justify-start">
-      <div class="flex w-full pl-16">
+    <div class="drawer-content">
+      <div class="flex md:mt-8 px-4">
         <div class="flex flex-col flex-1">
-          <nav class="flex py-4 px-4 sticky top-0 items-center justify-between">
-            <label for="my-drawer-2" class="btn btn-ghost text-lg drawer-button"
-              ><span class="text-primary">Info</span></label
+          <div class="flex w-full justify-between">
+            <h3 class="text-2xl text-[#ff8500] mb-8">Specification</h3>
+            <nav
+              class="flex py-4 px-4 sticky top-0 items-center justify-between"
             >
-          </nav>
-          <h3 class="text-2xl text-[#ff8500]">Specification</h3>
-          <div class="prose">
+              <label
+                for="my-drawer-2"
+                class="btn btn-ghost text-lg drawer-button"
+                ><span class="text-primary">Info</span></label
+              >
+            </nav>
+          </div>
+
+          <div class="prose prose-invert lg:prose-xl spec-width">
             {@html context.spec.html}
           </div>
         </div>
@@ -38,7 +45,7 @@
       <label for="my-drawer-2" class="drawer-overlay" />
       <!-- w-1/4 border-r border-slate-300 bg-white hidden md:block -->
       <div class="menu bg-base-100 block">
-        <div class="py-2 space-y-3 sticky top-0 w-[500px]">
+        <div class="py-2 space-y-3 sticky top-0 w-[350px]">
           <div class="card">
             <div class="card-body">
               <div class="card-title">Information</div>
@@ -91,3 +98,16 @@
     </div>
   </div>
 {/if}
+
+<style>
+  .spec-width {
+    max-width: max-content;
+  }
+
+  @media only screen and (max-width: 450px) {
+    .spec-width {
+      width: 375px;
+      max-width: 360px;
+    }
+  }
+</style>
