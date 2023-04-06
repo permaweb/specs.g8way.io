@@ -728,6 +728,14 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
+"@permaweb/stampjs@^0.0.15":
+  version "0.0.15"
+  resolved "https://registry.yarnpkg.com/@permaweb/stampjs/-/stampjs-0.0.15.tgz#e809028e981cf9102b0286353ad3f3e53e6f4aab"
+  integrity sha512-1W/gSgEGRjHnGHsHDTnVPVPqYMr0MMYLew+LFTh3bTi/FIUKmFyuvUdI8kMPca0zfpqSzTDcaKHayvpMBcsI0w==
+  dependencies:
+    fpjson-lang "^0.1.3"
+    ramda "^0.28.0"
+
 "@protobufjs/aspromise@^1.1.1", "@protobufjs/aspromise@^1.1.2":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@protobufjs/aspromise/-/aspromise-1.1.2.tgz#9b8b0cc663d669a7d8f6f5d0893a14d348f30fbf"
@@ -2803,6 +2811,13 @@ formidable@^1.1.1:
   version "1.2.6"
   resolved "https://registry.yarnpkg.com/formidable/-/formidable-1.2.6.tgz#d2a51d60162bbc9b4a055d8457a7c75315d1a168"
   integrity sha512-KcpbcpuLNOwrEjnbpMC0gS+X8ciDoZE1kkqzat4a8vrprf+s9pKNQ/QIwWfbfs4ltgmFl3MD177SNTkve3BwGQ==
+
+fpjson-lang@^0.1.3:
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/fpjson-lang/-/fpjson-lang-0.1.3.tgz#850a3bac1da2b4488118000acf4aab1bb06109e6"
+  integrity sha512-GBLFEQmeoTdFLp1yfDhierzozniCClzeuu+Y9Xny+JIf1gOGM8n/gqZqn0sneKikt71K6qxFVZDrpfkPTA53nA==
+  dependencies:
+    ramda "^0.28.0"
 
 fraction.js@^4.2.0:
   version "4.2.0"

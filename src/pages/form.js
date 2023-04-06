@@ -43,6 +43,9 @@ Title: "Specification Title"
 Description: 
 Topics:
   - specs
+Authors:
+  - WALLET_ADDRESS1
+  - WALLET_ADDRESS2
 
 ---
 
