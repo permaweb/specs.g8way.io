@@ -24,7 +24,12 @@ export default {
         .map(x => (console.log(x), x))
     },
     get: (id) => Async.fromPromise(services.get)(id),
-    related: (id) => Promise.resolve([])
+    related: (id) => Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
+      .map(toItem)
+      .chain(spec => Async.fromPromise(services.gql)(buildSpecRelatedQuery(), { groupIds: [spec.groupId] }))
+      .map(path(['data', 'transactions', 'edges']))
+      .map(map(compose(toItem, prop('node'))))
+      .map(x => (console.log(x), x))
   })
 }
 
@@ -36,8 +41,51 @@ function toItem(node) {
     height: node.block.height,
     title: getTag('Title'),
     type: getTag('Type'),
-    description: getTag('Description')
+    description: getTag('Description'),
+    groupId: getTag('GroupId'),
+    forks: getTag('Forks')
   }
+}
+
+function buildSingleQuery() {
+  return `query ($tx: ID!) {
+    transaction(id: $tx) {
+      id
+      owner { address } 
+      tags { 
+        name
+        value
+      }
+      block {
+        height
+      }
+    }
+  }`
+}
+
+function buildSpecRelatedQuery() {
+  return `query ($groupIds: [String!]!) {
+  transactions(first:100, tags: [
+    {name: "Type", values: ["test-spec"] },
+    {name: "GroupId", values: $groupIds }
+  ]) {
+    edges {
+      node {
+        id
+        owner {
+          address
+        }
+        tags {
+          name 
+          value
+        }
+        block {
+          height
+        }
+      }
+    }
+  }
+}`
 }
 
 function buildSpecListQuery() {

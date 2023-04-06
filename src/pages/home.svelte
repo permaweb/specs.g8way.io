@@ -33,7 +33,9 @@
   <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
   <div class="drawer-content flex flex-col items-center justify-start">
     <!-- Page content here -->
-    <div class="w-full md:w-4/5 border-l border-r border-slate-300">
+    <div
+      class="w-full md:w-4/5 border-l border-r border-slate-300 min-h-screen"
+    >
       <nav
         class="flex py-4 px-4 sticky top-0 border-b border-slate-300 items-center justify-between"
       >

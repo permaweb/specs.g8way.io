@@ -5,7 +5,7 @@ const arweave = import.meta.env.MODE === 'development' ?
   Arweave.init({ host: 'arweave.net', port: 443, protocol: 'https' }) :
   Arweave.init({})
 
-export const gql = async (query) => arweave.api.post('graphql', { query }).then(prop('data'))
+export const gql = async (query, variables = {}) => arweave.api.post('graphql', { query, variables }).then(prop('data'))
 
 export const get = async (tx) => arweave.api.get(tx).then(prop('data'))
 
