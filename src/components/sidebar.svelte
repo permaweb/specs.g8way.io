@@ -6,7 +6,7 @@
       <span>SPECS</span>
     </div>
     <div
-      class="block  py-2 px-2 text-primary text-2xl flex space-x-2 items-center"
+      class="block py-2 px-2 text-primary text-2xl flex space-x-2 items-center"
     >
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,7 +23,7 @@
         />
       </svg>
 
-      <span class="font-extrabold"> Home</span>
+      <span>Home</span>
     </div>
     <!--
     <div
@@ -52,7 +52,9 @@
     </div>
     -->
     <div class="py-3 px-2">
-      <a href="/create" class="btn btn-block btn-outline">Create Spec</a>
+      <a href="/create" class="btn btn-block btn-primary"
+        >Create Spec</a
+      >
     </div>
 
     <!-- <div
