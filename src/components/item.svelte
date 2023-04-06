@@ -1,17 +1,17 @@
 <script>
   export let creator = {
-    name: "Rakis",
-    handle: "@rakis",
+    name: 'Rakis',
+    handle: '@rakis',
     avatar:
-      "https://arweave.net:443/fYmFNZbRCbPhBWqmOJLNiJFoLFiFchIBSZNI6jRwWaI",
+      'https://arweave.net:443/fYmFNZbRCbPhBWqmOJLNiJFoLFiFchIBSZNI6jRwWaI',
   };
-  export let id = "";
-  export let title = "Asset Discoverability - ANS-110";
-  export let groupId = "ANS-110";
-  export let height = "pending";
+  export let id = '';
+  export let title = 'Asset Discoverability - ANS-110';
+  export let groupId = 'ANS-110';
+  export let height = 'pending';
 </script>
 
-<div class="mt-4">
+<div class="mt-4 border-b-2 border-black-500">
   <div class="py-2 px-5">
     <div class="flex items-center justify-between">
       <div class="flex items-center space-x-1">
@@ -37,17 +37,18 @@
         </div>
       </div>
       <div>
-        <a class="btn btn-sm btn-ghost float-right" href="/view?tx={id}"
-          >View Spec</a
+        <a
+          class="btn btn-sm btn-outline float-right btn-primary"
+          href="/view?tx={id}">View Spec</a
         >
         <!-- <span class="text-lg text-gray-600"><i class="fa fa-ellipsis-h" /></span
         > -->
       </div>
     </div>
 
-    <div class="flex mt-2 space-x-10 text-gray-500 justify-evenly">
-      <span class="flex items-center">Stamps: (8)</span>
-      <span class="flex items-center space-x-2">Height: 1000</span>
+    <div class="flex mt-2 space-x-10 text-gray-500 place-content-end">
+      <span class="flex items-end">Stamps: (8)</span>
+      <span class="flex space-x-2 items-end">Height: 1000</span>
       <!-- <span class="flex items-center space-x-2">+3</span>
       <span class="flex items-center space-x-2">+5</span> -->
     </div>
