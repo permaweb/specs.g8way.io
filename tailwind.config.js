@@ -1,6 +1,7 @@
 import daisyui from 'daisyui';
 import typography from '@tailwindcss/typography';
 import { default as defaultTheme } from 'tailwindcss/defaultTheme';
+import themes from 'daisyui/src/colors/themes';
 
 export default {
   content: ['./index.html', './src/**/*.{svelte,js,ts}'],
@@ -10,7 +11,8 @@ export default {
       sans: ['Poppins', ...defaultTheme.fontFamily.sans],
       mono: ['Roboto Mono', ...defaultTheme.fontFamily.mono],
     },
-    extend: {},
+    extend: {
+    },
   },
   purge: ['./index.html', './src/**/*.{svelte,js,ts}'], // for unused CSS
   variants: {
@@ -20,15 +22,8 @@ export default {
     themes: [
       {
         arweave: {
-          primary: '#000000',
-          secondary: '#ffffff',
-          accent: '#ffffff',
-          neutral: '#ffffff',
-          '#ffffff': '#ffffff',
-          info: '#000000',
-          success: '#21BA82',
-          warning: '#DAA60B',
-          error: '#F16F55',
+          ...themes["[data-theme=light]"],
+          "primary": "#000000",
         },
       },
     ],
