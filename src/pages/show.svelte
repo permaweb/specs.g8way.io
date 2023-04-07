@@ -88,7 +88,9 @@
             <div class="card-body">
               <div class="card-title">Actions</div>
               <button class="btn btn-sm btn-outline">STAMP</button>
-              <button class="btn btn-sm btn-outline">View Related</button>
+              <a href="/related/{tx}" class="btn btn-sm btn-outline"
+                >View Related</a
+              >
               <a href="/remix/{tx}" class="btn btn-sm btn-outline">Remix</a>
               <a href="/" class="btn btn-sm btn-outline">Home</a>
             </div>

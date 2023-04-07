@@ -7,6 +7,7 @@ const publicUrl = `5173-${host}`
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '',
   plugins: [svelte()],
   css: {
     postcss

@@ -25,11 +25,12 @@ export default {
     },
     get: (id) => Async.fromPromise(services.get)(id),
     related: (id) => Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
+      .map(path(['data', 'transaction']))
       .map(toItem)
       .chain(spec => Async.fromPromise(services.gql)(buildSpecRelatedQuery(), { groupIds: [spec.groupId] }))
       .map(path(['data', 'transactions', 'edges']))
       .map(map(compose(toItem, prop('node'))))
-      .map(x => (console.log(x), x))
+
   })
 }
 

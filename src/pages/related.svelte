@@ -1,6 +1,6 @@
 <script>
   import service from "./related.js";
-  import Sidebar from "../components/sidebar.svelte";
+  import Sidebar from "../components/sidebar-related.svelte";
   import Item from "../components/item.svelte";
 
   export let tx = null;
@@ -47,6 +47,6 @@
     </div>
   </div>
   <div class="drawer-side">
-    <Sidebar />
+    <Sidebar {tx} />
   </div>
 </div>
