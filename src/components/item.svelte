@@ -1,14 +1,16 @@
 <script>
   export let creator = {
-    name: 'Rakis',
-    handle: '@rakis',
+    name: "Rakis",
+    handle: "@rakis",
     avatar:
-      'https://arweave.net:443/fYmFNZbRCbPhBWqmOJLNiJFoLFiFchIBSZNI6jRwWaI',
+      "https://arweave.net:443/fYmFNZbRCbPhBWqmOJLNiJFoLFiFchIBSZNI6jRwWaI",
   };
-  export let id = '';
-  export let title = 'Asset Discoverability - ANS-110';
-  export let groupId = 'ANS-110';
-  export let height = 'pending';
+  export let id = "";
+  export let title = "Asset Discoverability - ANS-110";
+  export let groupId = "ANS-110";
+  export let height = "pending";
+  export let stamps = 0;
+  export let forks, description, owner, type;
 </script>
 
 <div class="mt-4 border-b-2 border-black-500">
@@ -47,8 +49,8 @@
     </div>
 
     <div class="flex mt-2 space-x-10 text-gray-500 place-content-end">
-      <span class="flex items-end">Stamps: (8)</span>
-      <span class="flex space-x-2 items-end">Height: 1000</span>
+      <span class="flex items-end">Stamps: ({stamps})</span>
+      <span class="flex space-x-2 items-end">Height: {height}</span>
       <!-- <span class="flex items-center space-x-2">+3</span>
       <span class="flex items-center space-x-2">+5</span> -->
     </div>

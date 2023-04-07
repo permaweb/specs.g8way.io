@@ -1,6 +1,9 @@
 import { Async } from 'crocks'
 import fm from 'front-matter'
-import { always, compose, map, prop, toPairs, over, lensProp, append, path, find, propEq } from 'ramda'
+import {
+  always, assoc, compose, map, prop, toPairs, over, lensProp, append, path, find, propEq,
+  sortWith, uniqWith, ascend, descend
+} from 'ramda'
 
 export default {
   init: (services) => ({
@@ -21,7 +24,12 @@ export default {
       return Async.fromPromise(services.gql)(buildSpecListQuery())
         .map(path(['data', 'transactions', 'edges']))
         .map(map(compose(toItem, prop('node'))))
-        .map(x => (console.log(x), x))
+        .chain(specs => Async.fromPromise(services.stampCounts)(map(prop('id'), specs))
+          .map(results => map(s => assoc('stamps', results[s.id]?.vouched || 0, s), specs))
+        )
+        .map(sortWith([ascend(prop('groupId')), descend(prop('stamps')), descend(prop('height'))]))
+        .map(uniqWith(prop('groupId')))
+
     },
     get: (id) => Async.fromPromise(services.get)(id),
     related: (id) => Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
@@ -39,7 +47,7 @@ function toItem(node) {
   return {
     id: node.id,
     owner: node.owner.address,
-    height: node.block.height,
+    height: node.block?.height,
     title: getTag('Title'),
     type: getTag('Type'),
     description: getTag('Description'),
