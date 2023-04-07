@@ -26,7 +26,6 @@ const machine = createMachine({
         .toPromise()
     },
     transition('done', 'ready', reduce((ctx, ev) => {
-      console.log(ev)
       return ({ ...ctx, spec: ev.data })
     })),
     transition('error', 'error')
@@ -34,7 +33,12 @@ const machine = createMachine({
   ready: state(
     transition('stamp', 'doStamp'),
     transition('remix', 'doRemix')
-  )
+  ),
+  doStamp: invoke(ctx => api.stamp(ctx.tx).toPromise(),
+    transition('done', 'ready'),
+    transition('error', 'error', reduce((ctx, ev) => (console.log(ev))))
+  ),
+  error: state()
 }, () => ({ tx: (new URLSearchParams(location.search).get('tx')) }))
 
 const service = useMachine(machine, () => null);

@@ -87,7 +87,10 @@
           <div class="card">
             <div class="card-body">
               <div class="card-title">Actions</div>
-              <button class="btn btn-sm btn-outline">STAMP</button>
+              <button
+                class="btn btn-sm btn-outline"
+                on:click={() => send("stamp")}>STAMP</button
+              >
               <a href="/related/{tx}" class="btn btn-sm btn-outline"
                 >View Related</a
               >
