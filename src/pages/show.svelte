@@ -1,5 +1,8 @@
 <script>
   import service from "./show.js";
+  import { take, takeLast } from "ramda";
+
+  const shortHash = (h) => `${take(5, h)}...${takeLast(5, h)}`;
 
   export let tx;
 
@@ -45,14 +48,16 @@
       <label for="my-drawer-2" class="drawer-overlay" />
       <!-- w-1/4 border-r border-slate-300 bg-white hidden md:block -->
       <div class="menu bg-base-100 block">
-        <div class="py-2 space-y-3 sticky top-0 w-[350px]">
+        <div class="py-2 space-y-3 sticky top-0 w-[400px]">
           <div class="card">
             <div class="card-body">
               <div class="card-title">Information</div>
-              <table class="table">
+              <h4 class="text-xl">{context.spec.Title}</h4>
+              <p class="break-normal">{context.spec.Description}</p>
+              <table class="table table-compact">
                 <tr>
                   <th>ID</th>
-                  <td>{tx}</td>
+                  <td>{shortHash(tx)}</td>
                 </tr>
                 <tr>
                   <th>GroupId</th>
@@ -61,17 +66,9 @@
                 {#if context.spec.Forks}
                   <tr>
                     <th>Forks</th>
-                    <td>{context.spec.Forks}</td>
+                    <td>{shortHash(context.spec.Forks)}</td>
                   </tr>
                 {/if}
-                <tr>
-                  <th>Title</th>
-                  <td>{context.spec.Title}</td>
-                </tr>
-                <tr>
-                  <th>Description</th>
-                  <td>{context.spec.Description}</td>
-                </tr>
                 <tr>
                   <th>Topics</th>
                   <td>{context.spec.Topics}</td>

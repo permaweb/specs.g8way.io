@@ -1,5 +1,7 @@
 import { Async } from 'crocks'
 import fm from 'front-matter'
+import { marked } from "marked";
+
 import {
   always, assoc, compose, map, prop, toPairs, over, lensProp, append, path, find, propEq,
   sortWith, uniqWith, ascend, descend
@@ -31,7 +33,17 @@ export default {
         .map(uniqWith(prop('groupId')))
 
     },
-    get: (id) => Async.fromPromise(services.get)(id),
+    get: (id) => Async.fromPromise(services.get)(id)
+      .map(fm)
+      .map(({ body, attributes }) => ({
+        body,
+        ...attributes,
+        html: marked(body)
+      }))
+      .chain(spec => Async.fromPromise(services.stampCount)(id)
+        .map(stamps => ({ ...spec, stamps }))
+      )
+    ,
     related: (id) => Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
       .map(path(['data', 'transaction']))
       .map(toItem)
