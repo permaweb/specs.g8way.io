@@ -15,8 +15,8 @@
   $: context = $service.context;
 
   onMount(() => {
-    console.log("current", current);
-    console.log("tx - mouting", tx);
+    // console.log("current", current);
+    // console.log("tx - mouting", tx);
     send({ type: "load", tx });
   });
 </script>

@@ -93,7 +93,7 @@ ${context.spec.body}
       }, 100);
     }
     if (current === "confirm") {
-      console.log(context);
+      //console.log(context);
       router.goto("/");
     }
   }

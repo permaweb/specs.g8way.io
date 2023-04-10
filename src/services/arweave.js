@@ -1,9 +1,10 @@
 import Arweave from 'arweave'
 import { prop } from 'ramda'
+import { getHost } from './get-host'
 
-const arweave = import.meta.env.MODE === 'development' ?
-  Arweave.init({ host: 'arweave.net', port: 443, protocol: 'https' }) :
-  Arweave.init({})
+const info = { host: getHost(), port: 443, protocol: 'https' }
+// @ts-ignore
+const arweave = Arweave.init(info)
 
 export const gql = async (query, variables = {}) => arweave.api.post('graphql', { query, variables }).then(prop('data'))
 

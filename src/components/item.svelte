@@ -7,7 +7,7 @@
   };
   export let id = "";
   export let title = "Asset Discoverability - ANS-110";
-  export let groupId = "ANS-110";
+  export let groupId = null;
   export let height = "pending";
   export let stamps = 0;
   export let forks, description, owner, type;
@@ -34,7 +34,8 @@
           >
           <span class="text-secondary">{date}</span> -->
           <h1 class="pl-8 text-xl text-primary">
-            {title} ({groupId})
+            {title}
+            {groupId ? `(${groupId})` : ""}
           </h1>
         </div>
       </div>

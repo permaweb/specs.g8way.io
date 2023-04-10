@@ -81,7 +81,7 @@
     </div>
     -->
     <div class="py-3 px-2">
-      <a href="/view/?tx={tx}" class="btn btn-block btn-primary">Return</a>
+      <a href="/view/{tx}" class="btn btn-block btn-primary">Return</a>
     </div>
 
     <!-- <div

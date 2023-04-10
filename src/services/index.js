@@ -1,7 +1,7 @@
-import { contractsByWallet, readState, deploy } from './warp'
-import { getActiveAddress } from './wallet'
-import { post, gql, get } from './arweave'
-import { stampCounts, stamp, stampCount } from './stamps'
+import { contractsByWallet, readState, deploy } from "./warp";
+import { getActiveAddress } from "./wallet";
+import { post, gql, get } from "./arweave";
+import { stampCounts, stamp, stampCount } from "./stamps";
 
 export default {
   connect: getActiveAddress,
@@ -15,5 +15,5 @@ export default {
   post,
   stampCounts,
   stamp,
-  stampCount
-}
+  stampCount,
+};
