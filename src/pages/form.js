@@ -1,4 +1,4 @@
-import { createMachine, state, transition, invoke, reduce } from "robot3";
+import { createMachine, state, transition, invoke, reduce, immediate } from "robot3";
 import { useMachine } from "svelte-robot-factory";
 
 import services from "../services";
@@ -46,8 +46,16 @@ const machine = createMachine({
     transition("done", "confirm"),
     transition("error", "error")
   ),
-  confirm: state(),
-  error: state(),
+  confirm: state(
+    transition(
+      "init",
+      "loading",
+      reduce((ctx, ev) => ({ ...ctx, ...ev }))
+    )
+  ),
+  error: state(
+    immediate('idle')
+  ),
 });
 
 const service = useMachine(machine, () => ({}));

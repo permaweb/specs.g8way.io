@@ -16,10 +16,8 @@
   $: current = $service.machine.current;
   $: context = $service.context;
 
-  console.log("tx", tx);
-
   onMount(async () => {
-    console.log("mount: ", current);
+    console.log("state", current);
     editor = new EasyMDE({
       element: document.getElementById("editor"),
       minHeight: "85vh",
@@ -104,7 +102,6 @@ ${context.spec.body}
       }, 100);
     }
     if (current === "confirm") {
-      //console.log(context);
       router.goto("/");
     }
   }
