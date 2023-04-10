@@ -24,9 +24,11 @@ const machine = createMachine({
   ),
   doStamp: invoke(ctx => api.stamp(ctx.tx).toPromise(),
     transition('done', 'ready'),
-    transition('error', 'error', reduce((ctx, ev) => (console.log(ev))))
+    transition('error', 'error', reduce((ctx, ev) => ({ ...ctx, error: ev.error })))
   ),
-  error: state()
+  error: state(
+    transition('ready', 'ready')
+  )
 }, () => ({ tx: (new URLSearchParams(location.search).get('tx')) }))
 
 const service = useMachine(machine, () => null);

@@ -25,8 +25,8 @@
   <Route path="/create">
     <Form />
   </Route>
-  <Route path="/view" let:meta>
-    <Show tx={meta.query.tx} />
+  <Route path="/view/:tx" let:meta>
+    <Show tx={meta.params.tx} />
   </Route>
   <Route path="/remix/:tx" let:meta>
     <Form tx={meta.params.tx} />

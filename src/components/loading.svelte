@@ -6,7 +6,7 @@
 <div class="modal">
   <div class="modal-box">
     <div class="grid items-center justify-center bg-[#f2f3f4] p-4">
-      <img class="text-center w-full" src="loader.gif" alt="loading" />
+      <img class="text-center w-full" src="arweave-loader.gif" alt="loading" />
       <div class="text-center">Loading Specs...</div>
     </div>
   </div>

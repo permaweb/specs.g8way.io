@@ -12,7 +12,7 @@ const machine = createMachine({
   ),
   loading: invoke(
     (ctx) => ctx.tx !== null ? api.get(ctx.tx).map(updateForks).toPromise() : Promise.resolve(template()),
-    transition('done', 'ready', reduce((ctx, ev) => ({ ...ctx, markdown: ev.data })))
+    transition('done', 'ready', reduce((ctx, ev) => ({ ...ctx, spec: ev.data })))
   ),
   ready: state(
     transition('save', 'save', reduce((ctx, ev) => ({ ...ctx, md: ev.md }))),

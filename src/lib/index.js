@@ -35,7 +35,8 @@ export default {
     },
     get: (id) => Async.fromPromise(services.get)(id)
       .map(fm)
-      .map(({ body, attributes }) => ({
+      .map(({ body, attributes, frontmatter }) => ({
+        frontmatter,
         body,
         ...attributes,
         html: marked(body)
@@ -49,9 +50,14 @@ export default {
       .map(toItem)
       .chain(spec => Async.fromPromise(services.gql)(buildSpecRelatedQuery(), { groupIds: [spec.groupId] }))
       .map(path(['data', 'transactions', 'edges']))
-      .map(map(compose(toItem, prop('node')))),
+      .map(map(compose(toItem, prop('node'))))
+      .chain(specs => Async.fromPromise(services.stampCounts)(map(prop('id'), specs))
+        .map(results => map(s => assoc('stamps', results[s.id]?.vouched || 0, s), specs))
+      )
+    ,
+
     stamp: (tx) => Async.fromPromise(services.connect)()
-      .chain(_ => Async.fromPromise(services.stamp)(tx)
+      .chain(addr => Async.fromPromise(services.stamp)(tx, addr)
         .map(x => (console.log(x), x)))
 
 

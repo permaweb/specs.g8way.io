@@ -1,6 +1,10 @@
 <script>
+  import Loading from "../components/loading.svelte";
+  import Error from "../components/error.svelte";
+  import { router } from "tinro";
   import service from "./show.js";
   import { take, takeLast } from "ramda";
+  import { onMount } from "svelte";
 
   const shortHash = (h) => `${take(5, h)}...${takeLast(5, h)}`;
 
@@ -10,19 +14,25 @@
   $: current = $service.machine.current;
   $: context = $service.context;
 
-  $: {
-    if (current === "idle") {
-      send({ type: "load", tx });
-    }
-  }
+  onMount(() => {
+    console.log("current", current);
+    console.log("tx - mouting", tx);
+    send({ type: "load", tx });
+  });
 </script>
 
 {#if current === "loading"}
   <div>Loading...</div>
-{:else if current === "ready"}
+{:else if current === "ready" || current === "doStamp" || current === "error"}
   <div class="drawer drawer-end">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
+      <Loading open={current === "doStamp"} />
+      <Error
+        open={current === "error"}
+        error={context.error}
+        on:click={() => send("ready")}
+      />
       <div class="flex md:mt-8 px-4">
         <div class="flex flex-col flex-1">
           <div class="flex w-full justify-between">
@@ -92,7 +102,13 @@
                 >View Related</a
               >
               <a href="/remix/{tx}" class="btn btn-sm btn-outline">Remix</a>
-              <a href="/" class="btn btn-sm btn-outline">Home</a>
+              <button
+                class="btn btn-sm btn-outline"
+                on:click={async () => {
+                  await send("reset");
+                  router.goto("/");
+                }}>Home</button
+              >
             </div>
           </div>
         </div>

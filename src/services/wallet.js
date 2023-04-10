@@ -1,6 +1,6 @@
 import { ArweaveWebWallet } from 'arweave-wallet-connector'
 
-const wallet = new ArweaveWebWallet({ name: 'ANTMan' }, { state: { url: 'arweave.app' } })
+const wallet = new ArweaveWebWallet({ name: 'SPECS' }, { state: { url: 'arweave.app' } })
 
 export const getActiveAddress = async () => {
   if (window.arweaveWallet) {

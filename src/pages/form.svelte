@@ -83,7 +83,13 @@
   $: {
     if (current === "ready") {
       setTimeout(() => {
-        editor.value(context.markdown);
+        editor.value(`---
+${context.spec.frontmatter}
+
+---
+
+${context.spec.body}
+        `);
       }, 100);
     }
     if (current === "confirm") {
