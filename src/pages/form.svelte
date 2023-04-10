@@ -82,9 +82,20 @@
 
   $: {
     if (current === "ready") {
+      const fm = context.spec.frontmatter
+        .split("\n")
+        .map((s) => {
+          if (/Forks/.test(s)) {
+            return "";
+          }
+          return s;
+        })
+        .join("\n");
+
       setTimeout(() => {
         editor.value(`---
-${context.spec.frontmatter}
+${fm}
+${tx ? "Forks: " + tx : ""}
 
 ---
 
