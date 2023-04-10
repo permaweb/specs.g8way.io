@@ -41,7 +41,7 @@
       <div>
         <a
           class="btn btn-sm btn-outline float-right btn-primary"
-          href="/view/{id}">View Spec</a
+          href="/view/{id}">VIEW</a
         >
         <!-- <span class="text-lg text-gray-600"><i class="fa fa-ellipsis-h" /></span
         > -->
