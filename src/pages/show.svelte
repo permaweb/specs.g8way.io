@@ -22,7 +22,7 @@
 </script>
 
 {#if current === "loading"}
-  <div>Loading...</div>
+  <Loading open={true} />
 {:else if current === "ready" || current === "doStamp" || current === "error"}
   <div class="drawer drawer-end">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />

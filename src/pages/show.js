@@ -20,7 +20,8 @@ const machine = createMachine({
   ),
   ready: state(
     transition('stamp', 'doStamp'),
-    transition('remix', 'doRemix')
+    transition('remix', 'doRemix'),
+    transition('load', 'loading', reduce((ctx, ev) => ({ ...ctx, tx: ev.tx })))
   ),
   doStamp: invoke(ctx => api.stamp(ctx.tx).toPromise(),
     transition('done', 'ready'),

@@ -37,8 +37,8 @@ export default service
 
 
 function template() {
-  return `---
-GroupId: UNIQUE_IDENTIFIER
+  return {
+    frontmatter: `GroupId: UNIQUE_IDENTIFIER
 Title: "Specification Title"
 Description: 
 Topics:
@@ -46,10 +46,8 @@ Topics:
 Authors:
   - WALLET_ADDRESS1
   - WALLET_ADDRESS2
-
----
-
-# Your Specification Title
+`,
+    body: `# Your Specification Title
 
 Status: -
 
@@ -60,7 +58,10 @@ Version: -
 ## Motivation
 
 ## Specification
-  `
+
+`
+  }
+
 }
 
 
