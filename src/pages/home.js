@@ -25,5 +25,5 @@ const machine = createMachine({
   exit: state(),
 });
 
-const service = useMachine(machine, () => null);
+const service = () => useMachine(machine, () => null);
 export default service;

@@ -5,9 +5,10 @@
 
   export let tx = null;
 
-  const send = $service.send;
-  $: current = $service.machine.current;
-  $: context = $service.context;
+  const s = service();
+  const send = $s.send;
+  $: current = $s.machine.current;
+  $: context = $s.context;
 
   $: {
     if (current === "idle") {

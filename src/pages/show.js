@@ -48,5 +48,5 @@ const machine = createMachine(
   () => ({ tx: new URLSearchParams(location.search).get("tx") })
 );
 
-const service = useMachine(machine, () => null);
+const service = () => useMachine(machine, () => null);
 export default service;

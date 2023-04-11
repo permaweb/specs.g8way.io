@@ -10,9 +10,10 @@
 
   export let tx;
 
-  const send = $service.send;
-  $: current = $service.machine.current;
-  $: context = $service.context;
+  const s = service();
+  const send = $s.send;
+  $: current = $s.machine.current;
+  $: context = $s.context;
 
   onMount(() => {
     // console.log("current", current);

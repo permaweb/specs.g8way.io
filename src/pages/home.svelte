@@ -1,39 +1,18 @@
 <script>
-  import Sidebar from '../components/sidebar.svelte';
-  import Item from '../components/item.svelte';
-  import service from './home';
+  import Sidebar from "../components/sidebar.svelte";
+  import Item from "../components/item.svelte";
+  import service from "./home";
 
-  const send = $service.send;
-  $: current = $service.machine.current;
-  $: context = $service.context;
+  const s = service();
 
-  const items = [
-    {
-      creator: {
-        name: 'Rakis',
-        handle: '@rakis',
-        avatar:
-          'https://arweave.net:443/fYmFNZbRCbPhBWqmOJLNiJFoLFiFchIBSZNI6jRwWaI',
-      },
-      title: 'ANS-110 - Asset Discovery',
-    },
-    {
-      creator: {
-        name: 'JShaw',
-        handle: '@jshaw',
-        avatar:
-          'https://arweave.net/5wxPrv_WoZz0CU_GnTsQDOEnWIipcwiNbtoPzesq3gQ',
-      },
-      title: 'ANS-108 - Render-With',
-    },
-  ];
+  const send = $s.send;
+  $: current = $s.machine.current;
+  $: context = $s.context;
 </script>
 
 <div class="drawer drawer-mobile">
   <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
-  <div
-    class="drawer-content flex flex-col items-center justify-start"
-  >
+  <div class="drawer-content flex flex-col items-center justify-start">
     <!-- Page content here -->
     <div
       class="w-full md:w-4/5 border-l border-r border-slate-300 min-h-screen"
@@ -41,9 +20,7 @@
       <nav
         class="flex py-4 px-4 sticky top-0 border-b border-slate-300 items-center justify-between"
       >
-        <label
-          for="my-drawer-2"
-          class="btn btn-ghost text-lg drawer-button"
+        <label for="my-drawer-2" class="btn btn-ghost text-lg drawer-button"
           ><span class="text-primary">Home</span></label
         >
 
@@ -64,14 +41,14 @@
           </svg>
         </a>
       </nav>
-      {#if current === 'loading'}
+      {#if current === "loading"}
         <div class="grid items-center">
           <img
             src="https://arweave.net/IkMJRqi_0Xx_QhstK4WE3rsQqQxC07n84UagPgqGXfc"
             alt="loading"
           />
         </div>
-      {:else if current === 'ready'}
+      {:else if current === "ready"}
         <div class=" overflow-hidden">
           {#each context.specs as item}
             <Item {...item} />

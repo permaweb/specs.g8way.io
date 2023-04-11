@@ -58,7 +58,7 @@ const machine = createMachine({
   ),
 });
 
-const service = useMachine(machine, () => ({}));
+const service = () => useMachine(machine, () => ({}));
 export default service;
 
 function template() {
