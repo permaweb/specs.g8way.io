@@ -1,6 +1,7 @@
 <script>
   import { createEventDispatcher } from "svelte";
   export let current;
+  export let tx;
   const dispatch = createEventDispatcher();
 </script>
 
@@ -98,7 +99,11 @@
     </div>
     -->
     <div class="py-3 px-2 space-y-2">
-      <a href="/create" class="btn btn-block btn-primary">Create Spec</a>
+      {#if current === "ready"}
+        <a href="/create" class="btn btn-block btn-primary">Create Spec</a>
+      {:else if current === "view"}
+        <a href="/remix/{tx}" class="btn btn-block btn-primary">Remix</a>
+      {/if}
       <button class="btn btn-block btn-outline" on:click>Learn More</button>
       {#if current === "learn" || current === "view"}
         <button

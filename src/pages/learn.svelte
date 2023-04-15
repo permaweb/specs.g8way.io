@@ -10,6 +10,26 @@ Specs is a permaweb application that is a repository for standards that empower 
 
 With "SPECS" you can create a markdown specification document and publish on the permaweb, which can be viewed using a "Renderer" - https://specs.g8way.io/?tx=XXXXXX. To provide open access to all users of the permaweb, so that creators and innovators can leverage these specifications as guides to build amazing protocols and applications to help make the community better and extend knowledge to all who can access the permaweb.
 
+## How do I recommend an improvement?
+
+If you would like to recommend an improvement, view the specification that you want to update, then in the sidebar click the "remix" button, make your edits and sign the transaction with an arweave wallet. It will take a few minutes for the new document to be available, but once it is, share with the community and get community members to stamp it. Once it gets more stamps than any other related specification it will appear in the main spec list.
+
+<div class="bg-info text-context-info text-sm rounded py-4 px-8">
+You do need to be "Vouched" to recommend changes. <a href="https://vouch-dao.g8way.io">https://vouch-dao.g8way.io</a>
+</div>
+
+## How do I create a new specification?
+
+To create a new specification, you want to click the "Create SPEC" button in the sidebar, then you will be taken to a markdown editor, the default is a specification template suggested to follow, but you can use any format you prefer. Once finished, you can publish your specification and encourage people that use it to STAMP it.
+
+<div class="bg-info text-context-info text-sm rounded py-4 px-8">
+You do need to be "Vouched" to create a specification. <a href="https://vouch-dao.g8way.io">https://vouch-dao.g8way.io</a>
+</div>
+
+## How to promote a specification?
+
+👏 Yay! You have made a "spec improvement" or "proposed a new spec"! Now you need to get the support of the community. The best way is to connect with the community on the discord <a href="https://discord.gg/FGBZUxyK58">Permaweb Specification Channel</a> Or on your favorite social network. Ask them to read the specification and make recommendations, if they like it, to STAMP it. The more stamps you get, the more the community is in favor of this specification.
+
 ## Features
 
 * List most stamped specifications on https://specs.g8way.io

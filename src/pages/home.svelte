@@ -117,6 +117,7 @@
       on:back={() => send("back")}
       on:click={() => send("learn")}
       {current}
+      tx={context?.selected?.id}
     />
   </div>
 </div>
