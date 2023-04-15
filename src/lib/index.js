@@ -100,7 +100,8 @@ export default {
       Async.fromPromise(services.connect)().chain(
         (addr) => Async.fromPromise(services.stamp)(tx, addr)
         //.map(x => (console.log(x), x))
-      ),
+      )
+
   }),
 };
 

@@ -1,6 +1,8 @@
 <script>
   import Sidebar from "../components/sidebar.svelte";
   import Item from "../components/item.svelte";
+  import Spec from "./show.svelte";
+
   import service from "./home";
 
   const s = service();
@@ -20,26 +22,54 @@
       <nav
         class="flex py-4 px-4 sticky top-0 border-b border-slate-300 items-center justify-between"
       >
-        <label for="my-drawer-2" class="btn btn-ghost text-lg drawer-button"
-          ><span class="text-primary">Home</span></label
-        >
-
-        <a href="/create" class="btn btn-ghost btn-primary">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6 text-primary"
+        {#if current !== "view" && current !== "stamping"}
+          <label for="my-drawer-2" class="btn btn-ghost text-lg drawer-button"
+            ><span class="text-primary">Home</span></label
           >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </a>
+          <a href="/create" class="btn btn-ghost btn-primary">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 text-primary"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+          </a>
+        {:else if current === "view" || current === "stamping"}
+          <button class="btn btn-ghost" on:click={() => send("back")}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
+          </button>
+          {#if current === "stamping"}
+            Stamping...
+          {:else}
+            <button
+              class="btn btn-outline btn-primary"
+              on:click={() => send("stamp")}
+            >
+              stamp ({context.selected.stamps})
+            </button>
+          {/if}
+        {/if}
       </nav>
       {#if current === "loading"}
         <div class="grid items-center">
@@ -51,9 +81,14 @@
       {:else if current === "ready"}
         <div class=" overflow-hidden">
           {#each context.specs as item}
-            <Item {...item} />
+            <Item
+              {...item}
+              on:click={() => send({ type: "show", selected: item })}
+            />
           {/each}
         </div>
+      {:else if current === "view" || current === "stamping"}
+        <Spec tx={context.selected.id} parent={true} />
       {/if}
     </div>
   </div>

@@ -9,6 +9,7 @@
   const shortHash = (h) => `${take(5, h)}...${takeLast(5, h)}`;
 
   export let tx;
+  export let parent = false;
 
   const s = service();
   const send = $s.send;
@@ -41,11 +42,13 @@
             <nav
               class="flex py-4 px-4 sticky top-0 items-center justify-between"
             >
-              <label
-                for="my-drawer-2"
-                class="btn btn-ghost text-lg drawer-button"
-                ><span class="text-primary">Info</span></label
-              >
+              {#if !parent}
+                <label
+                  for="my-drawer-2"
+                  class="btn btn-ghost text-lg drawer-button"
+                  ><span class="text-primary">Info</span></label
+                >
+              {/if}
             </nav>
           </div>
 
