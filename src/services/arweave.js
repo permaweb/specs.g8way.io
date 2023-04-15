@@ -8,7 +8,7 @@ const arweave = Arweave.init(info)
 
 export const gql = async (query, variables = {}) => arweave.api.post('graphql', { query, variables }).then(prop('data'))
 
-export const get = async (tx) => arweave.api.get(tx).then(prop('data'))
+export const get = async (tx) => arweave.api.get(tx, { headers: { 'X-Content': 'arweave' } }).then(prop('data'))
 
 export const post = async ({ data, tags }) => {
   try {
