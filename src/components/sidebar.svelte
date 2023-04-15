@@ -1,7 +1,13 @@
+<script>
+  import { createEventDispatcher } from "svelte";
+  export let current;
+  const dispatch = createEventDispatcher();
+</script>
+
 <label for="my-drawer-2" class="drawer-overlay" />
 <!-- w-1/4 border-r border-slate-300 bg-white hidden md:block -->
 <div class="menu bg-base-100 block">
-  <div class="py-2 pl-28 space-y-3 sticky top-0 w-[500px]">
+  <div class="py-2 md:pl-28 space-y-3 sticky top-0 w-[300px]">
     <div class="flex items-center">
       <svg
         width="56"
@@ -91,9 +97,19 @@
       >
     </div>
     -->
-    <div class="py-3 px-2">
-      <a href="/create" class="btn btn-block btn-primary"
-        >Create Spec</a
+    <div class="py-3 px-2 space-y-2">
+      <a href="/create" class="btn btn-block btn-primary">Create Spec</a>
+      <button class="btn btn-block btn-outline" on:click>Learn More</button>
+      {#if current === "learn" || current === "view"}
+        <button
+          class="btn btn-block btn-outline"
+          on:click={() => dispatch("back")}>back</button
+        >
+      {/if}
+      <label
+        for="my-drawer-2"
+        class="block md:hidden btn btn-outline btn-block text-lg drawer-button"
+        ><span class="text-primary">Close</span></label
       >
     </div>
 

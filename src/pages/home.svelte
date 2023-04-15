@@ -2,6 +2,7 @@
   import Sidebar from "../components/sidebar.svelte";
   import Item from "../components/item.svelte";
   import Spec from "./show.svelte";
+  import Learn from "./learn.svelte";
 
   import service from "./home";
 
@@ -22,7 +23,7 @@
       <nav
         class="flex py-4 px-4 sticky top-0 border-b border-slate-300 items-center justify-between"
       >
-        {#if current !== "view" && current !== "stamping"}
+        {#if current !== "view" && current !== "stamping" && current !== "learn"}
           <label for="my-drawer-2" class="btn btn-ghost text-lg drawer-button"
             ><span class="text-primary">Home</span></label
           >
@@ -69,6 +70,23 @@
               stamp ({context.selected.stamps})
             </button>
           {/if}
+        {:else if current === "learn"}
+          <button class="btn btn-ghost" on:click={() => send("back")}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 19.5L8.25 12l7.5-7.5"
+              />
+            </svg>
+          </button>
         {/if}
       </nav>
       {#if current === "loading"}
@@ -89,10 +107,16 @@
         </div>
       {:else if current === "view" || current === "stamping"}
         <Spec tx={context.selected.id} parent={true} />
+      {:else if current === "learn"}
+        <Learn />
       {/if}
     </div>
   </div>
   <div class="drawer-side">
-    <Sidebar />
+    <Sidebar
+      on:back={() => send("back")}
+      on:click={() => send("learn")}
+      {current}
+    />
   </div>
 </div>

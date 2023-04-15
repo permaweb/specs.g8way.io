@@ -36,7 +36,7 @@
             ><i class="fa fa-circle text-gray-600" /></span
           >
           <span class="text-secondary">{date}</span> -->
-          <h1 class="pl-8 text-xl text-primary">
+          <h1 class="pl-2 md:pl-8 text-xl text-primary">
             {title}
             {groupId ? `(${groupId})` : ""}
           </h1>
@@ -68,7 +68,7 @@
     </div>
 
     <div class="flex mt-2 space-x-10 text-gray-500 place-content-end">
-      <span class="flex items-end"
+      <span class="hidden md:block flex items-end"
         >id: {shortHash(id)}
         <a
           href="https://viewblock.io/arweave/tx/{id}"

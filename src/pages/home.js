@@ -20,7 +20,8 @@ const machine = createMachine({
     )
   ),
   ready: state(
-    transition("show", "view", reduce((ctx, ev) => ({ ...ctx, selected: ev.selected })))
+    transition("show", "view", reduce((ctx, ev) => ({ ...ctx, selected: ev.selected }))),
+    transition("learn", "learn")
   ),
   view: state(
     transition("back", "ready"),
@@ -37,8 +38,13 @@ const machine = createMachine({
       }
 
     })),
-    transition('error', 'error')
+    transition('error', 'error'),
+    transition("learn", "learn")
   ),
+  learn: state(
+    transition("back", "ready")
+  ),
+  error: state(), // TODO: handle errors
   // @ts-ignore
 
   exit: state(),
