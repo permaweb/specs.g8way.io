@@ -1,6 +1,7 @@
 import { createMachine, state, transition, invoke, reduce, immediate } from "robot3";
 import { useMachine } from "svelte-robot-factory";
-
+import { cache } from '../store';
+import { assoc } from 'ramda';
 import services from "../services";
 import Api from "../lib";
 
@@ -37,6 +38,8 @@ const machine = createMachine({
     (ctx) =>
       api
         .save(ctx.md)
+        // add saved doc to local cache -- hold for now...
+        //.map(({ id }) => (cache.update(assoc(id, ctx.md)), { id }))
         .map(({ id }) => ({ ...ctx, id }))
         .toPromise()
         .catch((e) => {

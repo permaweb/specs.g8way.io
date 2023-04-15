@@ -15,10 +15,7 @@ export const post = async ({ data, tags }) => {
     const tx = await arweave.createTransaction({ data })
     tags.map(t => tx.addTag(t.name, t.value))
     const result = await window.arweaveWallet.dispatch(tx)
-    console.log(result)
-    //await arweave.transactions.sign(tx)
-    //await arweave.transactions.post(tx)
-    return Promise.resolve({ id: tx.id })
+    return Promise.resolve({ id: result.id })
   } catch (e) {
     console.log(e.message)
     return Promise.reject(e)
