@@ -36,7 +36,7 @@ export default {
           )
         )
         .map(
-          over(lensProp("tags"), append({ name: "Type", value: "test-spec" }))
+          over(lensProp("tags"), append({ name: "Type", value: "spec" }))
         )
         // connect wallet
         .chain((txInfo) =>
@@ -139,7 +139,7 @@ function buildSingleQuery() {
 function buildSpecRelatedQuery() {
   return `query ($groupIds: [String!]!) {
   transactions(first:100, tags: [
-    {name: "Type", values: ["test-spec"] },
+    {name: "Type", values: ["spec"] },
     {name: "GroupId", values: $groupIds }
   ]) {
     edges {
@@ -165,7 +165,7 @@ function buildSpecListQuery() {
   return `query {
   transactions(first:100, tags: [
     {name: "Content-Type", values: ["text/markdown"]},
-    {name: "Type", values: ["test-spec"]}
+    {name: "Type", values: ["spec"]}
   ]) {
     edges {
       node {
