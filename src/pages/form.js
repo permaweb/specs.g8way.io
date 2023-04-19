@@ -32,7 +32,7 @@ const machine = createMachine({
       "save",
       reduce((ctx, ev) => ({ ...ctx, md: ev.md }))
     ),
-    transition("reset", "idle")
+    transition("reset", "ready", reduce((ctx) => ({ ...ctx, error: null })))
   ),
   save: invoke(
     (ctx) =>
@@ -41,13 +41,12 @@ const machine = createMachine({
         // add saved doc to local cache -- hold for now...
         //.map(({ id }) => (cache.update(assoc(id, ctx.md)), { id }))
         .map(({ id }) => ({ ...ctx, id }))
-        .toPromise()
-        .catch((e) => {
-          console.log(e);
-          return Promise.reject(e);
-        }),
+        .toPromise(),
     transition("done", "confirm"),
-    transition("error", "error")
+    transition("error", "ready", reduce((ctx, ev) => {
+      //console.log(ev)
+      return ({ ...ctx, error: ev.error })
+    }))
   ),
   confirm: state(
     transition(
@@ -55,9 +54,6 @@ const machine = createMachine({
       "loading",
       reduce((ctx, ev) => ({ ...ctx, ...ev }))
     )
-  ),
-  error: state(
-    immediate('idle')
   ),
 });
 

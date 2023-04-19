@@ -11,11 +11,17 @@
   let editor = null;
   let showPublish = false;
   let showConfig = false;
+  let showError = false;
 
   const s = service();
   const send = $s.send;
   $: current = $s.machine.current;
   $: context = $s.context;
+  $: {
+    if ($s.context?.error) {
+      showError = true;
+    }
+  }
 
   onMount(async () => {
     console.log("state", current);
@@ -115,3 +121,28 @@ ${context.spec.body}
 <textarea id="editor" />
 <!-- <Publish {doc} bind:open={showPublish} on:publish={handlePublish} /> -->
 <!-- <Config bind:open={showConfig} /> -->
+<input
+  type="checkbox"
+  id="error-modal"
+  bind:checked={showError}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
+    {#if context?.error}
+      <h3 class="text-xl text-error">Error(s)</h3>
+      <ul class="flex-col items-start space-y-2">
+        {#each context.error.issues as issue}
+          <li>error with "{issue.path[0]}" {issue.message}</li>
+        {/each}
+      </ul>
+    {/if}
+    <button
+      class="btn btn-outline btn-block btn-error"
+      on:click={() => {
+        send("reset");
+        showError = false;
+      }}>close</button
+    >
+  </div>
+</div>

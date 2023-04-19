@@ -1,7 +1,7 @@
 import { Async } from "crocks";
 import fm from "front-matter";
 import { marked } from "marked";
-
+import { validateAttrs } from './attrs'
 import {
   always,
   assoc,
@@ -21,11 +21,19 @@ import {
   uniqBy,
 } from "ramda";
 
+const { of, fromPromise } = Async
+
 export default {
   init: (services) => ({
     save: (md) =>
-      Async.of(md)
+      of(md)
         .map((x) => (console.log("md ", x), x))
+        .chain(md => of(md)
+          .map(fm)
+          .chain(_ => fromPromise(validateAttrs)(prop('attributes', _))
+            .map(attributes => ({ data: md, tags: createTags(attributes) }))
+          )
+        )
         // extract front matter for tags
         .map((md) => ({ data: md, tags: createTags(md) }))
         // set content type for tags
@@ -38,6 +46,7 @@ export default {
         .map(
           over(lensProp("tags"), append({ name: "Type", value: "spec" }))
         )
+
         // connect wallet
         .chain((txInfo) =>
           Async.fromPromise(services.connect)().map(always(txInfo))
@@ -189,8 +198,9 @@ function buildSpecListQuery() {
 function createTags(md) {
   return compose(
     map(([name, value]) => ({ name, value })),
-    toPairs,
-    prop("attributes"),
-    fm
+    toPairs
+    //,
+    //prop("attributes"),
+    //fm
   )(md);
 }
