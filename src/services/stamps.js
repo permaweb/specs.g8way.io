@@ -1,5 +1,6 @@
 import Stamps from "@permaweb/stampjs";
-import { WarpFactory } from "warp-contracts/web";
+//import { WarpFactory } from "warp-contracts/web";
+import { WarpFactory } from 'https://unpkg.com/warp-contracts@1.4.1/bundles/web.bundle.min.js'
 import { prop } from "ramda";
 
 const stamps = Stamps.init({ warp: WarpFactory.forMainnet() });

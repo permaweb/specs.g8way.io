@@ -11,10 +11,18 @@
   export let tx;
   export let parent = false;
 
+  let showError = false;
+
   const s = service();
   const send = $s.send;
   $: current = $s.machine.current;
   $: context = $s.context;
+
+  $: {
+    if ($s.context?.error) {
+      showError = true;
+    }
+  }
 
   onMount(() => {
     // console.log("current", current);
@@ -25,16 +33,11 @@
 
 {#if current === "loading"}
   <Loading open={true} />
-{:else if current === "ready" || current === "doStamp" || current === "error"}
+{:else if current === "ready" || current === "doStamp"}
   <div class="drawer drawer-end">
     <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
     <div class="drawer-content">
       <Loading open={current === "doStamp"} />
-      <Error
-        open={current === "error"}
-        error={context.error}
-        on:click={() => send("ready")}
-      />
       <div class="flex md:mt-8 px-4">
         <div class="flex flex-col flex-1">
           <div class="flex w-full justify-between">
@@ -46,8 +49,22 @@
                 <label
                   for="my-drawer-2"
                   class="btn btn-ghost text-lg drawer-button"
-                  ><span class="text-primary">Info</span></label
                 >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M15.75 19.5L8.25 12l7.5-7.5"
+                    />
+                  </svg>
+                </label>
               {/if}
             </nav>
           </div>
@@ -120,6 +137,28 @@
     </div>
   </div>
 {/if}
+
+<input
+  type="checkbox"
+  id="error-modal"
+  bind:checked={showError}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
+    {#if context?.error}
+      <h3 class="text-xl text-error">Error(s)</h3>
+      <div class="text-sm">{context.error.message}</div>
+    {/if}
+    <button
+      class="btn btn-outline btn-block btn-error"
+      on:click={() => {
+        send("reset");
+        showError = false;
+      }}>close</button
+    >
+  </div>
+</div>
 
 <style>
   .spec-width {

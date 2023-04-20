@@ -103,6 +103,7 @@
         <a href="/create" class="btn btn-block btn-primary">Create Spec</a>
       {:else if current === "view"}
         <a href="/remix/{tx}" class="btn btn-block btn-primary">Remix</a>
+        <a href="/related/{tx}" class="btn btn-block btn-outline">Related</a>
       {/if}
       <button class="btn btn-block btn-outline" on:click>Learn More</button>
       {#if current === "learn" || current === "view"}

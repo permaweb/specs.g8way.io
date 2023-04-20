@@ -24,94 +24,105 @@ import {
 const { of, fromPromise } = Async
 
 export default {
-  init: (services) => ({
-    save: (md) =>
-      of(md)
-        .map((x) => (console.log("md ", x), x))
-        .chain(md => of(md)
+  init: (services) => {
+    const isVouched = addr => Async.fromPromise(services.isVouched)(addr)
+      .chain(res => res ? Async.Resolved(addr) : Async.Rejected(new Error('MUST be vouched!')))
+    return {
+      save: (md) =>
+        of(md)
+          .map((x) => (console.log("md ", x), x))
+          .chain(md => of(md)
+            .map(fm)
+            .chain(_ => fromPromise(validateAttrs)(prop('attributes', _))
+              .map(attributes => ({ data: md, tags: createTags(attributes) }))
+            )
+          )
+          // extract front matter for tags
+          //.map((md) => ({ data: md, tags: createTags(md) }))
+          // set content type for tags
+          .map(
+            over(
+              lensProp("tags"),
+              append({ name: "Content-Type", value: "text/markdown" })
+            )
+          )
+          .map(
+            over(lensProp("tags"), append({ name: "Type", value: "spec" }))
+          )
+          .map(
+            over(lensProp("tags"), append({ name: "Render-With", value: "specs" }))
+          )
+          // connect wallet
+          .chain((txInfo) =>
+            Async.fromPromise(services.connect)()
+              .chain(isVouched) // isVouched
+              .map(always(txInfo))
+          )
+          .map(x => (console.log('connect', x), x))
+          // dispatch
+          .chain(Async.fromPromise(services.dispatch)),
+
+      list: () => {
+        return Async.fromPromise(services.gql)(buildSpecListQuery())
+          .map(path(["data", "transactions", "edges"]))
+          .map(map(compose(toItem, prop("node"))))
+          .chain((specs) =>
+            Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
+              (results) =>
+                map((s) => assoc("stamps", results[s.id]?.vouched || 0, s), specs)
+            )
+          )
+          .map(
+            sortWith([
+              ascend(prop("groupId")),
+              descend(prop("stamps")),
+              descend(prop("height")),
+            ])
+          )
+          .map(uniqBy(prop("groupId")));
+      },
+      get: (id) =>
+        Async.fromPromise(services.get)(id)
           .map(fm)
-          .chain(_ => fromPromise(validateAttrs)(prop('attributes', _))
-            .map(attributes => ({ data: md, tags: createTags(attributes) }))
-          )
-        )
-        // extract front matter for tags
-        .map((md) => ({ data: md, tags: createTags(md) }))
-        // set content type for tags
-        .map(
-          over(
-            lensProp("tags"),
-            append({ name: "Content-Type", value: "text/markdown" })
-          )
-        )
-        .map(
-          over(lensProp("tags"), append({ name: "Type", value: "spec" }))
-        )
-
-        // connect wallet
-        .chain((txInfo) =>
-          Async.fromPromise(services.connect)().map(always(txInfo))
-        )
-        // dispatch
-        .chain(Async.fromPromise(services.dispatch)),
-
-    list: () => {
-      return Async.fromPromise(services.gql)(buildSpecListQuery())
-        .map(path(["data", "transactions", "edges"]))
-        .map(map(compose(toItem, prop("node"))))
-        .chain((specs) =>
-          Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
-            (results) =>
-              map((s) => assoc("stamps", results[s.id]?.vouched || 0, s), specs)
-          )
-        )
-        .map(
-          sortWith([
-            ascend(prop("groupId")),
-            descend(prop("stamps")),
-            descend(prop("height")),
-          ])
-        )
-        .map(uniqBy(prop("groupId")));
-    },
-    get: (id) =>
-      Async.fromPromise(services.get)(id)
-        .map(fm)
-        .map(({ body, attributes, frontmatter }) => ({
-          frontmatter,
-          body,
-          ...attributes,
-          html: marked(body),
-        }))
-        .chain((spec) =>
-          Async.fromPromise(services.stampCount)(id).map((stamps) => ({
-            ...spec,
-            stamps,
+          .map(({ body, attributes, frontmatter }) => ({
+            frontmatter,
+            body,
+            ...attributes,
+            html: marked(body),
           }))
-        ),
-    related: (id) =>
-      Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
-        .map(path(["data", "transaction"]))
-        .map(toItem)
-        .chain((spec) =>
-          Async.fromPromise(services.gql)(buildSpecRelatedQuery(), {
-            groupIds: [spec.groupId],
-          })
-        )
-        .map(path(["data", "transactions", "edges"]))
-        .map(map(compose(toItem, prop("node"))))
-        .chain((specs) =>
-          Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
-            (results) =>
-              map((s) => assoc("stamps", results[s.id]?.vouched || 0, s), specs)
+          .chain((spec) =>
+            Async.fromPromise(services.stampCount)(id).map((stamps) => ({
+              ...spec,
+              stamps,
+            }))
+          ),
+      related: (id) =>
+        Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
+          .map(path(["data", "transaction"]))
+          .map(toItem)
+          .chain((spec) =>
+            Async.fromPromise(services.gql)(buildSpecRelatedQuery(), {
+              groupIds: [spec.groupId],
+            })
           )
-        ),
-    stamp: (tx) =>
-      Async.fromPromise(services.connect)().chain(
-        (addr) => Async.fromPromise(services.stamp)(tx, addr)
-        //.map(x => (console.log(x), x))
-      )
+          .map(path(["data", "transactions", "edges"]))
+          .map(map(compose(toItem, prop("node"))))
+          .chain((specs) =>
+            Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
+              (results) =>
+                map((s) => assoc("stamps", results[s.id]?.vouched || 0, s), specs)
+            )
+          ),
+      stamp: (tx) =>
+        Async.fromPromise(services.connect)()
+          //.chain(isVouched) // isVouched
+          .chain(
+            (addr) => Async.fromPromise(services.stamp)(tx, addr)
+            //.map(x => (console.log(x), x))
+          )
 
-  }),
+    }
+  },
 };
 
 function toItem(node) {

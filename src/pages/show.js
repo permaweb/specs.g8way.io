@@ -32,6 +32,11 @@ const machine = createMachine(
         "load",
         "loading",
         reduce((ctx, ev) => ({ ...ctx, tx: ev.tx }))
+      ),
+      transition(
+        "reset",
+        "ready",
+        reduce((ctx) => ({ ...ctx, error: null }))
       )
     ),
     doStamp: invoke(
@@ -39,11 +44,13 @@ const machine = createMachine(
       transition("done", "ready"),
       transition(
         "error",
-        "error",
-        reduce((ctx, ev) => ({ ...ctx, error: ev.error }))
+        "ready",
+        reduce((ctx, ev) => {
+
+          return ({ ...ctx, error: ev.error })
+        })
       )
-    ),
-    error: state(transition("ready", "ready")),
+    )
   },
   () => ({ tx: new URLSearchParams(location.search).get("tx") })
 );

@@ -129,13 +129,16 @@ ${context.spec.body}
 />
 <div class="modal">
   <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
-    {#if context?.error}
+    {#if context?.error && context.error.issues}
       <h3 class="text-xl text-error">Error(s)</h3>
       <ul class="flex-col items-start space-y-2">
         {#each context.error.issues as issue}
           <li>error with "{issue.path[0]}" {issue.message}</li>
         {/each}
       </ul>
+    {/if}
+    {#if context?.error && context.error.message}
+      <div class="text-sm">{context.error.message}</div>
     {/if}
     <button
       class="btn btn-outline btn-block btn-error"

@@ -6,11 +6,19 @@
 
   import service from "./home";
 
+  let showError = false;
+
   const s = service();
 
   const send = $s.send;
   $: current = $s.machine.current;
   $: context = $s.context;
+
+  $: {
+    if ($s.context?.error) {
+      showError = true;
+    }
+  }
 </script>
 
 <div class="drawer drawer-mobile">
@@ -119,5 +127,27 @@
       {current}
       tx={context?.selected?.id}
     />
+  </div>
+</div>
+
+<input
+  type="checkbox"
+  id="error-modal"
+  bind:checked={showError}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
+    {#if context?.error}
+      <h3 class="text-xl text-error">Error(s)</h3>
+      <div class="text-sm">{context.error.message}</div>
+    {/if}
+    <button
+      class="btn btn-outline btn-block btn-error"
+      on:click={() => {
+        send("reset");
+        showError = false;
+      }}>close</button
+    >
   </div>
 </div>
