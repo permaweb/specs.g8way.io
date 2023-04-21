@@ -46,8 +46,11 @@ const machine = createMachine(
         "error",
         "ready",
         reduce((ctx, ev) => {
-
+          if (typeof ev.error === 'string') {
+            return ({ ...ctx, error: { message: ev.error } })
+          }
           return ({ ...ctx, error: ev.error })
+
         })
       )
     )

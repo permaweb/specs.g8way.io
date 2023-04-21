@@ -27,7 +27,7 @@ const machine = createMachine({
   view: state(
     transition("back", "ready"),
     transition("stamp", "stamping"),
-    transition('reset', 'ready', reduce((ctx) => ({ ...ctx, error: null })))
+    transition('reset', 'view', reduce((ctx) => ({ ...ctx, error: null })))
   ),
   stamping: invoke(
     async (ctx) => api.stamp(ctx.selected.id).toPromise(),
@@ -40,7 +40,13 @@ const machine = createMachine({
       }
 
     })),
-    transition('error', 'view', reduce((ctx, ev) => ({ ...ctx, error: ev.error }))),
+    transition('error', 'view', reduce((ctx, ev) => {
+      if (typeof ev.error === 'string') {
+        return ({ ...ctx, error: { message: ev.error } })
+      }
+      return ({ ...ctx, error: ev.error })
+
+    })),
     transition("learn", "learn")
   ),
   learn: state(
