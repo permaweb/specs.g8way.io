@@ -4,15 +4,24 @@
   const md = marked(`
   # SPECS
 
-Specs is a permaweb application that is a repository for standards that empower the community to drive change and vote by attribution of value or STAMPing specifications. The SPECs permaweb app gives vouched users the ability to "CREATE" and "REMIX" specifications in [MARKDOWN](https://www.markdownguide.org/cheat-sheet/) - with Front Matter.
+Specs is a permaweb application that is a repository for common practices that empower the community to 
+drive change and vote by STAMPing specs. The SPECs permaweb app gives vouched users the ability to "CREATE" 
+and "REMIX" spec documents in [MARKDOWN](https://www.markdownguide.org/cheat-sheet/) - with Front Matter.
 
 > What is front-matter? Front Matter is a pre-pended header of YAML describing meta data for the document.
 
-With "SPECS" you can create a markdown specification document and publish on the permaweb, which can be viewed using a "Renderer" - https://specs.g8way.io/?tx=XXXXXX. To provide open access to all users of the permaweb, so that creators and innovators can leverage these specifications as guides to build amazing protocols and applications to help make the community better and extend knowledge to all who can access the permaweb.
+With "SPECS" you can create a markdown specification document and publish on the permaweb, once published  
+the spec can be viewed using a "Renderer" - https://specs.g8way.io/?tx=XXXXXX. To provide open access to 
+all users of the permaweb, so that creators and innovators can leverage these specifications as guides to 
+build amazing protocols and applications to help make the community better and extend knowledge to all who 
+can access the permaweb.
 
-## How do I recommend an improvement?
+## How do I recommend an improvement to an existing spec?
 
-If you would like to recommend an improvement, view the specification that you want to update, then in the sidebar click the "remix" button, make your edits and sign the transaction with an arweave wallet. It will take a few minutes for the new document to be available, but once it is, share with the community and get community members to stamp it. Once it gets more stamps than any other related specification it will appear in the main spec list.
+If you would like to recommend changes to an existing spec, view the spec document that you want to update, 
+then in the sidebar click the "remix" button, make your edits and click publish. You will be prompted to sign 
+the transaction with an arweave wallet. Once submitted to the network, it will take a few minutes for the new 
+document to be available, but once it is, share with the community and get community members to stamp it. Once it gets more stamps than any other related specification it will appear in the main spec list.
 
 <div class="bg-info text-context-info text-sm rounded py-4 px-8">
 You do need to be "Vouched" to recommend changes. <a href="https://vouch-dao.g8way.io">https://vouch-dao.g8way.io</a>

@@ -68,28 +68,13 @@
     </div>
 
     <div class="flex mt-2 space-x-10 text-gray-500 place-content-end">
-      <span class="hidden md:block flex items-end"
-        >id: {shortHash(id)}
-        <a
-          href="https://viewblock.io/arweave/tx/{id}"
-          class="btn btn-ghost btn-sm mt-2 "
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="w-6 h-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M3.75 5.25h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5m-16.5 4.5h16.5"
-            />
-          </svg>
-        </a></span
+      <a
+        target="_blank"
+        href="https://viewblock.io/arweave/tx/{id}"
+        class="link mt-2 "
       >
+        <span class="hidden md:block flex items-end">{shortHash(id)} </span>
+      </a>
       <span class="flex items-end">Stamps: ({stamps})</span>
       <span class="flex space-x-2 items-end">Height: {height}</span>
       <!-- <span class="flex items-center space-x-2">+3</span>

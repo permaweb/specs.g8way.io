@@ -79,7 +79,9 @@ export default {
               descend(prop("height")),
             ])
           )
-          .map(uniqBy(prop("groupId")));
+          .map(uniqBy(prop("groupId")))
+          .map(sortWith([descend(prop('stamps')), ascend(prop('title'))]))
+          ;
       },
       get: (id) =>
         Async.fromPromise(services.get)(id)
@@ -112,7 +114,9 @@ export default {
               (results) =>
                 map((s) => assoc("stamps", results[s.id]?.vouched || 0, s), specs)
             )
-          ),
+          )
+          .map(sortWith([descend(prop('stamps')), ascend(prop('title'))]))
+      ,
       stamp: (tx) =>
         Async.fromPromise(services.connect)()
           //.chain(isVouched) // isVouched

@@ -7,6 +7,7 @@
   import Form from "./pages/form.svelte";
   import Show from "./pages/show.svelte";
   import Related from "./pages/related.svelte";
+  import Learn from "./pages/learn.svelte";
 
   const tx = new URLSearchParams(location.search).get("tx");
   router.mode.hash();
@@ -33,5 +34,8 @@
   </Route>
   <Route path="/related/:tx" let:meta>
     <Related tx={meta.params.tx} />
+  </Route>
+  <Route path="/learn">
+    <Learn />
   </Route>
 </Transition>

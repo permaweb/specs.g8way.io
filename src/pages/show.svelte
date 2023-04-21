@@ -46,6 +46,9 @@
               class="flex py-4 px-4 sticky top-0 items-center justify-between"
             >
               {#if !parent}
+                <button class="btn btn-outline" on:click={() => send("stamp")}>
+                  stamp ({context.spec.stamps})
+                </button>
                 <label
                   for="my-drawer-2"
                   class="btn btn-ghost text-lg drawer-button"

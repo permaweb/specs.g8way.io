@@ -5,7 +5,7 @@
 <label for="my-drawer-2" class="drawer-overlay" />
 <!-- w-1/4 border-r border-slate-300 bg-white hidden md:block -->
 <div class="menu bg-base-100 block">
-  <div class="py-2 pl-28 space-y-3 sticky top-0 w-[500px]">
+  <div class="py-2 pl-28 space-y-3 sticky top-0 w-[300px]">
     <div class="flex items-center">
       <svg
         width="56"
@@ -81,7 +81,10 @@
     </div>
     -->
     <div class="py-3 px-2">
-      <a href="/view/{tx}" class="btn btn-block btn-primary">Return</a>
+      <a href="/" class="btn btn-block btn-outline">Home</a>
+      <a href="/view/{tx}" class="btn btn-block btn-outline mt-4"
+        >View Current</a
+      >
     </div>
 
     <!-- <div
