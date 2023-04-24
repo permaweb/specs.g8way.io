@@ -31,6 +31,15 @@
   });
 </script>
 
+<!-- <svelte:head>
+  <link
+    href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css"
+    rel="stylesheet"
+    type="text/css"
+  />
+  <script src="https://cdn.twind.style" crossorigin></script>
+</svelte:head> -->
+
 {#if current === "loading"}
   <Loading open={true} />
 {:else if current === "ready" || current === "doStamp"}
@@ -72,7 +81,11 @@
             </nav>
           </div>
 
-          <div class="prose prose-invert lg:prose-xl spec-width">
+          <div
+            class="prose prose-invert lg:prose-xl spec-width {!parent
+              ? 'lg:mx-64'
+              : 'mx-8'}"
+          >
             {@html context.spec.html}
           </div>
         </div>

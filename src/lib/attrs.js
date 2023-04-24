@@ -6,7 +6,8 @@ const Schema = z.object({
   Description: z.string().max(200),
   Topics: z.array(z.string()),
   Authors: z.array(z.string().min(43).max(43)),
-  Type: z.string().default('spec')
+  Type: z.string().default('spec'),
+  Forks: z.string().optional()
 })
 
 export const validateAttrs = (tags) => Schema.parseAsync(tags)

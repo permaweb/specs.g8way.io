@@ -30,6 +30,7 @@
       minHeight: "85vh",
       autoFocus: true,
       spellChecker: false,
+      indentWithTabs: false,
       toolbar: [
         "bold",
         "italic",
