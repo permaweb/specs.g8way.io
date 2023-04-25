@@ -116,6 +116,7 @@ export default {
             )
           )
           .map(sortWith([descend(prop('stamps')), ascend(prop('title'))]))
+          .map(uniqBy(prop('id')))
       ,
       stamp: (tx) =>
         Async.fromPromise(services.connect)()

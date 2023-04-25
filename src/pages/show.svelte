@@ -83,7 +83,7 @@
 
           <div
             class="prose prose-invert lg:prose-xl spec-width {!parent
-              ? 'lg:mx-64'
+              ? 'max-w-full'
               : 'mx-8'}"
           >
             {@html context.spec.html}
