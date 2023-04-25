@@ -12,6 +12,7 @@
   let showPublish = false;
   let showConfig = false;
   let showError = false;
+  let showConfirm = false;
 
   const s = service();
   const send = $s.send;
@@ -110,7 +111,8 @@ ${context.spec.body}
       }, 100);
     }
     if (current === "confirm") {
-      router.goto("/");
+      showConfirm = true;
+      //router.goto("/");
     }
   }
 </script>
@@ -147,6 +149,31 @@ ${context.spec.body}
         send("reset");
         showError = false;
       }}>close</button
+    >
+  </div>
+</div>
+
+<input
+  type="checkbox"
+  id="confirm-modal"
+  bind:checked={showConfirm}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
+    <h3 class="text-xl text-success">Success!</h3>
+    <div class="py-8">
+      <p>
+        SPEC is successfully published to the Permaweb, it may take a few
+        moments to show up in the list as the decentralized network and indexes
+        complete processing the document.
+      </p>
+    </div>
+    <button
+      class="btn btn-outline btn-block btn-error"
+      on:click={() => {
+        router.goto("/");
+      }}>ok</button
     >
   </div>
 </div>
