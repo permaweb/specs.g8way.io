@@ -104,6 +104,11 @@
       {:else if current === "view"}
         <a href="/remix/{tx}" class="btn btn-block btn-primary">Remix</a>
         <a href="/related/{tx}" class="btn btn-block btn-outline">Related</a>
+        <a
+          target="_blank"
+          href="https://microscope.g8way.io/?tx={tx}"
+          class="btn btn-block btn-outline">Microscope</a
+        >
       {/if}
       <button class="btn btn-block btn-outline" on:click>Learn More</button>
       {#if current === "learn" || current === "view"}

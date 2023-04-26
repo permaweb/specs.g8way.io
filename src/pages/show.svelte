@@ -1,6 +1,7 @@
 <script>
   import Loading from "../components/loading.svelte";
   import Error from "../components/error.svelte";
+  import { format, fromUnixTime } from "date-fns";
   import { router } from "tinro";
   import service from "./show.js";
   import { take, takeLast } from "ramda";
@@ -124,6 +125,19 @@
                   <th>Stamps</th>
                   <td>{context.spec.stamps}</td>
                 </tr>
+                <tr>
+                  <th>Height</th>
+                  <td>{context.spec.height}</td>
+                </tr>
+                <tr>
+                  <th>Date</th>
+                  <td
+                    >{format(
+                      fromUnixTime(context.spec.timestamp),
+                      "M/d/yyyy"
+                    )}</td
+                  >
+                </tr>
               </table>
             </div>
           </div>
@@ -139,6 +153,12 @@
                 >View Related</a
               >
               <a href="/remix/{tx}" class="btn btn-sm btn-outline">Remix</a>
+              <a
+                href="https://microscope.g8way.io/?tx={tx}"
+                class="btn btn-sm btn-outline"
+              >
+                Microscope
+              </a>
               <button
                 class="btn btn-sm btn-outline"
                 on:click={async () => {

@@ -26,7 +26,6 @@
     copying = true;
     setTimeout(() => (copying = false), 2000);
     const spec = `${window.location.origin}/?tx=${context.selected.id}`;
-    console.log("spec", spec);
     window.navigator.clipboard.writeText(spec);
   }
 </script>

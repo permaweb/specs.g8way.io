@@ -1,5 +1,5 @@
 import { createMachine, state, transition, invoke, reduce } from "robot3";
-import { set, lensProp } from "ramda";
+import { set, lensProp, lensPath } from "ramda";
 
 import { useMachine } from "svelte-robot-factory";
 import Api from "../lib";
@@ -41,7 +41,10 @@ const machine = createMachine(
     ),
     doStamp: invoke(
       (ctx) => api.stamp(ctx.tx).toPromise(),
-      transition("done", "ready"),
+      transition("done", "ready", reduce((ctx, ev) => {
+        console.log(ev)
+        return set(lensPath(['spec', 'stamps']), ev.data, ctx)
+      })),
       transition(
         "error",
         "ready",

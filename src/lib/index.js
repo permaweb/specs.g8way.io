@@ -66,6 +66,7 @@ export default {
         return Async.fromPromise(services.gql)(buildSpecListQuery())
           .map(path(["data", "transactions", "edges"]))
           .map(map(compose(toItem, prop("node"))))
+          .map(x => (console.log('items', x), x))
           .chain((specs) =>
             Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
@@ -97,7 +98,13 @@ export default {
               ...spec,
               stamps,
             }))
-          ),
+          )
+          .chain((spec) =>
+            Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
+              .map(path(['data', 'transaction']))
+              .map(({ block }) => ({ ...spec, height: block.height, timestamp: block.timestamp }))
+          )
+      ,
       related: (id) =>
         Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
           .map(path(["data", "transaction"]))
@@ -137,6 +144,7 @@ function toItem(node) {
     id: node.id,
     owner: node.owner.address,
     height: node.block?.height,
+    timestamp: node.block?.timestamp,
     title: getTag("Title"),
     type: getTag("Type"),
     description: getTag("Description"),
@@ -156,6 +164,7 @@ function buildSingleQuery() {
       }
       block {
         height
+        timestamp
       }
     }
   }`;
@@ -179,6 +188,7 @@ function buildSpecRelatedQuery() {
         }
         block {
           height
+          timestamp
         }
       }
     }
@@ -204,6 +214,7 @@ function buildSpecListQuery() {
         }
         block {
           height
+          timestamp
         }
       }
     }
