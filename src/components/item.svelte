@@ -1,5 +1,7 @@
 <script>
   import { take, takeLast } from "ramda";
+  import { fromUnixTime, format } from "date-fns";
+
   export let creator = {
     name: "Rakis",
     handle: "@rakis",
@@ -10,6 +12,7 @@
   export let title = "Asset Discoverability - ANS-110";
   export let groupId = null;
   export let height = "pending";
+  export let timestamp = "pending";
   export let stamps = 0;
   export let forks, description, owner, type;
 
@@ -76,6 +79,9 @@
         <span class="hidden md:block flex items-end">{shortHash(id)} </span>
       </a>
       <span class="flex items-end">Stamps: ({stamps})</span>
+      <span class="flex space-x-2 items-end"
+        >Date: {format(fromUnixTime(timestamp), "M/d/yyyy")}</span
+      >
       <span class="flex space-x-2 items-end">Height: {height}</span>
       <!-- <span class="flex items-center space-x-2">+3</span>
       <span class="flex items-center space-x-2">+5</span> -->
