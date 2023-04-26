@@ -38,11 +38,28 @@
       class="w-full md:w-4/5 border-l border-r border-slate-300 min-h-screen"
     >
       <nav
-        class="flex py-4 px-4 sticky top-0 border-b border-slate-300 items-center justify-between"
+        class="flex py-4 px-4 sticky top-0 bg-white border-b border-slate-300 items-center justify-between lg:justify-end"
       >
         {#if current !== "view" && current !== "stamping" && current !== "learn"}
-          <label for="my-drawer-2" class="btn btn-ghost text-lg drawer-button"
-            ><span class="text-primary">Home</span></label
+          <label
+            for="my-drawer-2"
+            class="btn btn-ghost text-lg drawer-button lg:hidden"
+            ><span class="text-primary">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="w-6 h-6"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M11.25 4.5l7.5 7.5-7.5 7.5m-6-15l7.5 7.5-7.5 7.5"
+                />
+              </svg>
+            </span></label
           >
 
           <a href="/create" class="btn btn-ghost btn-primary">
@@ -146,7 +163,7 @@
         {/if}
       </nav>
       {#if current === "loading"}
-        <div class="grid items-center">
+        <div class="grid items-center justify-center min-w-full min-h-full">
           <img
             src="https://arweave.net/IkMJRqi_0Xx_QhstK4WE3rsQqQxC07n84UagPgqGXfc"
             alt="loading"
