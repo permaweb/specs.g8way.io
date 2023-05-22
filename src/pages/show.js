@@ -41,22 +41,25 @@ const machine = createMachine(
     ),
     doStamp: invoke(
       (ctx) => api.stamp(ctx.tx).toPromise(),
-      transition("done", "ready", reduce((ctx, ev) => {
-        console.log(ev)
-        return set(lensPath(['spec', 'stamps']), ev.data, ctx)
-      })),
+      transition(
+        "done",
+        "ready",
+        reduce((ctx, ev) => {
+          console.log(ev);
+          return set(lensPath(["spec", "stamps"]), ev.data, ctx);
+        })
+      ),
       transition(
         "error",
         "ready",
         reduce((ctx, ev) => {
-          if (typeof ev.error === 'string') {
-            return ({ ...ctx, error: { message: ev.error } })
+          if (typeof ev.error === "string") {
+            return { ...ctx, error: { message: ev.error } };
           }
-          return ({ ...ctx, error: ev.error })
-
+          return { ...ctx, error: ev.error };
         })
       )
-    )
+    ),
   },
   () => ({ tx: new URLSearchParams(location.search).get("tx") })
 );

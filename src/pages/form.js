@@ -1,7 +1,15 @@
-import { createMachine, state, transition, invoke, reduce, immediate } from "robot3";
+import {
+  createMachine,
+  state,
+  transition,
+  invoke,
+  reduce,
+  immediate,
+} from "robot3";
 import { useMachine } from "svelte-robot-factory";
-import { cache } from '../store';
-import { assoc } from 'ramda';
+import JSToYaml from "convert-yaml";
+import { cache } from "../store";
+import { assoc } from "ramda";
 import services from "../services";
 import Api from "../lib";
 
@@ -30,23 +38,38 @@ const machine = createMachine({
     transition(
       "save",
       "save",
-      reduce((ctx, ev) => ({ ...ctx, md: ev.md }))
+      reduce((ctx, ev) => ({ ...ctx, md: ev.md, metadata: ev.metadata }))
     ),
-    transition("reset", "ready", reduce((ctx) => ({ ...ctx, error: null })))
+    transition(
+      "reset",
+      "ready",
+      reduce((ctx) => ({ ...ctx, error: null }))
+    )
   ),
   save: invoke(
     (ctx) =>
       api
-        .save(ctx.md)
+        .save(
+          `---
+${JSToYaml.stringify(ctx.metadata).value}
+
+---
+
+${ctx.md}`
+        )
         // add saved doc to local cache -- hold for now...
         //.map(({ id }) => (cache.update(assoc(id, ctx.md)), { id }))
         .map(({ id }) => ({ ...ctx, id }))
         .toPromise(),
     transition("done", "confirm"),
-    transition("error", "ready", reduce((ctx, ev) => {
-      //console.log(ev)
-      return ({ ...ctx, error: ev.error })
-    }))
+    transition(
+      "error",
+      "ready",
+      reduce((ctx, ev) => {
+        //console.log(ev)
+        return { ...ctx, error: ev.error };
+      })
+    )
   ),
   confirm: state(
     transition(
@@ -84,6 +107,11 @@ Version: -
 ## Specification
 
 `,
+    GroupId: "",
+    Title: "",
+    Description: "",
+    Topics: [],
+    Authors: [],
   };
 }
 

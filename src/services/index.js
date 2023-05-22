@@ -2,7 +2,7 @@
 import { getActiveAddress } from "./wallet";
 import { post, gql, get } from "./arweave";
 import { stampCounts, stamp, stampCount } from "./stamps";
-import { isVouched } from './vouched'
+import { isVouched } from "./vouched";
 
 export default {
   connect: getActiveAddress,
@@ -17,5 +17,5 @@ export default {
   stampCounts,
   stamp,
   stampCount,
-  isVouched
+  isVouched,
 };

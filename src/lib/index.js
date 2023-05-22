@@ -1,7 +1,7 @@
 import { Async } from "crocks";
 import fm from "front-matter";
 import { marked } from "marked";
-import { validateAttrs } from './attrs'
+import { validateAttrs } from "./attrs";
 import {
   always,
   assoc,
@@ -21,21 +21,28 @@ import {
   uniqBy,
 } from "ramda";
 
-const { of, fromPromise } = Async
+const { of, fromPromise } = Async;
 
 export default {
   init: (services) => {
-    const isVouched = addr => Async.fromPromise(services.isVouched)(addr)
-      .chain(res => res ? Async.Resolved(addr) : Async.Rejected(new Error('MUST be vouched!')))
+    const isVouched = (addr) =>
+      Async.fromPromise(services.isVouched)(addr).chain((res) =>
+        res
+          ? Async.Resolved(addr)
+          : Async.Rejected(new Error("MUST be vouched!"))
+      );
     return {
       save: (md) =>
         of(md)
           .map((x) => (console.log("md ", x), x))
-          .chain(md => of(md)
-            .map(fm)
-            .chain(_ => fromPromise(validateAttrs)(prop('attributes', _))
-              .map(attributes => ({ data: md, tags: createTags(attributes) }))
-            )
+          .chain((md) =>
+            of(md)
+              .map(fm)
+              .chain((_) =>
+                fromPromise(validateAttrs)(prop("attributes", _)).map(
+                  (attributes) => ({ data: md, tags: createTags(attributes) })
+                )
+              )
           )
           // extract front matter for tags
           //.map((md) => ({ data: md, tags: createTags(md) }))
@@ -46,11 +53,12 @@ export default {
               append({ name: "Content-Type", value: "text/markdown" })
             )
           )
+          .map(over(lensProp("tags"), append({ name: "Type", value: "spec" })))
           .map(
-            over(lensProp("tags"), append({ name: "Type", value: "spec" }))
-          )
-          .map(
-            over(lensProp("tags"), append({ name: "Render-With", value: "specs" }))
+            over(
+              lensProp("tags"),
+              append({ name: "Render-With", value: "specs" })
+            )
           )
           // connect wallet
           .chain((txInfo) =>
@@ -58,7 +66,7 @@ export default {
               .chain(isVouched) // isVouched
               .map(always(txInfo))
           )
-          .map(x => (console.log('connect', x), x))
+          .map((x) => (console.log("connect", x), x))
           // dispatch
           .chain(Async.fromPromise(services.dispatch)),
 
@@ -66,11 +74,14 @@ export default {
         return Async.fromPromise(services.gql)(buildSpecListQuery())
           .map(path(["data", "transactions", "edges"]))
           .map(map(compose(toItem, prop("node"))))
-          .map(x => (console.log('items', x), x))
+          .map((x) => (console.log("items", x), x))
           .chain((specs) =>
             Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
-                map((s) => assoc("stamps", results[s.id]?.vouched || 0, s), specs)
+                map(
+                  (s) => assoc("stamps", results[s.id]?.vouched || 0, s),
+                  specs
+                )
             )
           )
           .map(
@@ -81,8 +92,7 @@ export default {
             ])
           )
           .map(uniqBy(prop("groupId")))
-          .map(sortWith([descend(prop('stamps')), ascend(prop('title'))]))
-          ;
+          .map(sortWith([descend(prop("stamps")), ascend(prop("title"))]));
       },
       get: (id) =>
         Async.fromPromise(services.get)(id)
@@ -101,10 +111,13 @@ export default {
           )
           .chain((spec) =>
             Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
-              .map(path(['data', 'transaction']))
-              .map(({ block }) => ({ ...spec, height: block.height, timestamp: block.timestamp }))
-          )
-      ,
+              .map(path(["data", "transaction"]))
+              .map(({ block }) => ({
+                ...spec,
+                height: block.height,
+                timestamp: block.timestamp,
+              }))
+          ),
       related: (id) =>
         Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
           .map(path(["data", "transaction"]))
@@ -119,21 +132,22 @@ export default {
           .chain((specs) =>
             Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
-                map((s) => assoc("stamps", results[s.id]?.vouched || 0, s), specs)
+                map(
+                  (s) => assoc("stamps", results[s.id]?.vouched || 0, s),
+                  specs
+                )
             )
           )
-          .map(sortWith([descend(prop('stamps')), ascend(prop('title'))]))
-          .map(uniqBy(prop('id')))
-      ,
+          .map(sortWith([descend(prop("stamps")), ascend(prop("title"))]))
+          .map(uniqBy(prop("id"))),
       stamp: (tx) =>
         Async.fromPromise(services.connect)()
           //.chain(isVouched) // isVouched
           .chain(
             (addr) => Async.fromPromise(services.stamp)(tx, addr)
             //.map(x => (console.log(x), x))
-          )
-
-    }
+          ),
+    };
   },
 };
 

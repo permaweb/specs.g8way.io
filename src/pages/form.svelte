@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { router } from "tinro";
   import service from "./form.js";
+  import { trim } from "ramda";
 
   //import Publish from "../components/publish-dialog.svelte";
   //import Config from "../components/config-dialog.svelte";
@@ -13,6 +14,16 @@
   let showConfig = false;
   let showError = false;
   let showConfirm = false;
+  let showFM = false;
+
+  let specMeta = {
+    GroupId: "",
+    Title: "",
+    Description: "",
+    Topics: [],
+    Authors: [],
+    Forks: "",
+  };
 
   const s = service();
   const send = $s.send;
@@ -47,20 +58,20 @@
         "preview",
         "side-by-side",
         "|",
-        // {
-        //   name: "config",
-        //   action: () => {
-        //     showConfig = true;
-        //   },
-        //   className: "fa fa-gear",
-        //   text: "Config ",
-        //   title: "Config Editor",
-        // },
+        {
+          name: "metadata",
+          action: () => {
+            showFM = true;
+          },
+          className: "fa fa-gear",
+          text: "Metadata ",
+          title: "Metadata Editor",
+        },
         {
           name: "publish",
           action: () => {
-            send({ type: "save", md: editor.value() });
-            //showPublish = true;
+            showPublish = true;
+            showFM = true;
           },
           className: "fa fa-cloud-upload",
           text: "Publish ",
@@ -87,28 +98,44 @@
     // router.goto("/specs");
   }
 
+  async function updateMetadata() {
+    showFM = false;
+    if (showPublish) {
+      showPublish = false;
+
+      send({
+        type: "save",
+        md: editor.value(),
+        metadata: {
+          ...specMeta,
+          Topics: specMeta.Topics.split(",").map(trim),
+          Authors: specMeta.Authors.split("\n").map(trim),
+        },
+      });
+    }
+  }
+
   $: {
-    if (current === "ready") {
-      const fm = context.spec.frontmatter
-        .split("\n")
-        .map((s) => {
-          if (/Forks/.test(s)) {
-            return "";
-          }
-          return s;
-        })
-        .join("\n");
+    if (current === "ready" && !showFM) {
+      specMeta = {
+        Title: context.spec.Title,
+        GroupId: context.spec.GroupId,
+        Description: context.spec.Description,
+        Topics: context.spec.Topics.join(", "),
+        Authors: context.spec.Authors.join("\n"),
+        Forks: tx ? tx : "",
+      };
 
-      setTimeout(() => {
-        editor.value(`---
-${fm}
-${tx ? "Forks: " + tx : ""}
-
----
-
-${context.spec.body}
-        `);
-      }, 100);
+      // const fm = context.spec.frontmatter
+      //   .split("\n")
+      //   .map((s) => {
+      //     if (/Forks/.test(s)) {
+      //       return "";
+      //     }
+      //     return s;
+      //   })
+      //   .join("\n");
+      setTimeout(() => editor.value(context.spec.body), 100);
     }
     if (current === "confirm") {
       showConfirm = true;
@@ -175,5 +202,92 @@ ${context.spec.body}
         router.goto("/");
       }}>ok</button
     >
+  </div>
+</div>
+
+<input
+  type="checkbox"
+  id="frontmatter"
+  bind:checked={showFM}
+  class="modal-toggle"
+/>
+<div class="modal">
+  <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
+    <button
+      on:click={() => {
+        showFM = false;
+        showPublish = false;
+      }}
+      class="btn btn-sm btn-circle absolute right-2 top-2">✕</button
+    >
+    <h3 class="text-xl">Metadata</h3>
+    {#if current === "ready"}
+      <form on:submit|preventDefault={updateMetadata}>
+        <div class="form-control">
+          <label class="label">Group ID</label>
+          <input
+            name="groupId"
+            class="input input-bordered"
+            placeholder="unique spec identifier"
+            bind:value={specMeta.GroupId}
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">Title</label>
+          <input
+            name="title"
+            class="input input-bordered"
+            placeholder="Spec Title"
+            bind:value={specMeta.Title}
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">Description</label>
+          <textarea
+            name="description"
+            class="textarea textarea-bordered"
+            placeholder="spec description"
+            bind:value={specMeta.Description}
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">Topics</label>
+          <input
+            name="topics"
+            class="input input-bordered"
+            placeholder="list of topics"
+            bind:value={specMeta.Topics}
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">Authors</label>
+          <textarea
+            name="authors"
+            class="textarea textarea-bordered"
+            placeholder="place each authors wallet address on a separate line"
+            bind:value={specMeta.Authors}
+          />
+        </div>
+        {#if specMeta.forks}
+          <div class="form-control">
+            <label class="label">Forks</label>
+            <input
+              name="forks"
+              class="input input-bordered"
+              placeholder="forks TX"
+              bind:value={specMeta.Forks}
+              disabled
+            />
+          </div>
+        {/if}
+        <div class="mt-8">
+          {#if showPublish}
+            <button class="btn btn-block">Publish</button>
+          {:else}
+            <button class="btn btn-block btn-info">Update Metadata</button>
+          {/if}
+        </div>
+      </form>
+    {/if}
   </div>
 </div>

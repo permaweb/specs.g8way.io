@@ -20,38 +20,51 @@ const machine = createMachine({
     )
   ),
   ready: state(
-    transition("show", "view", reduce((ctx, ev) => ({ ...ctx, selected: ev.selected }))),
+    transition(
+      "show",
+      "view",
+      reduce((ctx, ev) => ({ ...ctx, selected: ev.selected }))
+    ),
     transition("learn", "learn")
-
   ),
   view: state(
     transition("back", "ready"),
     transition("stamp", "stamping"),
-    transition('reset', 'view', reduce((ctx) => ({ ...ctx, error: null })))
+    transition(
+      "reset",
+      "view",
+      reduce((ctx) => ({ ...ctx, error: null }))
+    )
   ),
   stamping: invoke(
     async (ctx) => api.stamp(ctx.selected.id).toPromise(),
-    transition('done', 'view', reduce((ctx, ev) => {
-      const specs = ctx.specs.map(s => s.id === ctx.selected.id ? assoc('stamps', ev.data, s) : s)
-      return {
-        ...ctx,
-        specs,
-        selected: { ...ctx.selected, stamps: ev.data }
-      }
-
-    })),
-    transition('error', 'view', reduce((ctx, ev) => {
-      if (typeof ev.error === 'string') {
-        return ({ ...ctx, error: { message: ev.error } })
-      }
-      return ({ ...ctx, error: ev.error })
-
-    })),
+    transition(
+      "done",
+      "view",
+      reduce((ctx, ev) => {
+        const specs = ctx.specs.map((s) =>
+          s.id === ctx.selected.id ? assoc("stamps", ev.data, s) : s
+        );
+        return {
+          ...ctx,
+          specs,
+          selected: { ...ctx.selected, stamps: ev.data },
+        };
+      })
+    ),
+    transition(
+      "error",
+      "view",
+      reduce((ctx, ev) => {
+        if (typeof ev.error === "string") {
+          return { ...ctx, error: { message: ev.error } };
+        }
+        return { ...ctx, error: ev.error };
+      })
+    ),
     transition("learn", "learn")
   ),
-  learn: state(
-    transition("back", "ready")
-  ),
+  learn: state(transition("back", "ready")),
   error: state(), // TODO: handle errors
   // @ts-ignore
 
