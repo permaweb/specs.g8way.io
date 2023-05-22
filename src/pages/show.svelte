@@ -132,10 +132,9 @@
                 <tr>
                   <th>Date</th>
                   <td
-                    >{format(
-                      fromUnixTime(context.spec.timestamp),
-                      "M/d/yyyy"
-                    )}</td
+                    >{context.spec.timestamp > 0
+                      ? format(fromUnixTime(context.spec.timestamp), "M/d/yyyy")
+                      : "pending"}</td
                   >
                 </tr>
               </table>

@@ -80,7 +80,9 @@
       </a>
       <span class="flex items-end">Stamps: ({stamps})</span>
       <span class="flex space-x-2 items-end"
-        >Date: {format(fromUnixTime(timestamp), "M/d/yyyy")}</span
+        >Date: {timestamp > 0
+          ? format(fromUnixTime(timestamp), "M/d/yyyy")
+          : "pending"}</span
       >
       <span class="flex space-x-2 items-end">Height: {height}</span>
       <!-- <span class="flex items-center space-x-2">+3</span>

@@ -114,8 +114,8 @@ export default {
               .map(path(["data", "transaction"]))
               .map(({ block }) => ({
                 ...spec,
-                height: block.height,
-                timestamp: block.timestamp,
+                height: block ? block.height : 'pending',
+                timestamp: block ? block.timestamp : 0,
               }))
           ),
       related: (id) =>
@@ -157,8 +157,8 @@ function toItem(node) {
   return {
     id: node.id,
     owner: node.owner.address,
-    height: node.block?.height,
-    timestamp: node.block?.timestamp,
+    height: node.block ? node.block?.height : 'pending',
+    timestamp: node.block ? node.block?.timestamp : 0,
     title: getTag("Title"),
     type: getTag("Type"),
     description: getTag("Description"),

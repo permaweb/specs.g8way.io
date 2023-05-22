@@ -220,7 +220,7 @@
       }}
       class="btn btn-sm btn-circle absolute right-2 top-2">✕</button
     >
-    <h3 class="text-xl">Metadata</h3>
+    <h3 class="text-xl">Metadata *</h3>
     {#if current === "ready"}
       <form on:submit|preventDefault={updateMetadata}>
         <div class="form-control">
@@ -230,24 +230,27 @@
             class="input input-bordered"
             placeholder="unique spec identifier"
             bind:value={specMeta.GroupId}
+            required
           />
         </div>
         <div class="form-control">
-          <label class="label">Title</label>
+          <label class="label">Title *</label>
           <input
             name="title"
             class="input input-bordered"
             placeholder="Spec Title"
             bind:value={specMeta.Title}
+            required
           />
         </div>
         <div class="form-control">
-          <label class="label">Description</label>
+          <label class="label">Description *</label>
           <textarea
             name="description"
             class="textarea textarea-bordered"
             placeholder="spec description"
             bind:value={specMeta.Description}
+            required
           />
         </div>
         <div class="form-control">
