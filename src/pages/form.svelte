@@ -100,6 +100,7 @@
 
   async function updateMetadata() {
     showFM = false;
+
     if (showPublish) {
       showPublish = false;
 
@@ -108,8 +109,14 @@
         md: editor.value(),
         metadata: {
           ...specMeta,
-          Topics: specMeta.Topics.split(",").map(trim),
-          Authors: specMeta.Authors.split("\n").map(trim),
+          Topics:
+            specMeta.Topics.length > 0
+              ? specMeta.Topics.split(",").map(trim)
+              : [],
+          Authors:
+            specMeta.Topics.length > 0
+              ? specMeta.Authors.split("\n").map(trim)
+              : [],
         },
       });
     }
@@ -117,25 +124,20 @@
 
   $: {
     if (current === "ready" && !showFM) {
-      specMeta = {
-        Title: context.spec.Title,
-        GroupId: context.spec.GroupId,
-        Description: context.spec.Description,
-        Topics: context.spec.Topics.join(", "),
-        Authors: context.spec.Authors.join("\n"),
-        Forks: tx ? tx : "",
-      };
-
-      // const fm = context.spec.frontmatter
-      //   .split("\n")
-      //   .map((s) => {
-      //     if (/Forks/.test(s)) {
-      //       return "";
-      //     }
-      //     return s;
-      //   })
-      //   .join("\n");
-      setTimeout(() => editor.value(context.spec.body), 100);
+      if (context.spec.Title) {
+        specMeta = {
+          Title: context.spec.Title,
+          GroupId: context.spec.GroupId,
+          Description: context.spec.Description,
+          Topics: context.spec.Topics.join(", "),
+          Authors: context.spec.Authors.join("\n"),
+          Forks: tx ? tx : "",
+        };
+      }
+      if (editor.value() === "") {
+        setTimeout(() => editor.value(context.spec.body), 100);
+      }
+      //setTimeout(() => editor.value(context.spec.body), 100);
     }
     if (current === "confirm") {
       showConfirm = true;
@@ -224,7 +226,7 @@
     {#if current === "ready"}
       <form on:submit|preventDefault={updateMetadata}>
         <div class="form-control">
-          <label class="label">Group ID</label>
+          <label class="label">Group ID *</label>
           <input
             name="groupId"
             class="input input-bordered"
