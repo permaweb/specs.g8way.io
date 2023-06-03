@@ -5,7 +5,7 @@ import { prop } from "ramda";
 import { getHost } from "./get-host";
 
 const arweave = Arweave.init({ host: getHost(), port: 443, protocol: "https" });
-const stamps = Stamps.init({ warp: WarpFactory.forMainnet(), arweave });
+const stamps = Stamps.init({ warp: WarpFactory.forMainnet(), arweave, dre: 'https://dre-5.warp.cc/contract' });
 
 export const stampCounts = (txs) => stamps.counts(txs);
 

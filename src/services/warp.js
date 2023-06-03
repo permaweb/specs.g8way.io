@@ -4,7 +4,7 @@ import {
   InjectedArweaveSigner,
 } from "warp-contracts-plugin-deploy";
 // @ts-ignore
-import { WarpFactory, LoggerFactory } from "warp-contracts/web";
+import { WarpFactory, LoggerFactory } from "warp-contracts";
 
 LoggerFactory.INST.logLevel("fatal");
 const warp = WarpFactory.forMainnet().use(new DeployPlugin());
@@ -15,7 +15,8 @@ const DRE = "https://cache-2.permaweb.tools/contract";
 const options = {
   allowBigInt: true,
   internalWrites: true,
-  unsafeClient: "allow",
+  unsafeClient: "skip",
+  remoteStateSyncEnabled: true
 };
 export const contractsByWallet = (addr) =>
   fetch(`${AGG}/balances?walletAddress=${addr}`)
@@ -25,9 +26,9 @@ export const contractsByWallet = (addr) =>
 export const readState = (tx) =>
   warp
     .contract(tx)
-    .syncState(DRE, { validity: true })
-    .then((c) => c.setEvaluationOptions(options))
-    .then((c) => c.readState())
+    .setEvaluationOptions(options)
+    .readState()
+    .catch(e => warp.contract(tx).setEvaluationOptions({ ...options, remoteStateSyncSource: 'https://dre-5.warp.cc/contract' }).readState())
     .then(path(["cachedValue", "state"]));
 
 export const deploy = async (contract) => {

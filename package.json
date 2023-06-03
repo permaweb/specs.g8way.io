@@ -19,7 +19,7 @@
     "vite": "^4.2.0"
   },
   "dependencies": {
-    "@permaweb/stampjs": "^0.2.2",
+    "@permaweb/stampjs": "^0.2.8",
     "@tailwindcss/typography": "^0.5.9",
     "arweave": "^1.13.5",
     "arweave-wallet-connector": "^1.0.1",
@@ -31,6 +31,8 @@
     "ramda": "^0.28.0",
     "robot3": "^0.4.0",
     "svelte-robot-factory": "^2.0.5",
+    "warp-contracts": "^1.4.10",
+    "warp-contracts-plugin-deploy": "^1.0.8",
     "zod": "^3.21.4"
   }
 }
