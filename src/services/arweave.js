@@ -6,6 +6,15 @@ const info = { host: getHost(), port: 443, protocol: "https" };
 // @ts-ignore
 const arweave = Arweave.init(info);
 
+export const bundlr = async (query, variables = {}) =>
+  fetch('https://node2.bundlr.network/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ query, variables })
+  }).then(res => res.json())
+
 export const gql = async (query, variables = {}) =>
   //arweave.api.post("graphql", { query, variables }).then(prop("data"));
   fetch('https://arweave-search.goldsky.com/graphql', {

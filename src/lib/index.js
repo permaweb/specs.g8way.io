@@ -21,7 +21,7 @@ import {
   uniqBy,
 } from "ramda";
 
-const { of, fromPromise } = Async;
+const { of, fromPromise, all } = Async;
 
 export default {
   init: (services) => {
@@ -71,12 +71,18 @@ export default {
           .chain(Async.fromPromise(services.dispatch)),
 
       list: () => {
-        return Async.fromPromise(services.gql)(buildSpecListQuery())
-          .map(path(["data", "transactions", "edges"]))
-          .map(map(compose(toItem, prop("node"))))
-          .map((x) => (console.log("items", x), x))
+        return all([
+          fromPromise(services.gql)(buildSpecListQuery())
+            .map(path(["data", "transactions", "edges"]))
+            .map(map(compose(toItem, prop("node")))),
+          fromPromise(services.bundlr)(buildBundlrSpecListQuery())
+            .map(path(["data", "transactions", "edges"]))
+            .map(map(compose(toBundlrItem, prop("node"))))
+        ])
+          .map(([a, b]) => uniqBy(prop('id'), a.concat(b)))
+          .map((x) => (console.log("data", x), x))
           .chain((specs) =>
-            Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
+            fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
                 map(
                   (s) => assoc("stamps", results[s.id]?.vouched || 0, s),
@@ -95,7 +101,7 @@ export default {
           .map(sortWith([descend(prop("stamps")), ascend(prop("title"))]));
       },
       get: (id) =>
-        Async.fromPromise(services.get)(id)
+        fromPromise(services.get)(id)
           .map(fm)
           .map(({ body, attributes, frontmatter }) => ({
             frontmatter,
@@ -104,22 +110,23 @@ export default {
             html: marked(body),
           }))
           .chain((spec) =>
-            Async.fromPromise(services.stampCount)(id).map((stamps) => ({
+            fromPromise(services.stampCount)(id).map((stamps) => ({
               ...spec,
               stamps,
             }))
           )
           .chain((spec) =>
-            Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
+            fromPromise(services.gql)(buildSingleQuery(), { tx: id })
               .map(path(["data", "transaction"]))
-              .map(({ block }) => ({
+              .map(x => (console.log('data', x), x))
+              .map((data) => data ? ({
                 ...spec,
-                height: block ? block.height : 'pending',
-                timestamp: block ? block.timestamp : 0,
-              }))
+                height: data.block ? data.block.height : 'pending',
+                timestamp: data.block ? data.block.timestamp : 0,
+              }) : ({ ...spec, height: 'pending', timestamp: 0 }))
           ),
       related: (id) =>
-        Async.fromPromise(services.gql)(buildSingleQuery(), { tx: id })
+        fromPromise(services.gql)(buildSingleQuery(), { tx: id })
           .map(path(["data", "transaction"]))
           .map(toItem)
           .chain((spec) =>
@@ -130,7 +137,7 @@ export default {
           .map(path(["data", "transactions", "edges"]))
           .map(map(compose(toItem, prop("node"))))
           .chain((specs) =>
-            Async.fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
+            fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
                 map(
                   (s) => assoc("stamps", results[s.id]?.vouched || 0, s),
@@ -141,10 +148,10 @@ export default {
           .map(sortWith([descend(prop("stamps")), ascend(prop("title"))]))
           .map(uniqBy(prop("id"))),
       stamp: (tx) =>
-        Async.fromPromise(services.connect)()
+        fromPromise(services.connect)()
           //.chain(isVouched) // isVouched
           .chain(
-            (addr) => Async.fromPromise(services.stamp)(tx, addr)
+            (addr) => fromPromise(services.stamp)(tx, addr)
             //.map(x => (console.log(x), x))
           ),
     };
@@ -159,6 +166,22 @@ function toItem(node) {
     owner: node.owner.address,
     height: node.block ? node.block?.height : 'pending',
     timestamp: node.block ? node.block?.timestamp : 0,
+    title: getTag("Title"),
+    type: getTag("Type"),
+    description: getTag("Description"),
+    groupId: getTag("GroupId"),
+    forks: getTag("Forks"),
+  };
+}
+
+function toBundlrItem(node) {
+  const getTag = (n) =>
+    compose(prop("value"), find(propEq("name", n)))(node.tags);
+  return {
+    id: node.id,
+    owner: node.address,
+    height: 'pending',
+    timestamp: node.timestamp,
     title: getTag("Title"),
     type: getTag("Type"),
     description: getTag("Description"),
@@ -208,6 +231,31 @@ function buildSpecRelatedQuery() {
     }
   }
 }`;
+}
+
+function buildBundlrSpecListQuery() {
+  return `
+  query {
+    transactions(
+      limit: 100,
+      tags: [
+      {name: "Content-Type", values: ["text/markdown"]},
+      {name: "Type", values: ["spec"]}
+    ]) {
+      edges {
+        node {
+          id
+          address
+          tags {
+            name
+            value
+          }
+          timestamp
+        }
+      }
+    }
+  }
+  `
 }
 
 function buildSpecListQuery() {
