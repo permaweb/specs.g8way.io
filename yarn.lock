@@ -717,10 +717,10 @@
     mkdirp "^1.0.4"
     rimraf "^3.0.2"
 
-"@permaweb/stampjs@^0.2.8":
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/@permaweb/stampjs/-/stampjs-0.2.8.tgz#70abd96053c86a046b92b73adcb79d065fe07046"
-  integrity sha512-1lK4U96Y+2qK6M/zAu8MYRlvoI6FiaS3DG6aelmFTMILWbwiVH7sggPRn5uwTUcsbWpRxsNI32/zZLp3Il1W4w==
+"@permaweb/stampjs@^0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@permaweb/stampjs/-/stampjs-0.3.2.tgz#9d3bced25d297d5d6dcab7bab46311552ae2e111"
+  integrity sha512-1t+RkoH6j72T5dgfbDnLfdzz9G2cldTXvSx5wPb9FDU2RZTfvweh6h/9ePhkl+fe8WwVkdtasBPyY/IAeEyn+A==
   dependencies:
     ar-gql "^1.2.1"
     ramda "^0.29.0"

@@ -14,7 +14,9 @@ export const stamp = (tx, addr) =>
     .hasStamped(tx)
     .then((s) =>
       !s
-        ? stamps.stamp(tx).then((_) => stamps.count(tx).then(prop("vouched")))
+        ? stamps.stamp(tx)
+          .then(_ => new Promise(r => setTimeout(r, 500)))
+          .then((_) => stamps.count(tx).then(prop("vouched")))
         : Promise.reject("Already Stamped!")
     );
 

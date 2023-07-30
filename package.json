@@ -19,7 +19,7 @@
     "vite": "^4.2.0"
   },
   "dependencies": {
-    "@permaweb/stampjs": "^0.2.8",
+    "@permaweb/stampjs": "^0.3.2",
     "@tailwindcss/typography": "^0.5.9",
     "arweave": "^1.13.5",
     "arweave-wallet-connector": "^1.0.1",
