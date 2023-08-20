@@ -2,7 +2,7 @@ import { ArweaveWebWallet } from "arweave-wallet-connector";
 
 const wallet = new ArweaveWebWallet(
   { name: "SPECS" },
-  { state: { url: "arweave.app" } }
+  { state: { url: "arweave.app" } },
 );
 
 export const getActiveAddress = async () => {

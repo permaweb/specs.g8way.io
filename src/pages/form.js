@@ -20,8 +20,8 @@ const machine = createMachine({
     transition(
       "init",
       "loading",
-      reduce((ctx, ev) => ({ ...ctx, ...ev }))
-    )
+      reduce((ctx, ev) => ({ ...ctx, ...ev })),
+    ),
   ),
   loading: invoke(
     (ctx) =>
@@ -31,20 +31,20 @@ const machine = createMachine({
     transition(
       "done",
       "ready",
-      reduce((ctx, ev) => ({ ...ctx, spec: ev.data }))
-    )
+      reduce((ctx, ev) => ({ ...ctx, spec: ev.data })),
+    ),
   ),
   ready: state(
     transition(
       "save",
       "save",
-      reduce((ctx, ev) => ({ ...ctx, md: ev.md, metadata: ev.metadata }))
+      reduce((ctx, ev) => ({ ...ctx, md: ev.md, metadata: ev.metadata })),
     ),
     transition(
       "reset",
       "ready",
-      reduce((ctx) => ({ ...ctx, error: null }))
-    )
+      reduce((ctx) => ({ ...ctx, error: null })),
+    ),
   ),
   save: invoke(
     (ctx) =>
@@ -55,7 +55,7 @@ ${JSToYaml.stringify(ctx.metadata).value}
 
 ---
 
-${ctx.md}`
+${ctx.md}`,
         )
         // add saved doc to local cache -- hold for now...
         //.map(({ id }) => (cache.update(assoc(id, ctx.md)), { id }))
@@ -68,15 +68,15 @@ ${ctx.md}`
       reduce((ctx, ev) => {
         //console.log(ev)
         return { ...ctx, error: ev.error };
-      })
-    )
+      }),
+    ),
   ),
   confirm: state(
     transition(
       "init",
       "loading",
-      reduce((ctx, ev) => ({ ...ctx, ...ev }))
-    )
+      reduce((ctx, ev) => ({ ...ctx, ...ev })),
+    ),
   ),
 });
 

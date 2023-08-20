@@ -20,6 +20,6 @@ export function getHost() {
     ]),
     join("."),
     takeLast(2),
-    split(".")
+    split("."),
   )(location.hostname);
 }

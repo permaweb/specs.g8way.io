@@ -13,17 +13,17 @@ const machine = createMachine(
       transition(
         "load",
         "loading",
-        reduce((ctx, ev) => ({ ...ctx, tx: ev.tx }))
-      )
+        reduce((ctx, ev) => ({ ...ctx, tx: ev.tx })),
+      ),
     ),
     loading: invoke(
       (ctx) => api.get(ctx.tx).toPromise(),
       transition(
         "done",
         "ready",
-        reduce((ctx, ev) => ({ ...ctx, spec: ev.data }))
+        reduce((ctx, ev) => ({ ...ctx, spec: ev.data })),
       ),
-      transition("error", "error")
+      transition("error", "error"),
     ),
     ready: state(
       transition("stamp", "doStamp"),
@@ -31,13 +31,13 @@ const machine = createMachine(
       transition(
         "load",
         "loading",
-        reduce((ctx, ev) => ({ ...ctx, tx: ev.tx }))
+        reduce((ctx, ev) => ({ ...ctx, tx: ev.tx })),
       ),
       transition(
         "reset",
         "ready",
-        reduce((ctx) => ({ ...ctx, error: null }))
-      )
+        reduce((ctx) => ({ ...ctx, error: null })),
+      ),
     ),
     doStamp: invoke(
       (ctx) => api.stamp(ctx.tx).toPromise(),
@@ -47,7 +47,7 @@ const machine = createMachine(
         reduce((ctx, ev) => {
           console.log(ev);
           return set(lensPath(["spec", "stamps"]), ev.data, ctx);
-        })
+        }),
       ),
       transition(
         "error",
@@ -57,11 +57,11 @@ const machine = createMachine(
             return { ...ctx, error: { message: ev.error } };
           }
           return { ...ctx, error: ev.error };
-        })
-      )
+        }),
+      ),
     ),
   },
-  () => ({ tx: new URLSearchParams(location.search).get("tx") })
+  () => ({ tx: new URLSearchParams(location.search).get("tx") }),
 );
 
 const service = () => useMachine(machine, () => null);

@@ -16,7 +16,7 @@ const options = {
   allowBigInt: true,
   internalWrites: true,
   unsafeClient: "skip",
-  remoteStateSyncEnabled: true
+  remoteStateSyncEnabled: true,
 };
 export const contractsByWallet = (addr) =>
   fetch(`${AGG}/balances?walletAddress=${addr}`)
@@ -28,7 +28,15 @@ export const readState = (tx) =>
     .contract(tx)
     .setEvaluationOptions(options)
     .readState()
-    .catch(e => warp.contract(tx).setEvaluationOptions({ ...options, remoteStateSyncSource: 'https://dre-5.warp.cc/contract' }).readState())
+    .catch((e) =>
+      warp
+        .contract(tx)
+        .setEvaluationOptions({
+          ...options,
+          remoteStateSyncSource: "https://dre-5.warp.cc/contract",
+        })
+        .readState(),
+    )
     .then(path(["cachedValue", "state"]));
 
 export const deploy = async (contract) => {

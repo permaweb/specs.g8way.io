@@ -18,7 +18,7 @@ const machine = createMachine({
         .map((specs) => ({ specs }))
         .toPromise(),
     transition("done", "ready", reduce(addItems)),
-    transition("error", "error")
+    transition("error", "error"),
   ),
   ready: state(),
   error: state(),
