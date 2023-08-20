@@ -19,6 +19,8 @@ import {
   ascend,
   descend,
   uniqBy,
+  reduce,
+  concat
 } from "ramda";
 
 const { of, fromPromise, all } = Async;
@@ -34,7 +36,7 @@ export default {
     return {
       save: (md) =>
         of(md)
-          .map((x) => (console.log("md ", x), x))
+          //.map((x) => (console.log("md ", x), x))
           .chain((md) =>
             of(md)
               .map(fm)
@@ -68,7 +70,8 @@ export default {
           )
           .map((x) => (console.log("connect", x), x))
           // dispatch
-          .chain(Async.fromPromise(services.dispatch)),
+          .chain(Async.fromPromise(services.dispatch))
+      ,
 
       list: () => {
         return all([
@@ -285,7 +288,27 @@ function buildSpecListQuery() {
 }
 
 function createTags(md) {
+  console.log('tags: ', md)
+  // add atomic asset info here and take
+  // authors to create balances object
+  const atomicTags = [
+    { name: 'Data-Protocol', value: 'Specification' },
+    { name: 'App-Name', value: 'SmartWeaveContract' },
+    { name: 'App-Version', value: '0.3.0' },
+    { name: 'Contract-Src', value: 'Of9pi--Gj7hCTawhgxOwbuWnFI1h24TTgO5pw8ENJNQ' },
+    { name: 'Contract-Manifest', value: '{"evaluationOptions":{"sourceType":"redstone-sequencer","allowBigInt":true,"internalWrites":true,"unsafeClient":"skip","useConstructor":true}}' },
+    {
+      name: 'Init-State', value: JSON.stringify({
+        ticker: 'SPEC',
+        name: 'SPEC ATOMIC ASSET',
+        claimable: [],
+        balances: reduce((a, v) => assoc(v, 1, a), {}, md.Authors)
+      })
+    },
+    { name: 'License', value: 'yRj4a5KMctX_uOmKWCFJIjmY8DeJcusVk6-HzLiM_t8' }
+  ]
   return compose(
+    concat(atomicTags),
     map(([name, value]) => ({ name, value })),
     toPairs
     //,
