@@ -9,8 +9,8 @@ import { WarpFactory, LoggerFactory } from "warp-contracts";
 LoggerFactory.INST.logLevel("fatal");
 const warp = WarpFactory.forMainnet().use(new DeployPlugin());
 
-const AGG = "https://contracts.warp.cc";
-const DRE = "https://cache-2.permaweb.tools/contract";
+const AGG = "https://contracts-u.warp.cc";
+const DRE = "https://dre-u.warp.cc/contract";
 
 const options = {
   allowBigInt: true,
@@ -23,6 +23,8 @@ export const contractsByWallet = (addr) =>
     .then((res) => res.json())
     .then(prop("balances"));
 
+export const register = (tx) => warp.register(tx, 'node2')
+
 export const readState = (tx) =>
   warp
     .contract(tx)
@@ -33,7 +35,7 @@ export const readState = (tx) =>
         .contract(tx)
         .setEvaluationOptions({
           ...options,
-          remoteStateSyncSource: "https://dre-5.warp.cc/contract",
+          remoteStateSyncSource: "https://dre-u.warp.cc/contract",
         })
         .readState(),
     )
@@ -44,7 +46,7 @@ export const deploy = async (contract) => {
 
   const userSigner = new InjectedArweaveSigner(window.arweaveWallet);
   await userSigner.setPublicKey();
-  console.log("deploy");
+
   return await warp
     .deployFromSourceTx({
       wallet: userSigner,

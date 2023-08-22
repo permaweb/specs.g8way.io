@@ -70,7 +70,9 @@ export default {
           )
           .map((x) => (console.log("connect", x), x))
           // dispatch
-          .chain(Async.fromPromise(services.dispatch)),
+          .chain(Async.fromPromise(services.dispatch))
+          .chain(({ id }) => Async.fromPromise(services.register)(id))
+      ,
       list: () => {
         return all([
           fromPromise(services.gql)(buildSpecListQuery())
@@ -123,10 +125,10 @@ export default {
               .map((data) =>
                 data
                   ? {
-                      ...spec,
-                      height: data.block ? data.block.height : "pending",
-                      timestamp: data.block ? data.block.timestamp : 0,
-                    }
+                    ...spec,
+                    height: data.block ? data.block.height : "pending",
+                    timestamp: data.block ? data.block.timestamp : 0,
+                  }
                   : { ...spec, height: "pending", timestamp: 0 },
               ),
           ),
