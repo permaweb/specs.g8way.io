@@ -15,13 +15,14 @@
   let showError = false;
   let showConfirm = false;
   let showFM = false;
+  let loaded = false;
 
   let specMeta = {
     GroupId: "",
     Title: "",
     Description: "",
-    Topics: [],
-    Authors: [],
+    Topics: "",
+    Authors: "",
     Forks: "",
   };
 
@@ -100,7 +101,7 @@
 
   async function updateMetadata() {
     showFM = false;
-
+    console.log(specMeta);
     if (showPublish) {
       showPublish = false;
 
@@ -114,7 +115,7 @@
               ? specMeta.Topics.split(",").map(trim)
               : [],
           Authors:
-            specMeta.Topics.length > 0
+            specMeta.Authors.length > 0
               ? specMeta.Authors.split("\n").map(trim)
               : [],
         },
@@ -124,16 +125,24 @@
 
   $: {
     if (current === "ready" && !showFM) {
-      if (context.spec.Title) {
+      if (context.spec.Title && !loaded) {
+        loaded = true;
         specMeta = {
           Title: context.spec.Title,
           GroupId: context.spec.GroupId,
           Description: context.spec.Description,
-          Topics: context.spec.Topics.join(", "),
-          Authors: context.spec.Authors.join("\n"),
+          Topics:
+            context.spec.Topics.length > 0
+              ? context.spec.Topics.join(", ")
+              : "",
+          Authors:
+            context.spec.Authors.length > 0
+              ? context.spec.Authors.join("\n")
+              : "",
           Forks: tx ? tx : "",
         };
       }
+
       if (editor.value() === "") {
         setTimeout(() => editor.value(context.spec.body), 100);
       }

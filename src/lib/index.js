@@ -36,7 +36,6 @@ export default {
     return {
       save: (md) =>
         of(md)
-          //.map((x) => (console.log("md ", x), x))
           .chain((md) =>
             of(md)
               .map(fm)
@@ -46,8 +45,6 @@ export default {
                 ),
               ),
           )
-          // extract front matter for tags
-          //.map((md) => ({ data: md, tags: createTags(md) }))
           // set content type for tags
           .map(
             over(
@@ -68,7 +65,6 @@ export default {
               .chain(isVouched) // isVouched
               .map(always(txInfo)),
           )
-          .map((x) => (console.log("connect", x), x))
           // dispatch
           .chain(Async.fromPromise(services.dispatch))
           .chain(({ id }) => Async.fromPromise(services.register)(id))
@@ -83,7 +79,6 @@ export default {
             .map(map(compose(toBundlrItem, prop("node")))),
         ])
           .map(([a, b]) => uniqBy(prop("id"), a.concat(b)))
-          .map((x) => (console.log("data", x), x))
           .chain((specs) =>
             fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
@@ -292,7 +287,6 @@ function buildSpecListQuery() {
 }
 
 function createTags(md) {
-  console.log("tags: ", md);
   // add atomic asset info here and take
   // authors to create balances object
   const atomicTags = [
