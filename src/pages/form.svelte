@@ -140,6 +140,7 @@
               ? context.spec.Authors.join("\n")
               : "",
           Forks: tx ? tx : "",
+          Variant: context.spec?.Variant || "",
         };
       }
 
