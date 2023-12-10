@@ -86,6 +86,7 @@ export default service;
 function template() {
   return {
     frontmatter: `GroupId: UNIQUE_IDENTIFIER
+Variant: ""
 Title: "Specification Title"
 Description: 
 Topics:
@@ -108,6 +109,7 @@ Version: -
 
 `,
     GroupId: "",
+    Variant: "",
     Title: "",
     Description: "",
     Topics: [],

@@ -231,16 +231,25 @@
       }}
       class="btn btn-sm btn-circle absolute right-2 top-2">✕</button
     >
-    <h3 class="text-xl">Metadata *</h3>
     {#if current === "ready"}
       <form on:submit|preventDefault={updateMetadata}>
         <div class="form-control">
-          <label class="label">Group ID *</label>
+          <label class="label">Name *</label>
           <input
             name="groupId"
             class="input input-bordered"
-            placeholder="unique spec identifier"
+            placeholder="Name of Protocol"
             bind:value={specMeta.GroupId}
+            required
+          />
+        </div>
+        <div class="form-control">
+          <label class="label">Variant *</label>
+          <input
+            name="variant"
+            class="input input-bordered"
+            placeholder="Variant or Version of Specification"
+            bind:value={specMeta.Variant}
             required
           />
         </div>

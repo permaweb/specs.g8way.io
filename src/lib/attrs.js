@@ -2,6 +2,7 @@ import { z } from "zod";
 
 const Schema = z.object({
   GroupId: z.string(),
+  Variant: z.string(),
   Title: z.string().max(50),
   Description: z.string().max(200),
   Topics: z.array(z.string()),

@@ -173,6 +173,7 @@ function toItem(node) {
     description: getTag("Description"),
     groupId: getTag("GroupId"),
     forks: getTag("Forks"),
+    variant: getTag("Variant")
   };
 }
 
@@ -189,6 +190,7 @@ function toBundlrItem(node) {
     description: getTag("Description"),
     groupId: getTag("GroupId"),
     forks: getTag("Forks"),
+    variant: getTag("Variant")
   };
 }
 
