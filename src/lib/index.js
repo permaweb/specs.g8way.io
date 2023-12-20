@@ -70,15 +70,18 @@ export default {
           .chain(({ id }) => Async.fromPromise(services.register)(id))
       ,
       list: () => {
-        return all([
-          fromPromise(services.gql)(buildSpecListQuery())
-            .map(path(["data", "transactions", "edges"]))
-            .map(map(compose(toItem, prop("node")))),
-          fromPromise(services.bundlr)(buildBundlrSpecListQuery())
-            .map(path(["data", "transactions", "edges"]))
-            .map(map(compose(toBundlrItem, prop("node")))),
-        ])
-          .map(([a, b]) => uniqBy(prop("id"), a.concat(b)))
+        // return all([
+        //   fromPromise(services.gql)(buildSpecListQuery())
+        //     .map(path(["data", "transactions", "edges"]))
+        //     .map(map(compose(toItem, prop("node")))),
+        //   // fromPromise(services.bundlr)(buildBundlrSpecListQuery())
+        //   //   .map(path(["data", "transactions", "edges"]))
+        //   //   .map(map(compose(toBundlrItem, prop("node")))),
+        // ])
+        //   .map(([a, b]) => uniqBy(prop("id"), a.concat(b)))
+        return fromPromise(services.gql)(buildSpecListQuery())
+          .map(path(["data", "transactions", "edges"]))
+          .map(map(compose(toItem, prop("node"))))
           .chain((specs) =>
             fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
