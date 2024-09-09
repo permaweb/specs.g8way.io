@@ -10,6 +10,7 @@ const App = () => {
   return (
     <Router>
       {/* <Route path="/" component={<></>} /> */}
+      <Route path="/" component={() => <div className='text-4xl'>Hello</div>} />
     </Router>
   )
 }
