@@ -21,9 +21,11 @@
     ]
   },
   "dependencies": {
+    "date-fns": "^3.6.0",
     "preact": "^10.10.0",
     "preact-render-to-string": "^5.2.1",
-    "preact-router": "^3.2.1"
+    "preact-router": "^3.2.1",
+    "ramda": "^0.30.1"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.12",
