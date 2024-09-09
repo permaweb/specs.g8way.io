@@ -8,21 +8,21 @@ const api = Api.init(services);
 
 const machine = createMachine({
   loading: invoke(
-    async (ctx) => ({
+    async (ctx: object) => ({
       ...ctx,
       specs: await api.list().toPromise(),
     }),
     transition(
       "done",
       "ready",
-      reduce((ctx, ev) => ({ ...ctx, ...ev.data })),
+      reduce((ctx: object, ev: { data: object }) => ({ ...ctx, ...ev.data })),
     ),
   ),
   ready: state(
     transition(
       "show",
       "view",
-      reduce((ctx, ev) => ({ ...ctx, selected: ev.selected })),
+      reduce((ctx: object, ev: { selected: boolean }) => ({ ...ctx, selected: ev.selected })),
     ),
     transition("learn", "learn"),
   ),
@@ -32,15 +32,15 @@ const machine = createMachine({
     transition(
       "reset",
       "view",
-      reduce((ctx) => ({ ...ctx, error: null })),
+      reduce((ctx: object) => ({ ...ctx, error: null })),
     ),
   ),
   stamping: invoke(
-    async (ctx) => api.stamp(ctx.selected.id).toPromise(),
+    async (ctx: { selected: { id: string }}) => api.stamp(ctx.selected.id).toPromise(),
     transition(
       "done",
       "view",
-      reduce((ctx, ev) => {
+      reduce((ctx: { selected: { id: string }, specs: { id: string }[] }, ev: { data: object }) => {
         const specs = ctx.specs.map((s) =>
           s.id === ctx.selected.id ? assoc("stamps", ev.data, s) : s,
         );
@@ -54,7 +54,7 @@ const machine = createMachine({
     transition(
       "error",
       "view",
-      reduce((ctx, ev) => {
+      reduce((ctx: object, ev: { error: unknown }) => {
         if (typeof ev.error === "string") {
           return { ...ctx, error: { message: ev.error } };
         }

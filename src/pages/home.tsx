@@ -3,7 +3,7 @@ import Sidebar from '../components/sidebar'; // Create this component
 import Item from '../components/item';       // Create this component
 // import Spec from './Show';                   // Create this component
 // import Learn from './Learn';                 // Create this component
-import useService from './home';                // Adapt your service logic
+import useService from './homeService';                // Adapt your service logic
 
 const HomePage = () => {
   const [showError, setShowError] = useState(false);

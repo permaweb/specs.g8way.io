@@ -21,9 +21,10 @@ import {
   uniqBy,
   reduce,
   concat,
+  Ord,
 } from "ramda";
 
-const { of, fromPromise, all } = Async;
+const { of, fromPromise } = Async;
 
 export default {
   init: (services) => {
@@ -48,14 +49,14 @@ export default {
           // set content type for tags
           .map(
             over(
-              lensProp("tags"),
+              lensProp<{ tags: unknown }>("tags"),
               append({ name: "Content-Type", value: "text/markdown" }),
             ),
           )
-          .map(over(lensProp("tags"), append({ name: "Type", value: "spec" })))
+          .map(over(lensProp<{ tags: unknown }>("tags"), append({ name: "Type", value: "spec" })))
           .map(
             over(
-              lensProp("tags"),
+              lensProp<{ tags: unknown }>("tags"),
               append({ name: "Render-With", value: "specs" }),
             ),
           )
@@ -70,15 +71,6 @@ export default {
           .chain(({ id }) => Async.fromPromise(services.register)(id))
       ,
       list: () => {
-        // return all([
-        //   fromPromise(services.gql)(buildSpecListQuery())
-        //     .map(path(["data", "transactions", "edges"]))
-        //     .map(map(compose(toItem, prop("node")))),
-        //   // fromPromise(services.bundlr)(buildBundlrSpecListQuery())
-        //   //   .map(path(["data", "transactions", "edges"]))
-        //   //   .map(map(compose(toBundlrItem, prop("node")))),
-        // ])
-        //   .map(([a, b]) => uniqBy(prop("id"), a.concat(b)))
         return fromPromise(services.gql)(buildSpecListQuery())
           .map(path(["data", "transactions", "edges"]))
           .map(map(compose(toItem, prop("node"))))
@@ -93,13 +85,18 @@ export default {
           )
           .map(
             sortWith([
-              ascend(prop("groupId")),
-              descend(prop("stamps")),
-              descend(prop("height")),
+              ascend(prop("groupId") as () => Ord), // TODO: fix this
+              descend(prop("stamps") as () => Ord),
+              descend(prop("height") as () => Ord),
             ]),
           )
           .map(uniqBy(prop("groupId")))
-          .map(sortWith([descend(prop("stamps")), ascend(prop("title"))]));
+          .map(
+            sortWith([
+              descend(prop("stamps")  as () => Ord), 
+              ascend(prop("title") as () => Ord)
+            ])
+          );
       },
       get: (id) =>
         fromPromise(services.get)(id)
@@ -150,7 +147,12 @@ export default {
                 ),
             ),
           )
-          .map(sortWith([descend(prop("stamps")), ascend(prop("title"))]))
+          .map(
+            sortWith([
+              descend(prop("stamps") as () => Ord),
+              ascend(prop("title") as () => Ord)
+            ])
+          )
           .map(uniqBy(prop("id"))),
       stamp: (tx) =>
         fromPromise(services.connect)()
@@ -180,22 +182,6 @@ function toItem(node) {
   };
 }
 
-function toBundlrItem(node) {
-  const getTag = (n) =>
-    compose(prop("value"), find(propEq("name", n)))(node.tags);
-  return {
-    id: node.id,
-    owner: node.address,
-    height: "pending",
-    timestamp: node.timestamp,
-    title: getTag("Title"),
-    type: getTag("Type"),
-    description: getTag("Description"),
-    groupId: getTag("GroupId"),
-    forks: getTag("Forks"),
-    variant: getTag("Variant")
-  };
-}
 
 function buildSingleQuery() {
   return `query ($tx: ID!) {
@@ -240,30 +226,6 @@ function buildSpecRelatedQuery() {
 }`;
 }
 
-function buildBundlrSpecListQuery() {
-  return `
-  query {
-    transactions(
-      limit: 100,
-      tags: [
-      {name: "Content-Type", values: ["text/markdown"]},
-      {name: "Type", values: ["spec"]}
-    ]) {
-      edges {
-        node {
-          id
-          address
-          tags {
-            name
-            value
-          }
-          timestamp
-        }
-      }
-    }
-  }
-  `;
-}
 
 function buildSpecListQuery() {
   return `query {
@@ -313,17 +275,14 @@ function createTags(md) {
         ticker: "SPEC",
         name: "SPEC ATOMIC ASSET",
         claimable: [],
-        balances: reduce((a, v) => assoc(v, 1, a), {}, md.Authors),
+        balances: reduce((a, v) => assoc(v as string, 1, a), {}, md.Authors), // TODO: fix
       }),
     },
     { name: "License", value: "yRj4a5KMctX_uOmKWCFJIjmY8DeJcusVk6-HzLiM_t8" },
   ];
   return compose(
     concat(atomicTags),
-    map(([name, value]) => ({ name, value })),
+    map(([name, value]: string[]) => ({ name, value })),
     toPairs,
-    //,
-    //prop("attributes"),
-    //fm
   )(md);
 }
