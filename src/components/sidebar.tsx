@@ -1,9 +1,10 @@
 import { h } from 'preact';
 import { useState } from 'preact/hooks';
 
-const SidebarMenu = ({ current, tx, onBack }) => {
+const SidebarMenu = ({ current, tx, onBack, onClick }) => {
   const handleLearnMoreClick = () => {
     // Your learn more logic here
+    console.log('learn more')
   };
 
   return (
@@ -85,6 +86,7 @@ const SidebarMenu = ({ current, tx, onBack }) => {
                 </a>
                 <a
                   target="_blank"
+                  rel="noreferrer"
                   href={`https://microscope.g8way.io/?tx=${tx}`}
                   class="btn btn-block btn-outline"
                 >
