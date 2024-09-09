@@ -1,56 +1,19 @@
-# specs
+# preact-specs
 
-Where permaweb standards evolve!
+## CLI Commands
 
-## Gateways
+- `npm install`: Installs dependencies
 
-* https://specs.g8way.io
-* https://specs.arweave.dev
+- `npm run dev`: Run a development, HMR server
 
-## Developer Setup
+- `npm run serve`: Run a production-like server
 
-```sh
-yarn
-yarn dev
-```
+- `npm run build`: Production-ready build
 
-## Technical Stack
+- `npm run lint`: Pass TypeScript files using ESLint
 
-* Svelte (Presentation)
-* Tinro (Routing)
-* Tailwind (Presentation)
-* DaisyUI (Modal)
-* Robot (State Management)
-* Crocks/Ramda (Business Logic)
-* Arweave/Warp (Services)
+- `npm run test`: Run Jest and Enzyme with
+  [`enzyme-adapter-preact-pure`](https://github.com/preactjs/enzyme-adapter-preact-pure) for
+  your tests
 
-## Architecture
-
-```
-/src
-- main.js (init)
-- App.svelte (router)
-- pages (pages/views)
-- components (components)
-- lib (business logic - pure functions)
-- services (Backend Services)
-```
-
-## Separation of Concerns
-
-Components and Pages should not have business logic, they should focus on the presentation. We use the Robot StateMachine as the context boundary between the Presentation Layer and Application Layer. For each "Page" there is a corresponding "Robot" file that contains the state machine and establishes the connect from the state machine to the business logic.
-
-Services are injected into the the business logic container for loosely coupled architecture. This clean architecture allows you to test the logic of the application, without having to load the presentation layer or services layer.
-
-## Contributing
-
-Contributions are welcome, use the issues to create an issue and then a branch to make a contribution.
-
-## Support
-
-If you need help contributing, feel free to connect to our discord server and get help in the #dev channel.
-
-https://discord.gg/kyzkeF2qs8
-
-
-
+For detailed explanation on how things work, checkout the [CLI Readme](https://github.com/developit/preact-cli/blob/master/README.md).
