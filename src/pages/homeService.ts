@@ -69,5 +69,7 @@ const machine = createMachine({
   exit: state(),
 });
 
-const useService = () => useMachine(machine);
+console.log({ machine })
+
+const useService = () => useMachine(machine, () => null);
 export default useService;

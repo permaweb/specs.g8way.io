@@ -12,16 +12,18 @@ const HomePage = () => {
   const [context, setContext] = useState<any>({});
   
   const s = useService() as any;
-  const send = s.send;
-  
-  useEffect(() => {
-    setCurrent(s.machine.current);
-    setContext(s.context);
 
-    if (s.context?.error) {
+  const send = s[1]
+  
+  console.log({ s })
+  useEffect(() => {
+    setCurrent(s[0]);
+    setContext(s[0].context);
+
+    if (s[0].context?.error) {
       setShowError(true);
     }
-  }, [s.context]);
+  }, [s]);
 
   const handleCopy = () => {
     setCopying(true);
@@ -38,6 +40,7 @@ const HomePage = () => {
           <nav className="flex py-4 px-4 sticky top-0 bg-white border-b border-slate-300 items-center justify-between lg:justify-end">
             {current !== 'view' && current !== 'stamping' && current !== 'learn' ? (
               <>
+
                 <label htmlFor="my-drawer-2" className="btn btn-ghost text-lg drawer-button lg:hidden">
                   <span className="text-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">

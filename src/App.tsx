@@ -12,10 +12,8 @@ const App = () => {
     <Router>
       <Route path="/" component={() => <HomePage />} />
       <Route path="/" component={() => <div className='text-4xl'>Hello</div>} />
-    </Router>
+    </Router> 
   )
 }
 
 export default App;
-
-

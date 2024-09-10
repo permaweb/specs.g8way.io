@@ -1,11 +1,35 @@
+import daisyui from 'daisyui';
+import typography from '@tailwindcss/typography'
+import { fontFamily } from 'tailwindcss/defaultTheme'
+import themes from 'daisyui/src/colors/themes'
+
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   content: [
     './src/**/*.{js,jsx,ts,tsx}', 
   ],
+  plugins: [typography, daisyui],
   theme: {
+    fontFamily: {
+      sans: ['Poppins', ...fontFamily.sans],
+      mono: ['Roboto Mono', ...fontFamily.mono],
+    },
+    extend: {
+    },
+  },
+  purge: ['./index.html', './src/**/*.{svelte,js,ts}'], // for unused CSS
+  variants: {
     extend: {},
   },
-  plugins: [],
+  daisyui: {
+    themes: [
+      {
+        arweave: {
+          ...themes["[data-theme=light]"],
+          primary: "#000000",
+        },
+      },
+    ],
+  },
 }
 
