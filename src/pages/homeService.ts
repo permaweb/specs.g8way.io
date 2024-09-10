@@ -71,5 +71,5 @@ const machine = createMachine({
 
 console.log({ machine })
 
-const useService = () => useMachine(machine, () => null);
-export default useService;
+const useHomeService = () => useMachine(machine, () => null);
+export default useHomeService;

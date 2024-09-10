@@ -187,7 +187,6 @@ function toItem(
     const getTag = (n: string): string | undefined => 
       node.tags.find(tag => tag.name === n)?.value;
     
-  console.log({ node, groupId: getTag('GroupId') })
   return {
     id: node.id,
     owner: node.owner.address,
