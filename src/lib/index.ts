@@ -184,8 +184,9 @@ function toItem(
       value: string
     }[] 
   }) {
-  const getTag = (n: string) =>
-    compose(prop("value"), find(propEq(n, "name")))(node.tags); // TODO: fix typeerror
+    const getTag = (n: string): string | undefined => 
+      node.tags.find(tag => tag.name === n)?.value;
+    
   console.log({ node, groupId: getTag('GroupId') })
   return {
     id: node.id,
