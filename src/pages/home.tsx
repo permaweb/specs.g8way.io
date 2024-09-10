@@ -33,7 +33,7 @@ const HomePage = () => {
   };
 
   return (
-    <div className="drawer drawer-mobile">
+    <div className="drawer drawer-mobile lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col items-center justify-start">
         <div className="w-full md:w-4/5 border-l border-r border-slate-300 min-h-screen">

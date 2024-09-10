@@ -2398,11 +2398,6 @@ html:has(.drawer-toggle:checked) {
   line-height: 2.25rem;
 }
 
-.text-4xl {
-  font-size: 2.25rem;
-  line-height: 2.5rem;
-}
-
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -2447,12 +2442,59 @@ html:has(.drawer-toggle:checked) {
   color: var(--fallback-p,oklch(var(--p)/var(--tw-text-opacity)));
 }
 
+.text-red-700 {
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity));
+}
+
 .transition {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
+}
+
+@media (min-width: 1024px) {
+  .lg\:drawer-open > .drawer-toggle {
+    display: none;
+  }
+
+  .lg\:drawer-open > .drawer-toggle ~ .drawer-side {
+    pointer-events: auto;
+    visibility: visible;
+    position: sticky;
+    display: block;
+    width: auto;
+    overscroll-behavior: auto;
+  }
+
+  .lg\:drawer-open > .drawer-toggle ~ .drawer-side > *:not(.drawer-overlay) {
+    transform: translateX(0%);
+  }
+
+  [dir="rtl"] .lg\:drawer-open > .drawer-toggle ~ .drawer-side > *:not(.drawer-overlay) {
+    transform: translateX(0%);
+  }
+
+  .lg\:drawer-open > .drawer-toggle:checked ~ .drawer-side {
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  .lg\:drawer-open > .drawer-side {
+    overflow-y: auto;
+  }
+
+  html:has(.lg\:drawer-open.lg\:drawer-open) {
+    overflow-y: auto;
+    scrollbar-gutter: auto;
+  }
+
+  .lg\:drawer-open > .drawer-toggle ~ .drawer-side > .drawer-overlay {
+    cursor: default;
+    background-color: transparent;
+  }
 }
 
 .hover\:bg-gray-100:hover {
