@@ -8,7 +8,7 @@ const SidebarMenu = ({ current, tx, onBack, onClick }) => {
   };
 
   return (
-    <div>
+    <>
       <label for="my-drawer-2" class="drawer-overlay" />
       <div class="menu bg-base-100 block">
         <div class="py-2 md:pl-28 space-y-3 sticky top-0 w-[300px]">
@@ -114,7 +114,7 @@ const SidebarMenu = ({ current, tx, onBack, onClick }) => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

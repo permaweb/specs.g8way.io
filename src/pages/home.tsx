@@ -3,7 +3,7 @@ import Sidebar from '../components/sidebar'; // Create this component
 import Item from '../components/item';       // Create this component
 // import Spec from './Show';                   // Create this component
 // import Learn from './Learn';                 // Create this component
-import useService from './homeService';                // Adapt your service logic
+import useHomeService from './homeService';                // Adapt your service logic
 
 const HomePage = () => {
   const [showError, setShowError] = useState(false);
@@ -11,12 +11,12 @@ const HomePage = () => {
   const [current, setCurrent] = useState('');
   const [context, setContext] = useState<any>({});
   
-  const s = useService() as any;
+  const s = useHomeService() as any;
 
   const send = s[1]
   
+  console.log({ current, context })
   useEffect(() => {
-    console.log({ current, context })
     setCurrent(s[0].name);
     setContext(s[0].context);
 
