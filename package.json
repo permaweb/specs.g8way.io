@@ -6,9 +6,11 @@
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact build",
     "serve": "sirv build --cors --single",
-    "dev": "cross-env NODE_OPTIONS=--openssl-legacy-provider preact watch",
+    "dev": "npm run tw:build && cross-env NODE_OPTIONS=--openssl-legacy-provider preact watch",
     "lint": "eslint src",
-    "test": "jest"
+    "test": "jest",
+    "tw:build": "npx tailwindcss -i src/tailwind.css -c tailwind.config.js -o src/index.css",
+    "tw:watch": "npx tailwindcss -i src/tailwind.css -c tailwind.config.js -o src/index.css --watch"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",

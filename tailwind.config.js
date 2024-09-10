@@ -1,12 +1,12 @@
 import daisyui from 'daisyui';
 import typography from '@tailwindcss/typography'
 import { fontFamily } from 'tailwindcss/defaultTheme'
-import themes from 'daisyui/src/colors/themes'
+import themes from 'daisyui/src/theming/themes'
 
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
-    './src/**/*.{js,jsx,ts,tsx}', 
+    './src/**/*.{ts,tsx,js,jsx}', 
   ],
   plugins: [typography, daisyui],
   theme: {
@@ -17,7 +17,6 @@ export default {
     extend: {
     },
   },
-  purge: ['./index.html', './src/**/*.{svelte,js,ts}'], // for unused CSS
   variants: {
     extend: {},
   },
