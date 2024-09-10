@@ -74,6 +74,10 @@ export default {
         return fromPromise(services.gql)(buildSpecListQuery())
           .map(path(["data", "transactions", "edges"]))
           .map(map(compose(toItem, prop("node"))))
+          .map((ctx) => {
+            console.log({ ctx })
+            return ctx
+          })
           .chain((specs) =>
             fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
@@ -165,9 +169,24 @@ export default {
   },
 };
 
-function toItem(node) {
-  const getTag = (n) =>
-    compose(prop("value"), find(propEq("name", n)))(node.tags);
+function toItem(
+  node: { //TODO: move types somewhere
+    id: string,
+    block: {
+      height: number,
+      timestamp: number
+    },
+    owner: {
+      address: string 
+    }, 
+    tags: { 
+      name: string, 
+      value: string
+    }[] 
+  }) {
+  const getTag = (n: string) =>
+    compose(prop("value"), find(propEq(n, "name")))(node.tags); // TODO: fix typeerror
+  console.log({ node, groupId: getTag('GroupId') })
   return {
     id: node.id,
     owner: node.owner.address,

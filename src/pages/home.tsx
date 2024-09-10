@@ -15,9 +15,9 @@ const HomePage = () => {
 
   const send = s[1]
   
-  console.log({ s })
   useEffect(() => {
-    setCurrent(s[0]);
+    console.log({ current, context })
+    setCurrent(s[0].name);
     setContext(s[0].context);
 
     if (s[0].context?.error) {
