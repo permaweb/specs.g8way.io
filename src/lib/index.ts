@@ -158,8 +158,12 @@ export default {
             ])
           )
           .map(uniqBy(prop("id"))),
-      stamp: (tx) =>
+      stamp: (tx) => 
         fromPromise(services.connect)()
+          .map((ctx) => {
+            console.log(5, { ctx, service: services.stamp.toString() })
+            return ctx
+          })
           //.chain(isVouched) // isVouched
           .chain(
             (addr) => fromPromise(services.stamp)(tx, addr),

@@ -3,8 +3,7 @@ import { useState } from 'preact/hooks';
 
 const SidebarMenu = ({ current, tx, onBack, onClick }) => {
   const handleLearnMoreClick = () => {
-    // Your learn more logic here
-    console.log('learn more')
+    onClick()
   };
 
   return (

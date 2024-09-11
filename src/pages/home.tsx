@@ -4,6 +4,8 @@ import Item from '../components/item';       // Create this component
 // import Spec from './Show';                   // Create this component
 // import Learn from './Learn';                 // Create this component
 import useHomeService from './homeService';                // Adapt your service logic
+import ShowPage from './show'
+import LearnPage from './learn'
 
 const HomePage = () => {
   const [showError, setShowError] = useState(false);
@@ -24,7 +26,7 @@ const HomePage = () => {
       setShowError(true);
     }
   }, [s]);
-
+  console.log({current})
   const handleCopy = () => {
     setCopying(true);
     setTimeout(() => setCopying(false), 2000);
@@ -104,10 +106,10 @@ const HomePage = () => {
                 <Item key={item.id} {...item} onClick={() => send({ type: 'show', selected: item })} />
               ))}
             </div>
-          // ) : current === 'view' || current === 'stamping' ? (
-          //   <Spec tx={context.selected?.id} parent={true} />
-          // ) : current === 'learn' ? (
-          //   <Learn />
+          ) : current === 'view' || current === 'stamping' ? (
+            <ShowPage tx={context.selected?.id} parent={true} />
+          ) : current === 'learn' ? (
+            <LearnPage />
           ) : null}
         </div>
       </div>

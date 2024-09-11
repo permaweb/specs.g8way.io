@@ -1,11 +1,16 @@
 import { h } from 'preact';
-import { useState } from 'preact/hooks';
 
-const Modal = ({ open, setOpen }) => {
+const Modal = ({ open, setOpen }: {
+  open: boolean,
+  setOpen?: (checked: boolean) => void
+}) => {
   const handleChange = (event) => {
-    setOpen(event.target.checked);
+    if (setOpen) {
+      setOpen(event.target.checked);
+    }
   };
 
+  // TODO: image src from public
   return (
     <div>
       <input
@@ -19,7 +24,7 @@ const Modal = ({ open, setOpen }) => {
         <div class="modal">
           <div class="modal-box">
             <div class="grid items-center justify-center bg-[#f2f3f4] p-4">
-              <img class="text-center w-full" src="arweave-loader.gif" alt="loading" />
+              <img class="text-center w-full" src="../assets/arweave-loader.gif" alt="loading" /> 
               <div class="text-center">Loading Specs...</div>
             </div>
           </div>
