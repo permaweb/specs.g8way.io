@@ -5,16 +5,13 @@ import Loading from '../components/loading'
 import { route } from "preact-router"
 import { take, takeLast } from "ramda"
 import { format, fromUnixTime } from "date-fns";
-
+import '../../public/easymde.min.css'
 const shortHash = (h: string) => `${take(5, h)}...${takeLast(5, h)}`;
 
-const ShowPage = ({ tx }: { tx: string }) => {
-  console.log({ tx })
-  const [current, setCurrent] = useState<string>('loading');
-  const [context, setContext] = useState<any>(null);
-  const [showError, setShowError] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [isParent, setIsParent] = useState<boolean>(false)
+const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
+  const [current, setCurrent] = useState<string>('loading')
+  const [context, setContext] = useState<any>(null)
+  const [showError, setShowError] = useState<boolean>(false)
   const s = useShowService()
   const send = s[1]
 
@@ -22,7 +19,6 @@ const ShowPage = ({ tx }: { tx: string }) => {
     send({ type: 'load', tx })
   }, [])
   useEffect(() => {
-    console.log({ current })
     setCurrent(s[0].name);
     setContext(s[0].context);
 
@@ -31,8 +27,6 @@ const ShowPage = ({ tx }: { tx: string }) => {
     }
   }, [s]);
 
-  console.log({ current })
-
   const handleStamp = () => {
     send('stamp');
   };
@@ -40,22 +34,23 @@ const ShowPage = ({ tx }: { tx: string }) => {
   const handleReset = async () => {
     send('reset');
     route('/', true);
-  };
+  }
+
   return (
     <>
       {current === 'loading' ? (
-        <Loading open={isLoading} setOpen={setIsLoading} />
+        <Loading open={true} />
       ) : current === 'ready' || current === 'doStamp' ? (
         <div className="drawer drawer-end">
           <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
           <div className="drawer-content">
-            <Loading open={isLoading} setOpen={setIsLoading} />
+            <Loading open={current === 'doStamp'} />
             <div className="flex md:mt-8 px-4">
               <div className="flex flex-col flex-1">
                 <div className="flex w-full justify-between">
                   <h3 className="text-2xl text-[#ff8500] mb-8">Specification</h3>
                   <nav className="flex py-4 px-4 sticky top-0 items-center justify-between">
-                    {!isParent && (
+                    {!parent && (
                       <>
                         <button className="btn btn-outline" onClick={handleStamp}>
                           stamp ({context?.spec?.stamps})
@@ -70,7 +65,7 @@ const ShowPage = ({ tx }: { tx: string }) => {
                   </nav>
                 </div>
 
-                <div className={`prose prose-invert lg:prose-xl spec-width ${!isParent ? 'max-w-full' : 'mx-8'}`}>
+                <div className={`prose prose-invert lg:prose-xl spec-width ${!parent ? 'max-w-full' : 'mx-8'}`}>
                   <div dangerouslySetInnerHTML={{ __html: context?.spec?.html }} />
                 </div>
               </div>
@@ -86,40 +81,42 @@ const ShowPage = ({ tx }: { tx: string }) => {
                     <h4 className="text-xl">{context?.spec?.Title}</h4>
                     <p className="break-normal">{context?.spec?.Description}</p>
                     <table className="table table-compact">
-                      <tr>
-                        <th>ID</th>
-                        <td>{shortHash(tx)}</td>
-                      </tr>
-                      <tr>
-                        <th>GroupId</th>
-                        <td>{context?.spec?.GroupId}</td>
-                      </tr>
-                      {context?.spec?.Forks && (
+                      <tbody>
                         <tr>
-                          <th>Forks</th>
-                          <td>{shortHash(context.spec.Forks)}</td>
+                          <th>ID</th>
+                          <td>{shortHash(tx)}</td>
                         </tr>
-                      )}
-                      <tr>
-                        <th>Topics</th>
-                        <td>{context?.spec?.Topics}</td>
-                      </tr>
-                      <tr>
-                        <th>Stamps</th>
-                        <td>{context?.spec?.stamps}</td>
-                      </tr>
-                      <tr>
-                        <th>Height</th>
-                        <td>{context?.spec?.height}</td>
-                      </tr>
-                      <tr>
-                        <th>Date</th>
-                        <td>
-                          {context?.spec?.timestamp > 0
-                            ? format(fromUnixTime(context.spec.timestamp), 'M/d/yyyy')
-                            : 'pending'}
-                        </td>
-                      </tr>
+                        <tr>
+                          <th>GroupId</th>
+                          <td>{context?.spec?.GroupId}</td>
+                        </tr>
+                        {context?.spec?.Forks && (
+                          <tr>
+                            <th>Forks</th>
+                            <td>{shortHash(context.spec.Forks)}</td>
+                          </tr>
+                        )}
+                        <tr>
+                          <th>Topics</th>
+                          <td>{context?.spec?.Topics}</td>
+                        </tr>
+                        <tr>
+                          <th>Stamps</th>
+                          <td>{context?.spec?.stamps}</td>
+                        </tr>
+                        <tr>
+                          <th>Height</th>
+                          <td>{context?.spec?.height}</td>
+                        </tr>
+                        <tr>
+                          <th>Date</th>
+                          <td>
+                            {context?.spec?.timestamp > 0
+                              ? format(fromUnixTime(context.spec.timestamp), 'M/d/yyyy')
+                              : 'pending'}
+                          </td>
+                        </tr>
+                      </tbody>
                     </table>
                   </div>
                 </div>
@@ -153,7 +150,7 @@ const ShowPage = ({ tx }: { tx: string }) => {
             <button
               className="btn btn-outline btn-block btn-error"
               onClick={() => {
-                s?.send('reset');
+                send('reset');
                 setShowError(false);
               }}
             >

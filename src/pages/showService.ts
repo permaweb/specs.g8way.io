@@ -40,7 +40,10 @@ const machine = createMachine(
       ),
     ),
     doStamp: invoke(
-      (ctx: { tx: unknown }) => api.stamp(ctx.tx).toPromise(),
+      (ctx: { tx: unknown }) => {
+        console.log({ ctx })
+        return api.stamp(ctx.tx).toPromise()
+      },
       transition(
         "done",
         "ready",
