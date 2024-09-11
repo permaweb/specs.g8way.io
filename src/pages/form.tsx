@@ -2,7 +2,7 @@ import { h } from "preact";
 import { useEffect, useState } from "preact/hooks";
 import EasyMDE from "easymde";
 import { trim } from "ramda";
-import useFormService from "../components/formService";
+import useFormService from "./formService";
 import '../index.css'
 
 interface SpecMeta {
