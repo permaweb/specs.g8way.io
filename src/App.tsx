@@ -3,6 +3,7 @@ import { Route, Router } from 'preact-router';
 import Match from 'preact-router/match'
 import HomePage from './pages/home'
 import ShowPage from './pages/show'
+import Editor from './pages/form';
 
 // Code-splitting is automated for `routes` directory
 
@@ -18,6 +19,7 @@ const App = () => {
         }
         return <div className="text-4xl">Not Found</div>
       }}</Match>
+      <Route path='/create' component={Editor}/>
     </Router> 
   )
 }
