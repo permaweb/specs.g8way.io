@@ -19,21 +19,11 @@ export const stampCounts = (txs: string[]) => stamps.counts(txs);
 
 export const stamp = (tx: string) =>
   stamps.hasStamped(tx).then((s) => {
-    console.log(6, { tx, s })
-    console.log(0, { wallet: window.arweaveWallet })
     return !s
       ? stamps
           .stamp(tx)
-          .then((res) => {
-            console.log(7, { res })
-            return res
-          })
           .then(() => new Promise((r) => setTimeout(r, 500)))
           .then(() => stamps.count(tx).then(prop("vouched")))
-          .then((res) => {
-            console.log(8, { res })
-            return res
-          })
       : Promise.reject("Already Stamped!")
     }
   )

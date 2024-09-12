@@ -1,11 +1,12 @@
-import { createMachine, state, transition, invoke, reduce } from "robot3";
-import { set, lensPath } from "ramda";
+import { createMachine, state, transition, invoke, reduce } from "robot3"
+import { set, lensPath } from "ramda"
 import { useMachine } from "preact-robot"
 
-import Api from "../../lib";
-import services from "../../services";
+import Api from "../../lib"
+import services from "../../services"
+import { ShowMachineContext, ShowMachineEvent } from "./types"
 
-const api = Api.init(services);
+const api = Api.init(services)
 
 const machine = createMachine(
   {
@@ -13,15 +14,21 @@ const machine = createMachine(
       transition(
         "load",
         "loading",
-        reduce((ctx: object, ev: { tx: unknown }) => ({ ...ctx, tx: ev.tx })),
+        reduce((ctx: ShowMachineContext, ev: ShowMachineEvent) => {
+          return { ...ctx, tx: ev.tx }
+        }),
       ),
     ),
     loading: invoke(
-      (ctx: { tx: unknown }) => api.get(ctx.tx).toPromise(),
+      (ctx: ShowMachineContext) => {
+        return api.get(ctx.tx).toPromise()
+      },
       transition(
         "done",
         "ready",
-        reduce((ctx: object, ev: { data: unknown }) => ({ ...ctx, spec: ev.data })),
+        reduce((ctx: ShowMachineContext, ev: ShowMachineEvent) => {
+          return { ...ctx, spec: ev.data }
+        })
       ),
       transition("error", "error"),
     ),
@@ -31,41 +38,47 @@ const machine = createMachine(
       transition(
         "load",
         "loading",
-        reduce((ctx: object, ev: { tx: unknown }) => ({ ...ctx, tx: ev.tx })),
+        reduce((ctx: ShowMachineContext, ev: ShowMachineEvent) => {
+          console.log(4, { ctx, ev })
+          return { ...ctx, tx: ev.tx }
+        }),
       ),
       transition(
         "reset",
         "ready",
-        reduce((ctx: object) => ({ ...ctx, error: null })),
+        reduce((ctx: ShowMachineContext) => {
+          console.log(5, { ctx })
+          return { ...ctx, error: null }
+        }),
       ),
     ),
     doStamp: invoke(
-      (ctx: { tx: unknown }) => {
-        console.log({ ctx })
+      (ctx: ShowMachineContext) => {
         return api.stamp(ctx.tx).toPromise()
       },
       transition(
         "done",
         "ready",
-        reduce((ctx: object, ev: { data: unknown }) => {
-          console.log(ev);
-          return set(lensPath(["spec", "stamps"]), ev.data, ctx);
+        // TODO: fx type after typing api
+        reduce((ctx: ShowMachineContext, ev: { data: number }) => {
+          return set(lensPath(["spec", "stamps"]), ev.data, ctx)
         }),
       ),
       transition(
         "error",
         "ready",
-        reduce((ctx: object, ev: { error: string}) => {
+        reduce((ctx: ShowMachineContext, ev: ShowMachineEvent) => {
+          console.log(8, { ctx, ev })
           if (typeof ev.error === "string") {
             return { ...ctx, error: { message: ev.error } }
           }
-          return { ...ctx, error: ev.error };
+          return { ...ctx, error: ev.error }
         }),
       ),
     ),
   },
   () => ({ tx: new URLSearchParams(location.search).get("tx") }),
-);
+)
 
 const useShowService = () => useMachine(machine, () => null)
 export default useShowService

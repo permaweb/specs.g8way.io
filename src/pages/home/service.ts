@@ -3,26 +3,33 @@ import { assoc } from "ramda";
 import { useMachine } from "preact-robot"
 import Api from "../../lib";
 import services from "../../services";
+import { HomeMachineContext, HomeMachineCurrent, HomeMachineEvent, HomeMachineSend } from "./types"
 
 const api = Api.init(services);
 
 const machine = createMachine({
   loading: invoke(
-    async (ctx: object) => ({
-      ...ctx,
-      specs: await api.list().toPromise(),
-    }),
+    async (ctx: HomeMachineContext) => {
+      return {
+        ...ctx,
+        specs: await api.list().toPromise()
+      }
+    },
     transition(
       "done",
       "ready",
-      reduce((ctx: object, ev: { data: object }) => ({ ...ctx, ...ev.data })),
+      reduce((ctx: HomeMachineContext, ev: HomeMachineEvent) => {
+        return { ...ctx, ...ev.data }
+      }),
     ),
   ),
   ready: state(
     transition(
       "show",
       "view",
-      reduce((ctx: object, ev: { selected: boolean }) => ({ ...ctx, selected: ev.selected })),
+      reduce((ctx: HomeMachineContext, ev: HomeMachineEvent) => {
+        return { ...ctx, selected: ev.selected }
+      }),
     ),
     transition("learn", "learn"),
   ),
@@ -32,15 +39,20 @@ const machine = createMachine({
     transition(
       "reset",
       "view",
-      reduce((ctx: object) => ({ ...ctx, error: null })),
+      reduce((ctx: object) => {
+        console.log(3, { ctx })
+        return { ...ctx, error: null }
+      }),
     ),
   ),
   stamping: invoke(
-    async (ctx: { selected: { id: string }}) => api.stamp(ctx.selected.id).toPromise(),
+    async (ctx: HomeMachineContext) => api.stamp(ctx.selected.id).toPromise(),
     transition(
       "done",
       "view",
-      reduce((ctx: { selected: { id: string }, specs: { id: string }[] }, ev: { data: object }) => {
+      // TODO: fix this type when stamping is working
+      reduce((ctx: HomeMachineContext, ev: { data: number }) => {
+        console.log(4, { ctx, ev })
         const specs = ctx.specs.map((s) =>
           s.id === ctx.selected.id ? assoc("stamps", ev.data, s) : s,
         );
@@ -54,7 +66,7 @@ const machine = createMachine({
     transition(
       "error",
       "view",
-      reduce((ctx: object, ev: { error: unknown }) => {
+      reduce((ctx: HomeMachineContext, ev: HomeMachineEvent) => {
         if (typeof ev.error === "string") {
           return { ...ctx, error: { message: ev.error } };
         }
@@ -69,7 +81,5 @@ const machine = createMachine({
   exit: state(),
 });
 
-console.log({ machine })
-
-const useHomeService = () => useMachine(machine, () => null);
+const useHomeService = () => useMachine(machine, () => null) as [HomeMachineCurrent, HomeMachineSend]
 export default useHomeService;

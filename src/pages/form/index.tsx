@@ -1,18 +1,10 @@
-import { useEffect, useState } from "preact/hooks"
-import EasyMDE from "easymde"
+import { useEffect, useMemo, useState } from "preact/hooks"
+import EasyMDE, { ToolbarIcon } from "easymde"
 import { trim } from "ramda"
 import useFormService from "./service"
 import { route } from "preact-router"
-
-interface SpecMeta {
-  GroupId: string;
-  Title: string;
-  Description: string;
-  Topics: string;
-  Authors: string;
-  Forks: string;
-  Variant?: string;
-}
+import { FormMachineContext } from "./types"
+import { ZodIssue } from "zod"
 
 interface Props {
   tx?: string | null;
@@ -25,42 +17,43 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   const [showConfirm, setShowConfirm] = useState(false)
   const [showFM, setShowFM] = useState(false)
   const [loaded, setLoaded] = useState(false)
-  const [current, setCurrent] = useState('')
-  const [context, setContext] = useState<any>({})
 
-  const [specMeta, setSpecMeta] = useState<SpecMeta>({
+  const [specMeta, setSpecMeta] = useState({
     GroupId: "",
     Title: "",
     Description: "",
     Topics: "",
     Authors: "",
     Forks: "",
+    Variant: "",
   });
 
   const s = useFormService();
   const send = s[1]
 
 
-  useEffect(() => {
-    setCurrent(s[0].name);
-    setContext(s[0].context);
+  const context: FormMachineContext = useMemo(() => {
+    if (s[0].context?.error) {
+      setShowError(true)
+    }
+    return s[0].context
+  }, [s])
 
+  const current: string = useMemo(() => {
+    return s[0].name
+  }, [s])
+
+  useEffect(() => {
     if (s[0].context?.error) {
       setShowError(true);
     }
   }, [s]);
 
   useEffect(() => {
-    if (context?.error) {
-      setShowError(true);
-    }
-  }, [context]);
-
-  useEffect(() => {
     const editorInstance = new EasyMDE({
       element: document.getElementById("editor") as HTMLTextAreaElement,
       minHeight: "85vh",
-      autoFocus: true,
+      autofocus: true,
       spellChecker: false,
       indentWithTabs: false,
       toolbar: [
@@ -82,9 +75,9 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
           name: "metadata",
           action: () => setShowFM(true),
           className: "fa fa-gear",
-          text: "Metadata ",
           title: "Metadata Editor",
-        },
+          text: 'Metadata '
+        } as ToolbarIcon,
         {
           name: "publish",
           action: () => {
@@ -94,17 +87,17 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
           className: "fa fa-cloud-upload",
           text: "Publish ",
           title: "Publish Spec",
-        },
+        } as ToolbarIcon,
         {
           name: "cancel",
           action: () => {
             send("reset");
-            route("/");
+            route("/", true);
           },
           className: "fa fa-ban",
           text: "Cancel ",
           title: "Cancel Spec",
-        },
+        } as ToolbarIcon,
       ],
     });
     setEditor(editorInstance);
@@ -116,7 +109,6 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
     setShowFM(false);
     if (showPublish) {
       setShowPublish(false)
-      console.log('publishing...', { specMeta})
       send({
         type: "save",
         md: editor?.value(),
@@ -164,8 +156,8 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
               <>
                 <h3 class="text-xl text-error">Error(s)</h3>
                 <ul class="flex-col items-start space-y-2">
-                  {context.error.issues.map((issue: any) => (
-                    <li key={issue.id}>{`error with "${issue.path[0]}" ${issue.message}`}</li>
+                  {context.error.issues.map((issue: ZodIssue, i) => (
+                    <li key={i}>{`error with "${issue.path[0]}" ${issue.message}`}</li>
                   ))}
                 </ul>
               </>
@@ -196,7 +188,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
               </p>
             </div>
             <button class="btn btn-outline btn-block btn-error" onClick={() => {
-              // TODO: route to homepage
+              route("/", true)
             }}>
               ok
             </button>
