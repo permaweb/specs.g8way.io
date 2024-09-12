@@ -3476,6 +3476,17 @@ html:has(.drawer-toggle:checked){
   line-height: 1.25rem;
 }
 
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 700ms forwards;
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
 @media (min-width: 1024px){
   .lg\:prose-xl{
     font-size: 1.25rem;
