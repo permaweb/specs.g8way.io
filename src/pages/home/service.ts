@@ -1,11 +1,11 @@
-import { createMachine, state, transition, invoke, reduce } from "robot3";
-import { assoc } from "ramda";
+import { createMachine, state, transition, invoke, reduce } from "robot3"
+import { assoc } from "ramda"
 import { useMachine } from "preact-robot"
-import Api from "../../lib";
-import services from "../../services";
+import Api from "../../lib"
+import services from "../../services"
 import { HomeMachineContext, HomeMachineCurrent, HomeMachineEvent, HomeMachineSend } from "./types"
 
-const api = Api.init(services);
+const api = Api.init(services)
 
 const machine = createMachine({
   loading: invoke(
@@ -55,12 +55,12 @@ const machine = createMachine({
         console.log(4, { ctx, ev })
         const specs = ctx.specs.map((s) =>
           s.id === ctx.selected.id ? assoc("stamps", ev.data, s) : s,
-        );
+        )
         return {
           ...ctx,
           specs,
           selected: { ...ctx.selected, stamps: ev.data },
-        };
+        }
       }),
     ),
     transition(
@@ -68,9 +68,9 @@ const machine = createMachine({
       "view",
       reduce((ctx: HomeMachineContext, ev: HomeMachineEvent) => {
         if (typeof ev.error === "string") {
-          return { ...ctx, error: { message: ev.error } };
+          return { ...ctx, error: { message: ev.error } }
         }
-        return { ...ctx, error: ev.error };
+        return { ...ctx, error: ev.error }
       }),
     ),
     transition("learn", "learn"),
@@ -79,7 +79,7 @@ const machine = createMachine({
   error: state(), // TODO: handle errors
 
   exit: state(),
-});
+})
 
 const useHomeService = () => useMachine(machine, () => null) as [HomeMachineCurrent, HomeMachineSend]
-export default useHomeService;
+export default useHomeService
