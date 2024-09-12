@@ -21,6 +21,7 @@ const FadeInComponent: FunctionalComponent = ({ children }) => {
   return <div className={fadeClass}>{children}</div>;
 };
 
+
 const App = () => {
   const [path, setPath] = useState<string>('/');
 

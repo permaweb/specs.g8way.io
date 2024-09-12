@@ -115,7 +115,7 @@ The specification template is defined to keep the specification consistently def
 Specs is an application created by and used by the permaweb community, if you are interested in contributing to the specs application check out the github project. <a href="https://github.com/permaweb/specs">https://github.com/permaweb/specs</a>
 </div>
   
-`);
+`)
   return (
     <div class="flex md:mt-8 px-4">
       <div class="flex flex-col flex-1">

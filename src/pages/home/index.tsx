@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useMemo } from 'preact/hooks'
 import Sidebar from '../../components/sidebar'
 import Item from '../../components/item'
 import useHomeService from './service'
@@ -6,31 +6,30 @@ import LearnPage from '../learn'
 import ShowPage from '../show'
 
 const HomePage = () => {
-  const [showError, setShowError] = useState(false);
-  const [copying, setCopying] = useState(false);
-  const [current, setCurrent] = useState('');
-  const [context, setContext] = useState<any>({});
+  const [showError, setShowError] = useState(false)
+  const [copying, setCopying] = useState(false)
   
-  const s = useHomeService();
+  const s = useHomeService()
 
   const send = s[1]
-  
-  console.log({ current, context })
-  useEffect(() => {
-    setCurrent(s[0].name);
-    setContext(s[0].context);
-
+  const context = useMemo(() => {
     if (s[0].context?.error) {
-      setShowError(true);
+      setShowError(true)
     }
-  }, [s]);
+    return s[0].context
+  }, [s])
+
+  const current: string = useMemo(() => {
+    return s[0].name
+  }, [s])
+
 
   const handleCopy = () => {
-    setCopying(true);
-    setTimeout(() => setCopying(false), 2000);
-    const spec = `${window.location.origin}/?tx=${context.selected?.id}`;
-    window.navigator.clipboard.writeText(spec);
-  };
+    setCopying(true)
+    setTimeout(() => setCopying(false), 2000)
+    const spec = `${window.location.origin}/?tx=${context.selected?.id}`
+    window.navigator.clipboard.writeText(spec)
+  }
 
   return (
     <div className="drawer drawer-mobile lg:drawer-open">
@@ -129,8 +128,8 @@ const HomePage = () => {
               </>
             )}
             <button className="btn btn-outline btn-block btn-error" onClick={() => {
-              send('reset');
-              setShowError(false);
+              send('reset')
+              setShowError(false)
             }}>
               close
             </button>
@@ -138,7 +137,7 @@ const HomePage = () => {
         </div>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default HomePage;
+export default HomePage
