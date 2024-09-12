@@ -1,8 +1,8 @@
 import { useMachine } from 'preact-robot';
 import { createMachine, state, transition, invoke, reduce } from "robot3";
 
-import Api from "../lib";
-import services from "../services";
+import Api from "../../lib";
+import services from "../../services";
 
 const api = Api.init(services);
 

@@ -1,8 +1,8 @@
 import { useEffect, useState } from "preact/hooks"
-import useRelatedService from "./relatedService"
-import SidebarMenu from "../components/sidebar-related"
-import Item from '../components/item';       // Create this component
-import Loading from '../components/loading';       // Create this component
+import useRelatedService from "./service"
+import SidebarMenu from "../../components/sidebar-related"
+import Item from '../../components/item'
+import Loading from '../../components/loading'
 
 const RelatedPage = ({ tx }: { tx: string }) => {
   const [current, setCurrent] = useState('');

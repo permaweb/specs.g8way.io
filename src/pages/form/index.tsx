@@ -1,11 +1,8 @@
-import { h } from "preact";
-import { useEffect, useState } from "preact/hooks";
-import EasyMDE from "easymde";
-import { trim } from "ramda";
-import useFormService from "./formService";
-import '../index.css'
+import { useEffect, useState } from "preact/hooks"
+import EasyMDE from "easymde"
+import { trim } from "ramda"
+import useFormService from "./service"
 import { route } from "preact-router"
-import { d } from "robot3"
 
 interface SpecMeta {
   GroupId: string;
@@ -22,15 +19,14 @@ interface Props {
 }
 
 const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
-  const [editor, setEditor] = useState<EasyMDE | null>(null);
-  const [showPublish, setShowPublish] = useState(false);
-  const [showConfig, setShowConfig] = useState(false);
-  const [showError, setShowError] = useState(false);
-  const [showConfirm, setShowConfirm] = useState(false);
-  const [showFM, setShowFM] = useState(false);
-  const [loaded, setLoaded] = useState(false);
-  const [current, setCurrent] = useState('');
-  const [context, setContext] = useState<any>({});
+  const [editor, setEditor] = useState<EasyMDE | null>(null)
+  const [showPublish, setShowPublish] = useState(false)
+  const [showError, setShowError] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
+  const [showFM, setShowFM] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  const [current, setCurrent] = useState('')
+  const [context, setContext] = useState<any>({})
 
   const [specMeta, setSpecMeta] = useState<SpecMeta>({
     GroupId: "",

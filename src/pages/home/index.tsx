@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'preact/hooks';
-import Sidebar from '../components/sidebar'
-import Item from '../components/item'
-import useHomeService from './homeService'
-import LearnPage from './learn'
-import ShowPage from './show'
+import Sidebar from '../../components/sidebar'
+import Item from '../../components/item'
+import useHomeService from './service'
+import LearnPage from '../learn'
+import ShowPage from '../show'
 
 const HomePage = () => {
   const [showError, setShowError] = useState(false);
@@ -11,7 +11,7 @@ const HomePage = () => {
   const [current, setCurrent] = useState('');
   const [context, setContext] = useState<any>({});
   
-  const s = useHomeService() as any;
+  const s = useHomeService();
 
   const send = s[1]
   

@@ -11,8 +11,8 @@ import { useMachine } from "preact-robot";
 import yaml from 'js-yaml'
 // import { cache } from "../store";
 import { assoc } from "ramda";
-import services from "../services";
-import Api from "../lib";
+import services from "../../services";
+import Api from "../../lib";
 
 const api = Api.init(services);
 

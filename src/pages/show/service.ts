@@ -2,8 +2,8 @@ import { createMachine, state, transition, invoke, reduce } from "robot3";
 import { set, lensPath } from "ramda";
 import { useMachine } from "preact-robot"
 
-import Api from "../lib";
-import services from "../services";
+import Api from "../../lib";
+import services from "../../services";
 
 const api = Api.init(services);
 

@@ -1,11 +1,9 @@
-import React from "react" // TODO: get rid of this
-import useShowService from './showService'
+import useShowService from './service'
 import { useEffect, useState } from "preact/hooks"
-import Loading from '../components/loading'
+import Loading from '../../components/loading'
 import { route } from "preact-router"
 import { take, takeLast } from "ramda"
 import { format, fromUnixTime } from "date-fns";
-import '../../public/easymde.min.css'
 const shortHash = (h: string) => `${take(5, h)}...${takeLast(5, h)}`;
 
 const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
