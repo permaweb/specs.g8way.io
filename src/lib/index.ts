@@ -13,8 +13,6 @@ import {
   lensProp,
   append,
   path,
-  find,
-  propEq,
   sortWith,
   ascend,
   descend,
@@ -35,15 +33,17 @@ export default {
           : Async.Rejected(new Error("MUST be vouched!")),
       );
     return {
-      save: (md) =>
+      save: (md: string) =>
         of(md)
-          .chain((md) =>
+          .chain((md: string) =>
             of(md)
               .map(fm)
-              .chain((_) =>
-                fromPromise(validateAttrs)(prop("attributes", _)).map(
+              .chain((_) => {
+                console.log({ _ })
+                return fromPromise(validateAttrs)(prop("attributes", _)).map(
                   (attributes) => ({ data: md, tags: createTags(attributes) }),
-                ),
+                )
+              },
               ),
           )
           // set content type for tags
@@ -74,10 +74,6 @@ export default {
         return fromPromise(services.gql)(buildSpecListQuery())
           .map(path(["data", "transactions", "edges"]))
           .map(map(compose(toItem, prop("node"))))
-          .map((ctx) => {
-            console.log({ ctx })
-            return ctx
-          })
           .chain((specs) =>
             fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) =>
@@ -120,7 +116,7 @@ export default {
           .chain((spec) =>
             fromPromise(services.gql)(buildSingleQuery(), { tx: id })
               .map(path(["data", "transaction"]))
-              .map((x) => (console.log("data", x), x))
+              // .map((x) => (console.log("data", x), x))
               .map((data) =>
                 data
                   ? {

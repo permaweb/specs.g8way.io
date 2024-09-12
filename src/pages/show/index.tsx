@@ -1,5 +1,5 @@
 import useShowService from './service'
-import { useEffect, useState } from "preact/hooks"
+import { useEffect, useMemo, useState } from "preact/hooks"
 import Loading from '../../components/loading'
 import { route } from "preact-router"
 import { take, takeLast } from "ramda"
@@ -7,24 +7,24 @@ import { format, fromUnixTime } from "date-fns";
 const shortHash = (h: string) => `${take(5, h)}...${takeLast(5, h)}`;
 
 const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
-  const [current, setCurrent] = useState<string>('loading')
-  const [context, setContext] = useState<any>(null)
   const [showError, setShowError] = useState<boolean>(false)
   const s = useShowService()
   const send = s[1]
-
-  useEffect(() => {
-    send({ type: 'load', tx })
-  }, [])
-  useEffect(() => {
-    setCurrent(s[0].name);
-    setContext(s[0].context);
-
+  const context = useMemo(() => {
     if (s[0].context?.error) {
       setShowError(true);
     }
-  }, [s]);
+    return s[0].context
+  }, [s])
 
+  const current = useMemo(() => {
+    return s[0].name
+  }, [s])
+
+  useEffect(() => {
+    send({ type: 'load', tx })
+  })
+  
   const handleStamp = () => {
     send('stamp');
   };

@@ -1,20 +1,20 @@
-import { useEffect, useState } from "preact/hooks"
+import { useEffect, useMemo } from "preact/hooks"
 import useRelatedService from "./service"
 import SidebarMenu from "../../components/sidebar-related"
 import Item from '../../components/item'
 import Loading from '../../components/loading'
 
 const RelatedPage = ({ tx }: { tx: string }) => {
-  const [current, setCurrent] = useState('');
-  const [context, setContext] = useState<any>({});
-
   const s = useRelatedService()
   const send = s[1]
 
-  useEffect(() => {
-    setCurrent(s[0].name)
-    setContext(s[0].context)
-  }, [s]);
+  const context = useMemo(() => {
+    return s[0].context
+  }, [s])
+
+  const current = useMemo(() => {
+    return s[0].name
+  }, [s])
 
   useEffect(() => {
     if (current === 'idle' || current === '') {
@@ -36,7 +36,7 @@ const RelatedPage = ({ tx }: { tx: string }) => {
             <Loading open={true} />
           ) : current === 'ready' ? (
             <div class="overflow-hidden">
-              {context?.specs?.map((item: any) => (
+              {context?.specs?.map((item) => (
                 <Item key={item.id} {...item} />
               ))}
             </div>

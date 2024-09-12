@@ -4,86 +4,73 @@ import {
   transition,
   invoke,
   reduce,
-  immediate,
-} from "robot3";
-import { useMachine } from "preact-robot";
-// import JSToYaml from "convert-yaml";
+} from "robot3"
+import { useMachine } from "preact-robot"
 import yaml from 'js-yaml'
-// import { cache } from "../store";
-import { assoc } from "ramda";
-import services from "../../services";
-import Api from "../../lib";
+import services from "../../services"
+import Api from "../../lib"
+import { FormMachineContext, FormMachineCurrent, FormMachineEvent, FormMachineSend } from "./types"
 
-const api = Api.init(services);
-
-// Define the context type for the machine
-interface MachineContext {
-  tx: string | null;
-  spec?: any;
-  md?: string;
-  metadata?: Record<string, any>;
-  error?: string;
-  id?: string;
-}
-
-// Update the MachineEvent interface
-interface MachineEvent {
-  type: string;
-  [key: string]: any;
-}
+const api = Api.init(services)
 
 const machine = createMachine({
   idle: state(
     transition(
       "init",
       "loading",
-      reduce((ctx: object, ev: object) => ({ ...ctx, ...ev })),
+      reduce((ctx: FormMachineContext, ev: FormMachineEvent) => {
+        return { ...ctx, ...ev }
+      }),
     ),
   ),
   loading: invoke(
-    (ctx: any) =>
-      ctx.tx !== null
+    (ctx: FormMachineContext) => {
+      return ctx.tx !== null && ctx.tx !== undefined
         ? api.get(ctx.tx).map(updateForks).toPromise()
-        : Promise.resolve(template()),
+        : Promise.resolve(template())
+    },
     transition(
       "done",
       "ready",
-      reduce((ctx: object, ev: any) => ({ ...ctx, spec: ev.data })),
+      reduce((ctx: FormMachineContext, ev: FormMachineEvent) => {
+        return { ...ctx, spec: ev.data }
+      }),
     ),
   ),
   ready: state(
     transition(
       "save",
       "save",
-      reduce((ctx: object, ev: any) => ({ ...ctx, md: ev.md, metadata: ev.metadata })),
+      reduce((ctx: FormMachineContext, ev: FormMachineEvent) => {
+        return { ...ctx, md: ev.md, metadata: ev.metadata }
+      }),
     ),
     transition(
       "reset",
       "ready",
-      reduce((ctx: object) => ({ ...ctx, error: null })),
+      reduce((ctx: FormMachineContext) => ({ ...ctx, error: null })),
     ),
   ),
   save: invoke(
-    (ctx: any) =>
-      api
-        .save(
+    (ctx: FormMachineContext) => {
+      return api
+.save(
           `---
-  ${yaml.dump(ctx.metadata)}
-
-  ---
+  ${yaml.dump(ctx.metadata)}---
 
   ${ctx.md}`,
         )
         // add saved doc to local cache -- hold for now...
         //.map(({ id }) => (cache.update(assoc(id, ctx.md)), { id }))
         .map(({ id }) => ({ ...ctx, id }))
-        .toPromise(),
+        .toPromise()
+      },
     transition("done", "confirm"),
     transition(
       "error",
       "ready",
-      reduce((ctx: object, ev: any) => {
-        return { ...ctx, error: ev.error };
+      reduce((ctx: FormMachineContext, ev: FormMachineEvent) => {
+        return { ...ctx, error: ev.error }
       }),
     ),
   ),
@@ -91,13 +78,15 @@ const machine = createMachine({
     transition(
       "init",
       "loading",
-      reduce((ctx: object, ev: any) => ({ ...ctx, ...ev })),
+      reduce((ctx: FormMachineContext, ev: FormMachineEvent) => {
+        return { ...ctx, ...ev }
+      }),
     ),
   ),
-});
+})
 
-const useFormService = () => useMachine(machine, () => null);
-export default useFormService;
+const useFormService = () => useMachine(machine, () => null) as [FormMachineCurrent, FormMachineSend]
+export default useFormService
 
 function template() {
   return {
@@ -130,10 +119,10 @@ function template() {
     Description: "",
     Topics: [] as string[],
     Authors: [] as string[],
-  };
+  }
 }
 
 function updateForks(md: string): string {
   // if remix, we need to update front matter with Forks: {tx}
-  return md;
+  return md
 }

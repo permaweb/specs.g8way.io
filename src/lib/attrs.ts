@@ -11,4 +11,4 @@ const Schema = z.object({
   Forks: z.string().optional(),
 });
 
-export const validateAttrs = (tags) => Schema.parseAsync(tags);
+export const validateAttrs = (tags: Record<string, unknown>) => Schema.parseAsync(tags);
