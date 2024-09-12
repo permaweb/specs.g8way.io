@@ -4,6 +4,8 @@ import EasyMDE from "easymde";
 import { trim } from "ramda";
 import useFormService from "./formService";
 import '../index.css'
+import { route } from "preact-router"
+import { d } from "robot3"
 
 interface SpecMeta {
   GroupId: string;
@@ -59,7 +61,6 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   }, [context]);
 
   useEffect(() => {
-    console.log("state", current);
     const editorInstance = new EasyMDE({
       element: document.getElementById("editor") as HTMLTextAreaElement,
       minHeight: "85vh",
@@ -102,7 +103,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
           name: "cancel",
           action: () => {
             send("reset");
-            // router.goto("/"); TODO: route to homepage
+            route("/");
           },
           className: "fa fa-ban",
           text: "Cancel ",
@@ -115,14 +116,11 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
     send({ type: "init", tx });
   }, [send, tx]);
 
-  const handlePublish = async () => {
-    send({ type: "save", md: editor?.value() });
-  };
-
   const updateMetadata = async () => {
     setShowFM(false);
     if (showPublish) {
-      setShowPublish(false);
+      setShowPublish(false)
+      console.log('publishing...', { specMeta})
       send({
         type: "save",
         md: editor?.value(),
@@ -164,14 +162,14 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
       <textarea id="editor" />
 
       {showError && (
-        <div class="modal">
-          <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
+        <div class="modal modal-open">
+          <div class="modal-box mx-4 space-y-8">
             {context?.error?.issues && (
               <>
                 <h3 class="text-xl text-error">Error(s)</h3>
                 <ul class="flex-col items-start space-y-2">
                   {context.error.issues.map((issue: any) => (
-                    <li>error with "{issue.path[0]}" {issue.message}</li>
+                    <li key={issue.id}>{`error with "${issue.path[0]}" ${issue.message}`}</li>
                   ))}
                 </ul>
               </>
@@ -191,8 +189,8 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
       )}
 
       {showConfirm && (
-        <div class="modal">
-          <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
+        <div class="modal modal-open">
+          <div class="modal-box mx-4 space-y-8">
             <h3 class="text-xl text-success">Success!</h3>
             <div class="py-8">
               <p>
@@ -211,8 +209,8 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
       )}
 
       {showFM && (
-        <div class="modal">
-          <div class="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
+        <div class="modal modal-open">
+          <div class="modal-box mx-4 space-y-8">
             <button
               onClick={() => {
                 setShowFM(false);
