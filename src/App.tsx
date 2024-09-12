@@ -35,6 +35,7 @@ const App = () => {
       </Match>
       <Route path="/learn" component={LearnPage} />
       <Route path='/create' component={Editor}/>
+      <Route path='/remix/:tx' component={Editor}/>
     </Router> 
   )
 }

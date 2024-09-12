@@ -1,5 +1,6 @@
 import { take, takeLast } from 'ramda';
 import { fromUnixTime, format } from 'date-fns';
+import {route} from 'preact-router'
 
 interface Creator {
   name: string;
@@ -38,7 +39,7 @@ const Asset = ({
       : 'pending';
 
   return (
-    <div className="pt-4 border-b-2 border-black-500 hover:bg-gray-100" onClick={() => null}>
+    <div className="pt-4 border-b-2 border-black-500 hover:bg-gray-100" onClick={() => route(`/remix/${id}`)}>
       <div className="py-2 px-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1">
