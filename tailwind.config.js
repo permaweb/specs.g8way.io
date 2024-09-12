@@ -18,7 +18,7 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    
   },
   daisyui: {
     themes: [
@@ -26,6 +26,7 @@ module.exports = {
         arweave: {
           ...themes["[data-theme=light]"],
           primary: "#000000",
+          "primary-content": "#FFFFFF"
         },
       },
     ],

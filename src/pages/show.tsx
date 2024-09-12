@@ -73,7 +73,7 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
           </div>
           <div className="drawer-side">
             <label for="my-drawer-2" className="drawer-overlay" />
-            <div className="menu bg-base-100 block">
+            <div className="menu bg-base-100 block h-screen">
               <div className="py-2 space-y-3 sticky top-0 w-[400px]">
                 <div className="card">
                   <div className="card-body">

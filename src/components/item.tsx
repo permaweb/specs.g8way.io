@@ -16,6 +16,7 @@ interface AssetProps {
   height?: string | number;
   timestamp?: string | number;
   stamps?: number;
+  onClick?: () => void;
 }
 
 const shortHash = (h: string) => `${take(5, h)}...${takeLast(5, h)}`;
@@ -32,6 +33,7 @@ const Asset = ({
   height = 'pending',
   timestamp = 'pending',
   stamps = 0,
+  onClick
 }: AssetProps) => {
   const date =
     typeof timestamp === 'number' && timestamp > 0
@@ -39,7 +41,7 @@ const Asset = ({
       : 'pending';
 
   return (
-    <div className="pt-4 border-b-2 border-black-500 hover:bg-gray-100" onClick={() => route(`/remix/${id}`)}>
+    <div className="pt-4 border-b-2 border-black-500 hover:bg-gray-100" onClick={onClick}>
       <div className="py-2 px-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1">

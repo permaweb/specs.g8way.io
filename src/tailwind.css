@@ -3,3 +3,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.btn {
+  text-transform: uppercase
+}
+
+.prose {
+  color: rgba(31, 41, 55, 0.8)
+}
+
+.prose :where(pre):not(:where([class~="not-prose"],[class~="not-prose"] *)){
+  color: rgb(255, 255, 255);
+  background-color: rgb(61, 68, 81)
+}
+
+.btn-outline:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(31, 41, 55);
+  border-color: rgb(31, 41, 55);
+}

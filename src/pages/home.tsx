@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'preact/hooks';
-import Sidebar from '../components/sidebar'; // Create this component
-import Item from '../components/item';       // Create this component
-// import Spec from './Show';                   // Create this component
-// import Learn from './Learn';                 // Create this component
-import useHomeService from './homeService';                // Adapt your service logic
+import Sidebar from '../components/sidebar'
+import Item from '../components/item'
+import useHomeService from './homeService'
+import LearnPage from './learn'
+import ShowPage from './show'
 
 const HomePage = () => {
   const [showError, setShowError] = useState(false);
@@ -37,7 +37,7 @@ const HomePage = () => {
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
       <div className="drawer-content flex flex-col items-center justify-start">
         <div className="w-full md:w-4/5 border-l border-r border-slate-300 min-h-screen">
-          <nav className="flex py-4 px-4 sticky top-0 bg-white border-b border-slate-300 items-center justify-between lg:justify-end">
+          <nav className="flex py-4 px-4 sticky top-0 bg-white border-b border-slate-300 items-center justify-between lg:justify-end z-10">
             {current !== 'view' && current !== 'stamping' && current !== 'learn' ? (
               <>
 
@@ -79,8 +79,7 @@ const HomePage = () => {
                       )}
                     </button>
                     <button className="btn btn-outline btn-primary" onClick={() => send('stamp')}>
-                      stamp 1 
-                      {/* TODO: ({context.selected?.stamps}) */}
+                      TODO: ({context.selected?.stamps})
                     </button>
                   </div>
                 )}
@@ -104,10 +103,10 @@ const HomePage = () => {
                 <Item key={item.id} {...item} onClick={() => send({ type: 'show', selected: item })} />
               ))}
             </div>
-          // ) : current === 'view' || current === 'stamping' ? (
-          //   <Spec tx={context.selected?.id} parent={true} />
-          // ) : current === 'learn' ? (
-          //   <Learn />
+          ) : current === 'view' || current === 'stamping' ? (
+            <ShowPage tx={context.selected?.id} parent={true} />
+          ) : current === 'learn' ? (
+            <LearnPage />
           ) : null}
         </div>
       </div>

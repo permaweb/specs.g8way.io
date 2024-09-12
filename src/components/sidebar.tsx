@@ -3,15 +3,16 @@ import { useState } from 'preact/hooks';
 
 const SidebarMenu = ({ current, tx, onBack, onClick }) => {
   const handleLearnMoreClick = () => {
+    console.log('click')
     onClick()
   };
 
   return (
     <>
-      <label for="my-drawer-2" class="drawer-overlay" />
-      <div class="menu bg-base-100 block">
-        <div class="py-2 md:pl-28 space-y-3 sticky top-0 w-[300px]">
-          <div class="flex items-center">
+      <label for="my-drawer-2" className="drawer-overlay" />
+      <div className="menu bg-base-100 block w-full h-screen">
+        <div className="py-2 md:pl-28 space-y-3 sticky top-0 w-[300px]">
+          <div className="flex items-center">
             <svg
               width="56"
               height="60.15"
@@ -45,19 +46,19 @@ const SidebarMenu = ({ current, tx, onBack, onClick }) => {
                 </linearGradient>
               </defs>
             </svg>
-            <div class="block px-2 text-primary font-mono text-3xl">
+            <div className="block px-2 text-primary font-mono text-3xl">
               <span>SPECS</span>
             </div>
           </div>
 
-          <div class="py-2 px-2 text-primary text-2xl flex space-x-2 items-center">
+          <div className="py-2 px-2 text-primary text-2xl flex space-x-2 items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              className="w-6 h-6"
             >
               <path
                 stroke-linecap="round"
@@ -69,36 +70,38 @@ const SidebarMenu = ({ current, tx, onBack, onClick }) => {
             <span>Home</span>
           </div>
 
-          <div class="py-3 px-2 space-y-2">
+          <div className="py-3 px-2 space-y-2">
             {current === "ready" && (
-              <a href="/create" class="btn btn-block btn-primary">
+              <a href="/create" className="btn btn-block btn-primary">
                 Create Spec
               </a>
             )}
             {current === "view" && (
-              <div>
-                <a href={`/remix/${tx}`} class="btn btn-block btn-primary">
+              <>
+                <a href={`/remix/${tx}`} className="btn btn-block btn-primary">
                   Remix
                 </a>
-                <a href={`/related/${tx}`} class="btn btn-block btn-outline">
+                <a href={`/related/${tx}`} className="btn btn-block btn-outline">
                   Related
                 </a>
                 <a
                   target="_blank"
                   rel="noreferrer"
                   href={`https://microscope.g8way.io/?tx=${tx}`}
-                  class="btn btn-block btn-outline"
+                  className="btn btn-block btn-outline"
                 >
                   Microscope
                 </a>
-              </div>
+              </>
             )}
-            <button class="btn btn-block btn-outline" onClick={handleLearnMoreClick}>
-              Learn More
-            </button>
+            {(current !== 'learn' && current !== 'view') && (
+              <button className="btn btn-block btn-outline" onClick={handleLearnMoreClick}>
+                Learn More
+              </button>
+            )}
             {(current === "learn" || current === "view") && (
               <button
-                class="btn btn-block btn-outline"
+                className="btn btn-block btn-outline"
                 onClick={onBack}
               >
                 Back
@@ -106,9 +109,9 @@ const SidebarMenu = ({ current, tx, onBack, onClick }) => {
             )}
             <label
               for="my-drawer-2"
-              class="block md:hidden btn btn-outline btn-block text-lg drawer-button"
+              className="block lg:hidden btn btn-outline btn-block text-lg drawer-button"
             >
-              <span class="text-primary">Close</span>
+              <span className="text-primary">Close</span>
             </label>
           </div>
         </div>

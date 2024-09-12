@@ -525,7 +525,6 @@ html{
   --su: 64.8% 0.150 160;
   --wa: 84.71% 0.199 83.87;
   --er: 71.76% 0.221 22.18;
-  --pc: 80% 0 0;
   --inc: 0% 0 0;
   --suc: 0% 0 0;
   --wac: 0% 0 0;
@@ -539,6 +538,7 @@ html{
   --border-btn: 1px;
   --tab-border: 1px;
   --tab-radius: 0.5rem;
+  --pc: 100% 0 0;
 }
 
 *, ::before, ::after{
@@ -3036,6 +3036,10 @@ html:has(.drawer-toggle:checked){
   top: 0.5rem;
 }
 
+.z-10{
+  z-index: 10;
+}
+
 .float-right{
   float: right;
 }
@@ -3109,6 +3113,10 @@ html:has(.drawer-toggle:checked){
 
 .h-6{
   height: 1.5rem;
+}
+
+.h-screen{
+  height: 100vh;
 }
 
 .min-h-full{
@@ -3441,6 +3449,25 @@ html:has(.drawer-toggle:checked){
   transition-duration: 150ms;
 }
 
+.btn {
+  text-transform: uppercase
+}
+
+.prose {
+  color: rgba(31, 41, 55, 0.8)
+}
+
+.prose :where(pre):not(:where([class~="not-prose"],[class~="not-prose"] *)){
+  color: rgb(255, 255, 255);
+  background-color: rgb(61, 68, 81)
+}
+
+.btn-outline:hover {
+  color: rgb(255, 255, 255);
+  background-color: rgb(31, 41, 55);
+  border-color: rgb(31, 41, 55);
+}
+
 @media (min-width: 1024px){
   .lg\:prose-xl{
     font-size: 1.25rem;
@@ -3742,10 +3769,6 @@ html:has(.drawer-toggle:checked){
 
   .md\:block{
     display: block;
-  }
-
-  .md\:hidden{
-    display: none;
   }
 
   .md\:w-4\/5{
