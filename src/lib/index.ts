@@ -1,7 +1,7 @@
-import { Async } from "crocks";
-import fm from "front-matter";
-import { marked } from "marked";
-import { validateAttrs } from "./attrs";
+import { Async } from "crocks"
+import fm from "front-matter"
+import { marked } from "marked"
+import { validateAttrs } from "./attrs"
 import {
   always,
   assoc,
@@ -20,9 +20,10 @@ import {
   reduce,
   concat,
   Ord,
-} from "ramda";
+} from "ramda"
+import { Metadata } from "src/types/Spec"
 
-const { of, fromPromise } = Async;
+const { of, fromPromise } = Async
 
 export default {
   init: (services) => {
@@ -31,7 +32,7 @@ export default {
         res
           ? Async.Resolved(addr)
           : Async.Rejected(new Error("MUST be vouched!")),
-      );
+      )
     return {
       save: (md: string) =>
         of(md)
@@ -72,6 +73,10 @@ export default {
       ,
       list: () => {
         return fromPromise(services.gql)(buildSpecListQuery())
+          .map((ctx) => {
+            console.log({ctx})
+            return ctx
+          })
           .map(path(["data", "transactions", "edges"]))
           .map(map(compose(toItem, prop("node"))))
           .chain((specs) =>
@@ -96,7 +101,7 @@ export default {
               descend(prop("stamps")  as () => Ord), 
               ascend(prop("title") as () => Ord)
             ])
-          );
+          )
       },
       get: (id) =>
         fromPromise(services.get)(id)
@@ -165,9 +170,9 @@ export default {
             (addr) => fromPromise(services.stamp)(tx, addr),
             //.map(x => (console.log(x), x))
           ),
-    };
+    }
   },
-};
+}
 
 function toItem(
   node: { //TODO: move types somewhere
@@ -185,7 +190,7 @@ function toItem(
     }[] 
   }) {
     const getTag = (n: string): string | undefined => 
-      node.tags.find(tag => tag.name === n)?.value;
+      node.tags.find(tag => tag.name === n)?.value
     
   return {
     id: node.id,
@@ -198,7 +203,7 @@ function toItem(
     groupId: getTag("GroupId"),
     forks: getTag("Forks"),
     variant: getTag("Variant")
-  };
+  }
 }
 
 
@@ -216,7 +221,7 @@ function buildSingleQuery() {
         timestamp
       }
     }
-  }`;
+  }`
 }
 
 function buildSpecRelatedQuery() {
@@ -242,9 +247,8 @@ function buildSpecRelatedQuery() {
       }
     }
   }
-}`;
+}`
 }
-
 
 function buildSpecListQuery() {
   return `query {
@@ -269,10 +273,10 @@ function buildSpecListQuery() {
       }
     }
   }
-}`;
+}`
 }
 
-function createTags(md) {
+function createTags(md: Metadata) {
   // add atomic asset info here and take
   // authors to create balances object
   const atomicTags = [
@@ -298,10 +302,10 @@ function createTags(md) {
       }),
     },
     { name: "License", value: "yRj4a5KMctX_uOmKWCFJIjmY8DeJcusVk6-HzLiM_t8" },
-  ];
+  ]
   return compose(
     concat(atomicTags),
     map(([name, value]: string[]) => ({ name, value })),
     toPairs,
-  )(md);
+  )(md)
 }

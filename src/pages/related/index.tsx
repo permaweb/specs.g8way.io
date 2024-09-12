@@ -21,7 +21,6 @@ const RelatedPage = ({ tx }: { tx: string }) => {
       send({ type: 'load', tx })
     }
   })
-  // TODO: add item type
   return (    
     <div class="drawer drawer-mobile  lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />

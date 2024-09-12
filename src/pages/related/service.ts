@@ -1,11 +1,11 @@
-import { useMachine } from 'preact-robot';
-import { createMachine, state, transition, invoke, reduce } from "robot3";
+import { useMachine } from 'preact-robot'
+import { createMachine, state, transition, invoke, reduce } from "robot3"
 
-import Api from "../../lib";
-import services from "../../services";
+import Api from "../../lib"
+import services from "../../services"
 import { RelatedMachineContext, RelatedMachineCurrent, RelatedMachineEvent, RelatedMachineSend } from './types'
 
-const api = Api.init(services);
+const api = Api.init(services)
 
 const addTx = (ctx: RelatedMachineContext, ev: RelatedMachineEvent) => {
   return { ...ctx, tx: ev.tx }
@@ -27,7 +27,7 @@ const machine = createMachine({
   ),
   ready: state(),
   error: state(),
-});
+})
 
 const useRelatedService = () => useMachine(machine, () => null) as [RelatedMachineCurrent, RelatedMachineSend]
-export default useRelatedService;
+export default useRelatedService

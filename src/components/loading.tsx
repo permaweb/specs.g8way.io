@@ -10,7 +10,6 @@ const Modal = ({ open, setOpen }: {
     }
   };
 
-  // TODO: image src from public
   return (
     <div>
       <input

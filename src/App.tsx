@@ -1,11 +1,10 @@
 import { Route, Router } from 'preact-router';
 import Match from 'preact-router/match'
-// TODO: get rid of index
-import HomePage from './pages/home/index'
-import ShowPage from './pages/show/index'
-import Editor from './pages/form/index'
-import RelatedPage from './pages/related/index'
-import LearnPage from './pages/learn/index'
+import HomePage from './pages/home'
+import ShowPage from './pages/show'
+import Editor from './pages/form'
+import RelatedPage from './pages/related'
+import LearnPage from './pages/learn'
 
 const App = () => {
   return (

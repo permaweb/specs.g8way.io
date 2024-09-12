@@ -92,7 +92,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
           name: "cancel",
           action: () => {
             send("reset");
-            route("/");
+            route("/", true);
           },
           className: "fa fa-ban",
           text: "Cancel ",
@@ -188,7 +188,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
               </p>
             </div>
             <button class="btn btn-outline btn-block btn-error" onClick={() => {
-              // TODO: route to homepage
+              route("/", true)
             }}>
               ok
             </button>

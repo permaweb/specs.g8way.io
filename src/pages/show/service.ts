@@ -1,12 +1,12 @@
-import { createMachine, state, transition, invoke, reduce } from "robot3";
-import { set, lensPath } from "ramda";
+import { createMachine, state, transition, invoke, reduce } from "robot3"
+import { set, lensPath } from "ramda"
 import { useMachine } from "preact-robot"
 
-import Api from "../../lib";
-import services from "../../services";
+import Api from "../../lib"
+import services from "../../services"
 import { ShowMachineContext, ShowMachineEvent } from "./types"
 
-const api = Api.init(services);
+const api = Api.init(services)
 
 const machine = createMachine(
   {
@@ -61,7 +61,7 @@ const machine = createMachine(
         "ready",
         // TODO: fx type after typing api
         reduce((ctx: ShowMachineContext, ev: { data: number }) => {
-          return set(lensPath(["spec", "stamps"]), ev.data, ctx);
+          return set(lensPath(["spec", "stamps"]), ev.data, ctx)
         }),
       ),
       transition(
@@ -72,13 +72,13 @@ const machine = createMachine(
           if (typeof ev.error === "string") {
             return { ...ctx, error: { message: ev.error } }
           }
-          return { ...ctx, error: ev.error };
+          return { ...ctx, error: ev.error }
         }),
       ),
     ),
   },
   () => ({ tx: new URLSearchParams(location.search).get("tx") }),
-);
+)
 
 const useShowService = () => useMachine(machine, () => null)
 export default useShowService
