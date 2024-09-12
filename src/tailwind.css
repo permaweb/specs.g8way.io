@@ -22,3 +22,12 @@
   background-color: rgb(31, 41, 55);
   border-color: rgb(31, 41, 55);
 }
+
+
+.table{
+  position: relative;
+  border-radius: var(--rounded-box, 1rem);
+  text-align: left;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
