@@ -1,11 +1,10 @@
 import { Route, Router } from 'preact-router';
 import { FunctionalComponent, h } from 'preact';
-// TODO: remove index
-import HomePage from './pages/home/index';
-import ShowPage from './pages/show/index';
-import Editor from './pages/form/index';
-import RelatedPage from './pages/related/index';
-import LearnPage from './pages/learn/index';
+import HomePage from './pages/home';
+import ShowPage from './pages/show';
+import Editor from './pages/form';
+import RelatedPage from './pages/related';
+import LearnPage from './pages/learn';
 import { useEffect, useState } from 'preact/hooks';
 import Match from 'preact-router/match';
 
