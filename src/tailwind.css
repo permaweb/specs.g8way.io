@@ -26,6 +26,7 @@
 
 .table{
   position: relative;
+  width: fit-content;
   border-radius: var(--rounded-box, 1rem);
   text-align: left;
   font-size: 0.875rem;

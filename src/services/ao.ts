@@ -1,6 +1,23 @@
 import { createDataItemSigner, dryrun, message } from "@permaweb/aoconnect"
 // const SPEC_PID = "6x68KURcD4ySOslFCxiIorjsbpzNy6WD4joH6C8VHgg"
 
+type Spec = {
+  id: string,
+  GroupId: string,
+  Variant: string,
+  Title: string,
+  Description: string,
+  Topcs: string,
+  Authors: string,
+  Type: string,
+  Forks: string,
+  ContentType: string,
+  RenderWith: string,
+  BlockHeight: number,
+  Timestamp: number,
+  Owner: string,
+  DataProtocol: string
+}
 
 export const upload = async (md: {
   data: string
@@ -86,7 +103,7 @@ export const query = async (tx: string) => {
     ],
   }
   const result = await dryrun(args)
-  const data = JSON.parse(result.Output.data)
+  const data: Spec = JSON.parse(result.Output.data)
 
   return data
 }
@@ -101,7 +118,7 @@ export const queryAll = async () => {
     ],
   }
   const result = await dryrun(args)
-  const data = JSON.parse(result.Output.data)
+  const data: Spec[] = JSON.parse(result.Output.data)
 
   return data
 }
@@ -122,7 +139,7 @@ export const queryRelated = async (tx: string) => {
   }
 
   const result = await dryrun(args)
-  const data = JSON.parse(result.Output.data)
+  const data: Spec[] = JSON.parse(result.Output.data)
 
   return data
 }
