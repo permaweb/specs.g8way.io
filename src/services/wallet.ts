@@ -7,7 +7,7 @@ const wallet = new ArweaveWebWallet(
 
 export const getActiveAddress = async () => {
   if (window.arweaveWallet) {
-    await window.arweaveWallet.connect(["ACCESS_ADDRESS", "DISPATCH"]);
+    await window.arweaveWallet.connect(["ACCESS_ADDRESS", "DISPATCH", "SIGN_TRANSACTION"]);
   } else {
     await wallet.connect();
   }

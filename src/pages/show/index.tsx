@@ -21,9 +21,10 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
     return s[0].name
   }, [s])
 
+
   useEffect(() => {
     send({ type: 'load', tx })
-  })
+  }, [])
   
   const handleStamp = () => {
     send('stamp')
@@ -104,13 +105,13 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
                         </tr>
                         <tr>
                           <th>Height</th>
-                          <td>{context?.spec?.height}</td>
+                          <td>{context?.spec?.BlockHeight}</td>
                         </tr>
                         <tr>
                           <th>Date</th>
                           <td>
-                            {context?.spec?.timestamp > 0
-                              ? format(fromUnixTime(context.spec.timestamp), 'M/d/yyyy')
+                            {context?.spec?.Timestamp > 0
+                              ? format(fromUnixTime(context.spec.Timestamp / 1000), 'M/d/yyyy')
                               : 'pending'}
                           </td>
                         </tr>

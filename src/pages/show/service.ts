@@ -20,14 +20,14 @@ const machine = createMachine(
       ),
     ),
     loading: invoke(
-      (ctx: ShowMachineContext) => {
+      async (ctx: ShowMachineContext) => {
         return api.get(ctx.tx).toPromise()
       },
       transition(
         "done",
         "ready",
         reduce((ctx: ShowMachineContext, ev: ShowMachineEvent) => {
-          return { ...ctx, spec: ev.data }
+          return { ...ctx, spec: ev.data[0] }
         })
       ),
       transition("error", "error"),
@@ -39,7 +39,6 @@ const machine = createMachine(
         "load",
         "loading",
         reduce((ctx: ShowMachineContext, ev: ShowMachineEvent) => {
-          console.log(4, { ctx, ev })
           return { ...ctx, tx: ev.tx }
         }),
       ),
@@ -47,7 +46,6 @@ const machine = createMachine(
         "reset",
         "ready",
         reduce((ctx: ShowMachineContext) => {
-          console.log(5, { ctx })
           return { ...ctx, error: null }
         }),
       ),
@@ -68,7 +66,6 @@ const machine = createMachine(
         "error",
         "ready",
         reduce((ctx: ShowMachineContext, ev: ShowMachineEvent) => {
-          console.log(8, { ctx, ev })
           if (typeof ev.error === "string") {
             return { ...ctx, error: { message: ev.error } }
           }

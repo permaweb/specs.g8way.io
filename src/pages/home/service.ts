@@ -40,7 +40,6 @@ const machine = createMachine({
       "reset",
       "view",
       reduce((ctx: object) => {
-        console.log(3, { ctx })
         return { ...ctx, error: null }
       }),
     ),
@@ -52,7 +51,6 @@ const machine = createMachine({
       "view",
       // TODO: fix this type when stamping is working
       reduce((ctx: HomeMachineContext, ev: { data: number }) => {
-        console.log(4, { ctx, ev })
         const specs = ctx.specs.map((s) =>
           s.id === ctx.selected.id ? assoc("stamps", ev.data, s) : s,
         )

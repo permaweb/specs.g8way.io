@@ -1,15 +1,15 @@
-import { Spec } from "src/types/Spec"
+import { AoSpec } from "src/types/Spec"
 
 export interface RelatedMachineContext {
   type?: string
   tx?: string
-  specs?: Spec[]
+  specs?: AoSpec[]
 }
 
 export interface RelatedMachineEvent {
   type: "load" | "done"
   tx?: string
-  data?: Spec[]
+  data?: AoSpec[]
   [key: string]: unknown
 }
 

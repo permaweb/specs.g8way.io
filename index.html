@@ -8,9 +8,9 @@
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<link rel="apple-touch-icon" href="<%= htmlWebpackPlugin.files.publicPath %>assets/icons/apple-touch-icon.png">
 		<link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css">
-		<% preact.headEnd %>
 	</head>
 	<body data-theme="arweave">
-		<% preact.bodyEnd %>
+    <div id="app"></div>
+    <script type="module" src="/src/index.tsx"></script>
 	</body>
 </html>

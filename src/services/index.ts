@@ -3,6 +3,7 @@ import { post, gql, get } from "./arweave";
 import { stampCounts, stamp, stampCount } from "./stamps";
 import { isVouched } from "./vouched";
 import { register } from './warp';
+import { query, queryAll, queryRelated, upload } from "./ao"
 
 export default {
   connect: getActiveAddress,
@@ -19,4 +20,8 @@ export default {
   stampCount,
   isVouched,
   register,
+  query,
+  queryAll,
+  queryRelated,
+  upload
 };

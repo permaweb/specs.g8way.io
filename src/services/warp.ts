@@ -41,7 +41,6 @@ export const readState = (tx) =>
     .then(path(["cachedValue", "state"]));
 
 export const deploy = async (contract) => {
-  console.log("contract", contract);
 
   const userSigner = new InjectedArweaveSigner(window.arweaveWallet);
   await userSigner.setPublicKey();
@@ -53,7 +52,5 @@ export const deploy = async (contract) => {
       srcTxId: contract.contractSrc,
       tags: contract.tags,
     })
-    .then((x) => (console.log("result", x), x))
-    .catch((x) => console.log(x));
   //disable bundling
 };

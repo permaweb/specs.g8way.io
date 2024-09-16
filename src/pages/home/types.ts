@@ -1,16 +1,16 @@
-import { Spec } from "src/types/Spec"
+import { AoSpec } from "src/types/Spec"
 
 export interface HomeMachineContext {
   type?: string
-  specs?: Spec[]
-  selected?: Spec
+  specs?: AoSpec[]
+  selected?: AoSpec
   error?: { message: string }
 }
 
 export interface HomeMachineEvent {
   type: string
-  data?: { specs: Spec[] }
-  selected?: Spec
+  data?: { specs: AoSpec[] }
+  selected?: AoSpec
   error?: string | { message: string }
   [key: string]: unknown
 }

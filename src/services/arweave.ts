@@ -55,7 +55,6 @@ export const post = async ({ data, tags }) => {
     const result = await window.arweaveWallet.dispatch(tx);
     return Promise.resolve({ id: result.id });
   } catch (e) {
-    console.log(e.message);
     return Promise.reject(e);
   }
 };

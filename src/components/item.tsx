@@ -1,45 +1,29 @@
 import { take, takeLast } from 'ramda';
 import { fromUnixTime, format } from 'date-fns';
-import {route} from 'preact-router'
+import { AoSpec } from 'src/types/Spec'
 
-interface Creator {
-  name: string;
-  handle: string;
-  avatar: string;
-}
-
-interface AssetProps {
-  creator?: Creator;
-  id?: string;
-  title?: string;
-  groupId?: string | null;
-  height?: string | number;
-  timestamp?: string | number;
-  stamps?: number;
+interface AssetProps extends AoSpec {
   onClick?: () => void;
 }
 
 const shortHash = (h: string) => `${take(5, h)}...${takeLast(5, h)}`;
 
 const Asset = ({
-  creator = {
-    name: 'Rakis',
-    handle: '@rakis',
-    avatar: 'https://arweave.net:443/fYmFNZbRCbPhBWqmOJLNiJFoLFiFchIBSZNI6jRwWaI',
-  },
-  id = '',
-  title = 'Asset Discoverability - ANS-110',
-  groupId = null,
-  height = 'pending',
-  timestamp = 'pending',
+  id,
+  BlockHeight,
+  Authors = [],
+  Description = "Description",
+  Owner = "",
+  Title = "Title",
+  GroupId = "GroupId",
+  Timestamp = "Pending",
   stamps = 0,
   onClick
 }: AssetProps) => {
-  const date =
-    typeof timestamp === 'number' && timestamp > 0
-      ? format(fromUnixTime(Number(timestamp)), 'M/d/yyyy')
-      : 'pending';
-
+  const date = 
+    typeof Timestamp === 'string' && +Timestamp > 0
+      ? format(fromUnixTime(Math.floor(Number(Timestamp) / 1000)), 'M/d/yyyy')
+      : 'pending'
   return (
     <div className="pt-4 border-b-2 border-black-500 hover:bg-gray-100" onClick={onClick}>
       <div className="py-2 px-5">
@@ -62,7 +46,7 @@ const Asset = ({
               </span>
               */}
               <h1 className="pl-2 md:pl-8 text-xl text-primary">
-                {title} {groupId ? `(${groupId})` : ''}
+                {Title} {GroupId ? `(${GroupId})` : ''}
               </h1>
             </div>
           </div>
@@ -99,7 +83,7 @@ const Asset = ({
           <span className="flex space-x-2 items-end">
             Date: {date}
           </span>
-          <span className="flex space-x-2 items-end">Height: {height}</span>
+          <span className="flex space-x-2 items-end">Height: {BlockHeight}</span>
         </div>
       </div>
     </div>

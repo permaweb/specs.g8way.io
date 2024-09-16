@@ -13,8 +13,6 @@ const stamps = Stamps.init({
   wallet: "use_wallet"
 });
 
-console.log({ wallet: window.arweaveWallet })
-
 export const stampCounts = (txs: string[]) => stamps.counts(txs);
 
 export const stamp = (tx: string) =>

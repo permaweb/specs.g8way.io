@@ -35,3 +35,22 @@ export interface GQLSpec extends Metadata {
   stamps: number
   timestamp: number
 }
+
+export interface AoSpec {
+  Authors: string[],
+  BlockHeight: number,
+  ContentType: string,
+  DataProtocol: string,
+  Description: string,
+  Forks: string,
+  GroupId: string
+  Owner: string
+  RenderWith: string
+  Timestamp: string | number
+  Title: string
+  Topics: string[]
+  Type: string
+  Variant: string
+  id: string
+  stamps: number
+}
