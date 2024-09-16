@@ -23,7 +23,7 @@ import {
   Ord,
   isNotEmpty,
 } from "ramda"
-import { Metadata } from "src/types/Spec"
+import { Metadata, Spec } from "src/types/Spec"
 
 const { of, fromPromise } = Async
 
@@ -132,7 +132,7 @@ export default {
                 )
               }
             )
-          })
+          }) as Spec
         },
       related: (tx) => {
         return fromPromise(services.queryRelated)(tx)
@@ -151,7 +151,7 @@ export default {
               ascend(prop("Title") as () => Ord)
             ])
           )
-          .map(uniqBy(prop("id")))
+          .map(uniqBy(prop("id"))) as Spec[]
         },
       stamp: (tx) => 
         fromPromise(services.connect)()

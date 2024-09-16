@@ -1,23 +1,6 @@
 import { createDataItemSigner, dryrun, message } from "@permaweb/aoconnect"
+import { Spec } from "src/types/Spec"
 // const SPEC_PID = "6x68KURcD4ySOslFCxiIorjsbpzNy6WD4joH6C8VHgg"
-
-type Spec = {
-  id: string,
-  GroupId: string,
-  Variant: string,
-  Title: string,
-  Description: string,
-  Topcs: string,
-  Authors: string,
-  Type: string,
-  Forks: string,
-  ContentType: string,
-  RenderWith: string,
-  BlockHeight: number,
-  Timestamp: number,
-  Owner: string,
-  DataProtocol: string
-}
 
 export const upload = async (md: {
   data: string
