@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/web-manifest-combined.json",
+  "name": "Specs",
+  "short_name": "Specs",
+  "start_url": ".",
+  "display": "standalone",
+  "description": "Permaweb Specifications",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any"
+    }
+  ],
+  "orientation": "portrait"
+}

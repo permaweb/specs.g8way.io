@@ -1,5 +1,3 @@
-import { h } from 'preact';
-
 const Modal = ({ open, setOpen }: {
   open: boolean,
   setOpen?: (checked: boolean) => void
@@ -23,8 +21,8 @@ const Modal = ({ open, setOpen }: {
         <div class="modal">
           <div class="modal-box">
             <div class="grid items-center justify-center bg-[#f2f3f4] p-4">
-              <img class="text-center w-full" src="../assets/arweave-loader.gif" alt="loading" /> 
-              <div class="text-center">Loading Specs...</div>
+              <img class="text-center w-full" src="/arweave-loader.gif" alt="loading123" /> 
+              <div class="text-center">Loading...</div>
             </div>
           </div>
         </div>

@@ -4,6 +4,8 @@ import Item from '../../components/item'
 import useHomeService from './service'
 import LearnPage from '../learn'
 import ShowPage from '../show'
+import Loading from '../../components/loading'
+
 
 const HomePage = () => {
   const [showError, setShowError] = useState(false)
@@ -93,9 +95,7 @@ const HomePage = () => {
           </nav>
 
           {current === 'loading' ? (
-            <div className="grid items-center justify-center min-w-full min-h-full">
-              <img src="https://arweave.net/IkMJRqi_0Xx_QhstK4WE3rsQqQxC07n84UagPgqGXfc" alt="loading" />
-            </div>
+            <Loading open={true} />
           ) : current === 'ready' ? (
             <div className="overflow-hidden">
               {context.specs?.map((item) => (
