@@ -121,27 +121,35 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
     }
   };
 
-  useEffect(() => {
-    if (current === "ready" && !showFM && !loaded) {
-      setLoaded(true);
-      setSpecMeta({
-        Title: context.spec.Title,
-        GroupId: context.spec.GroupId,
-        Description: context.spec.Description,
-        Topics: context.spec.Topics.length > 0 ? context.spec.Topics.join(", ") : "",
-        Authors: context.spec.Authors.length > 0 ? context.spec.Authors.join("\n") : "",
-        Forks: tx || "",
-        Variant: context.spec?.Variant || "",
-      });
 
-      if (editor?.value() === "") {
-        setTimeout(() => editor?.value(context.spec.body), 100);
+  useEffect(() => {
+    //context.spec is an array
+    //@ts-ignore
+    if (current === "ready" && !loaded && context.spec && context.spec.length > 0) {
+      setLoaded(true);
+  
+      const specData = context.spec[0];
+  
+      setSpecMeta({
+        Title: specData.Title,
+        GroupId: specData.GroupId,
+        Description: specData.Description,
+        Topics: specData.Topics.length > 0 ? specData.Topics.split(",") : "", 
+        Authors: specData.Authors.length > 0 ? specData.Authors.split("\n") : "",
+        Forks: tx || "",
+        Variant: specData.Variant || "",
+      });
+  
+      if (editor && editor.value() === "") {
+        editor.value(specData.html);
       }
     }
+  
     if (current === "confirm") {
       setShowConfirm(true);
     }
-  }, [current, context, editor, loaded, showFM, tx]);
+  }, [current, context, editor, loaded, tx]);
+
 
   return (
     <div class="py-8 mx-8">
