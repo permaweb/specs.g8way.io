@@ -32,12 +32,15 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   const send = s[1]
 
 
+
   const context: FormMachineContext = useMemo(() => {
     if (s[0].context?.error) {
       setShowError(true)
     }
     return s[0].context
   }, [s])
+
+  console.log(context.spec)
 
   const current: string = useMemo(() => {
     return s[0].name
@@ -122,26 +125,57 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   };
 
   useEffect(() => {
-    if (current === "ready" && !showFM && !loaded) {
-      setLoaded(true);
-      setSpecMeta({
-        Title: context.spec.Title,
-        GroupId: context.spec.GroupId,
-        Description: context.spec.Description,
-        Topics: context.spec.Topics.length > 0 ? context.spec.Topics.join(", ") : "",
-        Authors: context.spec.Authors.length > 0 ? context.spec.Authors.join("\n") : "",
-        Forks: tx || "",
-        Variant: context.spec?.Variant || "",
-      });
+  if (current === "ready" && !loaded && context.spec && context.spec.length > 0) {
+    setLoaded(true);
 
-      if (editor?.value() === "") {
-        setTimeout(() => editor?.value(context.spec.body), 100);
-      }
+    const specData = context.spec[0]; // Access the first element of the array
+
+    console.log("Spec metadata is ready:", specData); // Log for debugging
+
+    // Update the form state
+    setSpecMeta({
+      Title: specData.Title,
+      GroupId: specData.GroupId,
+      Description: specData.Description,
+      Topics: specData.Topics.length > 0 ? specData.Topics.split(",") : "", // Assuming Topics is a string that needs splitting
+      Authors: specData.Authors.length > 0 ? specData.Authors.split("\n") : "", // Assuming Authors is a string
+      Forks: tx || "",
+      Variant: specData.Variant || "",
+    });
+
+    // Set the editor content when data is ready
+    if (editor && editor.value() === "") {
+      editor.value(specData.html); // Set the editor content to the HTML body
     }
-    if (current === "confirm") {
-      setShowConfirm(true);
-    }
-  }, [current, context, editor, loaded, showFM, tx]);
+  }
+
+  if (current === "confirm") {
+    setShowConfirm(true);
+  }
+}, [current, context, editor, loaded, tx]);
+
+
+  // useEffect(() => {
+  //   if (current === "ready" && !showFM && !loaded) {
+  //     setLoaded(true);
+  //     setSpecMeta({
+  //       Title: context.spec.Title,
+  //       GroupId: context.spec.GroupId,
+  //       Description: context.spec.Description,
+  //       Topics: context.spec.Topics.length > 0 ? context.spec.Topics.join(", ") : "",
+  //       Authors: context.spec.Authors.length > 0 ? context.spec.Authors.join("\n") : "",
+  //       Forks: tx || "",
+  //       Variant: context.spec?.Variant || "",
+  //     });
+
+  //     if (editor?.value() === "") {
+  //       setTimeout(() => editor?.value(context.spec.body), 100);
+  //     }
+  //   }
+  //   if (current === "confirm") {
+  //     setShowConfirm(true);
+  //   }
+  // }, [current, context, editor, loaded, showFM, tx]);
 
   return (
     <div class="py-8 mx-8">
