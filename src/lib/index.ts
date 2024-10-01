@@ -1,7 +1,6 @@
 import { queryRelated } from './../services/ao';
 import { Async } from "crocks"
 import fm from "front-matter"
-import { marked } from "marked"
 import { validateAttrs } from "./attrs"
 import {
   always,
@@ -127,7 +126,7 @@ export default {
               (results) => {
                 const { body } = fm(results)
                 return map(
-                  (s) => assoc("html", marked(body), s),
+                  (s) => assoc("html", body, s),
                   specs
                 )
               }
