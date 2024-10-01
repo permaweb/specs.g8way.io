@@ -1,4 +1,4 @@
-# specs
+# specs.
 
 Where permaweb standards evolve!
 
