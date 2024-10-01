@@ -123,8 +123,6 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
 
 
   useEffect(() => {
-    //context.spec is an array
-    //@ts-ignore
     if (current === "ready" && !loaded && context.spec && context.spec.length > 0) {
       setLoaded(true);
   
@@ -134,15 +132,11 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
         Title: specData.Title,
         GroupId: specData.GroupId,
         Description: specData.Description,
-        Topics: specData.Topics.length > 0 ? specData.Topics.split(",") : "", 
-        Authors: specData.Authors.length > 0 ? specData.Authors.split("\n") : "",
+        Topics: "", 
+        Authors: "",
         Forks: tx || "",
         Variant: specData.Variant || "",
       });
-  
-      if (editor && editor.value() === "") {
-        editor.value(specData.html);
-      }
     }
   
     if (current === "confirm") {

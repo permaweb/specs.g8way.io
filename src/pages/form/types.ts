@@ -4,7 +4,7 @@ import { ZodError } from "zod"
 export interface FormMachineContext {
   type?: string
   tx?: string | null
-  spec?: FormSpec
+  spec?: FormSpec[]
   md?: string
   metadata?: Metadata
   error?: ZodError
