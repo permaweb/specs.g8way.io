@@ -110,14 +110,14 @@ export default {
             ])
           )
       },
-      get: (tx: string) => {
+      get: (tx: string, {isMarked}: {isMarked: boolean}) => {
          return fromPromise(services.query)(tx)
           .chain((specs) =>
             fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
               (results) => {
                 return map(
                   (s) => assoc("stamps", results[s.id]?.vouched || 0, s),
-                  specs,
+                   specs,
                 )
               }
             ),
@@ -126,13 +126,14 @@ export default {
             return fromPromise(services.get)(map(prop("id"), specs)).map(
               (results) => {
                 const { body } = fm(results)
+                const val = isMarked ? marked(body) : body
                 return map(
-                  (s) => assoc("html", marked(body), s),
+                  (s) => assoc("html", val, s),
                   specs
                 )
               }
             )
-          }) as Spec
+          })
         },
       related: (tx) => {
         return fromPromise(services.queryRelated)(tx)
