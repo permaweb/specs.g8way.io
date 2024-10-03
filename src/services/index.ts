@@ -12,13 +12,9 @@ export default {
   gql,
   dispatch: post,
   get,
-  getActiveAddress,
-  post,
-  // Skip
   stampCounts,
   stamp,
   stampCount,
-  // End skip
   isVouched,
   register,
   query,

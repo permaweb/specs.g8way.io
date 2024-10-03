@@ -21,18 +21,20 @@ import {
   isNotEmpty,
 } from "ramda"
 import { Metadata, Spec } from "src/types/Spec"
-import { getActiveAddressSchema, Services } from 'src/services/dal'
+import { getActiveAddressSchema, isVouchedSchema, Services, uploadSchema } from 'src/services/dal'
 
 export default {
   init: (services: Services) => {
+    const connect = fromPromise(getActiveAddressSchema.implement(services.connect))
+    const upload = fromPromise(uploadSchema.implement(services.upload))
+
     const isVouched = (addr) =>
-      fromPromise(services.isVouched)(addr).chain((res) =>
+      fromPromise(isVouchedSchema.implement(services.isVouched))(addr).chain((res) =>
         res
           ? Resolved(addr)
           : Rejected(new Error("MUST be vouched!")),
       )
-    const connect = fromPromise(getActiveAddressSchema.implement(services.connect))
-    // const exFunc = fromPromise(exSchema.implement(services.ex))
+
     return {
       save: (md: string) =>
         of(md)
@@ -67,7 +69,7 @@ export default {
               .map(always(txInfo)),
           )
           // dispatch
-          .chain(fromPromise(services.upload)) // Goes to arweave
+          .chain(fromPromise(upload)) // Goes to arweave
           // .chain(({ id }) => Async.fromPromise(services.register)(id)) // Remove this
           // .chain where we send the tx-id and the metadata to the AO process
       ,
