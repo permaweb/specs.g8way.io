@@ -26,7 +26,7 @@ const machine = createMachine({
   loading: invoke(
     (ctx: FormMachineContext) => {
       return ctx.tx !== null && ctx.tx !== undefined
-        ? api.get(ctx.tx, {isMarked: false}).map(updateForks).toPromise()
+        ? api.get(ctx.tx, {isMarked: false}).toPromise()
         : Promise.resolve(template())
     },
     transition(

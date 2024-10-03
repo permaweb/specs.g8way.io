@@ -133,7 +133,7 @@ export default {
                 )
               }
             )
-          }) as Spec
+          })
         },
       related: (tx) => {
         return fromPromise(services.queryRelated)(tx)

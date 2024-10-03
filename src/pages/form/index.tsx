@@ -122,7 +122,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   };
 
   useEffect(() => {
-    if (current === "ready" && !loaded && context.spec && context.spec.length > 0) {
+    if (current === "ready" && !loaded && context.spec && context.spec[0]) {
       setLoaded(true);
   
       const specData = context.spec[0];
@@ -138,7 +138,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
       });
   
       if (editor && editor.value() === "") {
-        editor.value(specData.html); // Set the editor content to the HTML body
+        editor.value(specData.html)
       }
     }
   
