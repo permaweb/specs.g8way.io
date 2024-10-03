@@ -122,26 +122,31 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   };
 
   useEffect(() => {
-    if (current === "ready" && !showFM && !loaded) {
+    if (current === "ready" && !loaded && context.spec && context.spec.length > 0) {
       setLoaded(true);
+  
+      const specData = context.spec[0];
+  
       setSpecMeta({
-        Title: context.spec.Title,
-        GroupId: context.spec.GroupId,
-        Description: context.spec.Description,
-        Topics: context.spec.Topics.length > 0 ? context.spec.Topics.join(", ") : "",
-        Authors: context.spec.Authors.length > 0 ? context.spec.Authors.join("\n") : "",
+        Title: specData.Title,
+        GroupId: specData.GroupId,
+        Description: specData.Description,
+        Topics: "", 
+        Authors: "",
         Forks: tx || "",
-        Variant: context.spec?.Variant || "",
+        Variant: specData.Variant || "",
       });
-
-      if (editor?.value() === "") {
-        setTimeout(() => editor?.value(context.spec.body), 100);
+  
+      if (editor && editor.value() === "") {
+        editor.value(specData.html); // Set the editor content to the HTML body
       }
     }
+  
     if (current === "confirm") {
       setShowConfirm(true);
     }
-  }, [current, context, editor, loaded, showFM, tx]);
+  }, [current, context, editor, loaded, tx]);
+
 
   return (
     <div class="py-8 mx-8">

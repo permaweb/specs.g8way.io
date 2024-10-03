@@ -21,7 +21,7 @@ const machine = createMachine(
     ),
     loading: invoke(
       async (ctx: ShowMachineContext) => {
-        return api.get(ctx.tx).toPromise()
+        return api.get(ctx.tx, {isMarked: true}).toPromise()
       },
       transition(
         "done",
