@@ -1,5 +1,4 @@
-import { queryRelated } from './../services/ao';
-import { Async } from "crocks"
+import { of, fromPromise, Rejected, Resolved } from "hyper-async"
 import fm from "front-matter"
 import { marked } from "marked"
 import { validateAttrs } from "./attrs"
@@ -13,28 +12,27 @@ import {
   over,
   lensProp,
   append,
-  path,
   sortWith,
   ascend,
   descend,
   uniqBy,
-  reduce,
   concat,
   Ord,
   isNotEmpty,
 } from "ramda"
 import { Metadata, Spec } from "src/types/Spec"
-
-const { of, fromPromise } = Async
+import { getActiveAddressSchema, Services } from 'src/services/dal'
 
 export default {
-  init: (services) => {
+  init: (services: Services) => {
     const isVouched = (addr) =>
-      Async.fromPromise(services.isVouched)(addr).chain((res) =>
+      fromPromise(services.isVouched)(addr).chain((res) =>
         res
-          ? Async.Resolved(addr)
-          : Async.Rejected(new Error("MUST be vouched!")),
+          ? Resolved(addr)
+          : Rejected(new Error("MUST be vouched!")),
       )
+    const connect = fromPromise(getActiveAddressSchema.implement(services.connect))
+    // const exFunc = fromPromise(exSchema.implement(services.ex))
     return {
       save: (md: string) =>
         of(md)
@@ -64,7 +62,7 @@ export default {
           )
           // connect wallet
           .chain((txInfo) =>
-            fromPromise(services.connect)()
+            fromPromise(connect)()
               // .chain(isVouched) // isVouched // TODO: add back
               .map(always(txInfo)),
           )
@@ -154,12 +152,11 @@ export default {
           )
           .map(uniqBy(prop("id"))) as Spec[]
         },
-      stamp: (tx) => 
-        fromPromise(services.connect)()
+      stamp: (tx: string) => 
+        connect()
           //.chain(isVouched) // isVouched
           .chain(
-            (addr) => fromPromise(services.stamp)(tx, addr),
-            //.map(x => (console.log(x), x))
+            (addr: string) => fromPromise(services.stamp)(tx, addr)
           ),
     }
   },

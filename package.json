@@ -33,6 +33,7 @@
     "date-fns": "^3.6.0",
     "easymde": "^2.18.0",
     "front-matter": "^4.0.2",
+    "hyper-async": "^1.1.2",
     "js-yaml": "^4.1.0",
     "marked": "^14.1.2",
     "preact": "^10.10.0",
@@ -47,6 +48,7 @@
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.9.1",
+    "@types/crocks": "^0.12.6",
     "@types/enzyme": "^3.10.12",
     "@types/jest": "^27.4.1",
     "@types/ramda": "^0.30.2",
