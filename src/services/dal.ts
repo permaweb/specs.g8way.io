@@ -16,48 +16,81 @@ const SpecSchema = z.object({
 
 const getActiveAddressSchema = z.function().returns(z.promise(z.string()))
 
-const gqlSchema = z.function().returns(z.promise(z.any()))
+const gqlSchema = z
+  .function()
+  .args(z.string(), z.object({}).passthrough().optional())
+  .returns(z.promise(z.any()))
 
-const postSchema = z.function().returns(
-  z.promise(
+const postSchema = z
+  .function()
+  .args(
     z.object({
-      id: z.string()
+      data: z.object({}).passthrough(),
+      tags: z.array(z.object({ name: z.string(), value: z.string() }))
     })
   )
-)
+  .returns(
+    z.promise(
+      z.object({
+        id: z.string()
+      })
+    )
+  )
 
-const getSchema = z.function().returns(z.promise(z.any()))
+const getSchema = z.function().args(z.string()).returns(z.promise(SpecSchema))
 
 ////// TODO: type these
-const stampCountsSchema = z.function()
-const stampSchema = z.function()
-const stampCountSchema = z.function()
-const registerSchema = z.function()
+const stampCountsSchema = z.function().args(z.array(z.string()))
+const stampSchema = z.function().args(z.string())
+const stampCountSchema = z.function().args(z.string())
 //////
 
-const isVouchedSchema = z.function().returns(z.promise(z.boolean()))
+const isVouchedSchema = z
+  .function()
+  .args(z.string())
+  .returns(z.promise(z.boolean()))
 
-const querySchema = z.function().returns(z.promise(SpecSchema))
+const registerSchema = z
+  .function()
+  .args(z.string())
+  .returns(
+    z.promise(
+      z.object({ contractTxId: z.string(), srcTxId: z.string().optional() })
+    )
+  )
+
+const querySchema = z.function().args(z.string()).returns(z.promise(SpecSchema))
 
 const queryAllSchema = z.function().returns(z.promise(z.array(SpecSchema)))
 
-const queryRelatedSchema = z.function().returns(z.promise(z.array(SpecSchema)))
+const queryRelatedSchema = z
+  .function()
+  .args(z.string())
+  .returns(z.promise(z.array(SpecSchema)))
 
-const uploadSchema = z.function().returns(z.promise(z.string()))
+const uploadSchema = z
+  .function()
+  .args(
+    z.object({
+      data: z.string(),
+      tags: z.array(z.object({ name: z.string(), value: z.string() }))
+    })
+  )
+  .returns(z.promise(z.string()))
 
 type Services = {
-  connect: z.infer<typeof getActiveAddressSchema>,
-  gql: z.infer<typeof gqlSchema>,
-  dispatch: z.infer<typeof postSchema>,
-  get: z.infer<typeof getSchema>,
-  isVouched: z.infer<typeof isVouchedSchema>,
-  stampCounts: z.infer<typeof stampCountsSchema>,
-  stamp: z.infer<typeof stampSchema>,
-  stampCount: z.infer<typeof stampCountSchema>,
-  register: z.infer<typeof registerSchema>,
-  query: z.infer<typeof querySchema>,
-  queryAll: z.infer<typeof queryAllSchema>,
-  queryRelated: z.infer<typeof queryRelatedSchema>,
+  connect: z.infer<typeof getActiveAddressSchema>
+  gql: z.infer<typeof gqlSchema>
+  dispatch: z.infer<typeof postSchema>
+  get: z.infer<typeof getSchema>
+  isVouched: z.infer<typeof isVouchedSchema>
+  stampCounts: z.infer<typeof stampCountsSchema>
+  stamp: z.infer<typeof stampSchema>
+  stampCount: z.infer<typeof stampCountSchema>
+  register: z.infer<typeof registerSchema>
+  query: z.infer<typeof querySchema>
+  queryAll: z.infer<typeof queryAllSchema>
+  queryRelated: z.infer<typeof queryRelatedSchema>
   upload: z.infer<typeof uploadSchema>
 }
 
