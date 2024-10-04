@@ -124,7 +124,7 @@ export default {
               descend(prop("stamps")  as () => Ord), 
               ascend(prop("title") as () => Ord)
             ])
-          ) as Spec[]
+          )
       },
       get: (tx: string, {isMarked}: {isMarked: boolean}) => {
          return fromPromise(query)(tx)
@@ -149,7 +149,7 @@ export default {
                 )
               }
             )
-          }) as Spec
+          })
         },
       related: (tx: string) => {
         return fromPromise(queryRelated)(tx)
@@ -168,7 +168,7 @@ export default {
               ascend(prop("Title") as () => Ord)
             ])
           )
-          .map(uniqBy(prop("id"))) as Spec[]
+          .map(uniqBy(prop("id")))
         },
       stamp: (tx: string) => 
         connect()
