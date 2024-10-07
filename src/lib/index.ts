@@ -39,11 +39,13 @@ export default {
     const connect = fromPromise(getActiveAddressSchema.implement(services.connect))
     const upload = fromPromise(uploadSchema.implement(services.upload))
     const get = fromPromise(getSchema.implement(services.get))
-    const queryAll = fromPromise((services.queryAll))
+    const queryAll = fromPromise(queryAllSchema.implement(services.queryAll))
     const query = fromPromise(querySchema.implement(services.query))
     const queryRelated = fromPromise(queryRelatedSchema.implement(services.queryRelated))
     const stamp = fromPromise(stampSchema.implement(services.stamp))
     const stampCounts = fromPromise(stampCountsSchema.implement(services.stampCounts))
+
+    // const stamp = fromPromise(services.stamp)
 
     const isVouched = (addr) =>
       fromPromise(isVouchedSchema.implement(services.isVouched))(addr).chain((res) =>
@@ -136,7 +138,7 @@ export default {
                    specs,
                 )
               }
-            ),
+            )
           )
           .chain((specs) => {
             return get(map(prop("id"), specs)).map(

@@ -4,7 +4,7 @@ import { stampCounts, stamp, stampCount } from "./stamps";
 import { isVouched } from "./vouched";
 import { register } from './warp';
 import { query, queryAll, queryRelated, upload } from "./ao"
-import { Services } from "./dal"
+import { Services } from "../dal"
 
 
 export default {
@@ -21,4 +21,4 @@ export default {
   queryAll,
   queryRelated,
   upload
-} as Services
+}

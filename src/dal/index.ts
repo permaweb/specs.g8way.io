@@ -1,22 +1,8 @@
 import { z } from 'zod'
 
-const SpecSchema = z.object({
-  description: z.string(),
-  forks: z.string(),
-  groupId: z.string(),
-  height: z.number(),
-  id: z.string(),
-  owner: z.string(),
-  stamps: z.number(),
-  timestamp: z.number(),
-  title: z.string(),
-  type: z.string(),
-  variant: z.string().optional()
-})
-
 const AoSpecSchema = z.object({
   Authors: z.string(),
-  BlockHeight: z.number(),
+  BlockHeight: z.string(),
   ContentType: z.string(),
   DataProtocol: z.string(),
   Description: z.string(),
@@ -24,13 +10,14 @@ const AoSpecSchema = z.object({
   GroupId: z.string(),
   Owner: z.string(),
   RenderWith: z.string(),
-  Timestamp: z.union([z.number(), z.string()]),
+  Timestamp: z.string(),
   Title: z.string(),
   Topics: z.string(),
   Type: z.string(),
   Variant: z.string(),
-  id: z.string()
+  id: z.string(),
 })
+
 const getActiveAddressSchema = z.function().returns(z.promise(z.string()))
 
 const gqlSchema = z
@@ -54,7 +41,7 @@ const postSchema = z
     )
   )
 
-const getSchema = z.function().args(z.string()).returns(z.promise(SpecSchema))
+const getSchema = z.function().args(z.array(z.string())).returns(z.promise(z.any()))
 
 ////// TODO: type these
 const stampCountsSchema = z.function().args(z.array(z.string()))
@@ -76,14 +63,14 @@ const registerSchema = z
     )
   )
 
-const querySchema = z.function().args(z.string()).returns(z.promise(AoSpecSchema))
+const querySchema = z.function().args(z.string()).returns(z.promise(z.array(AoSpecSchema.optional())))
 
-const queryAllSchema = z.function().returns(z.promise(z.array(AoSpecSchema)))
+const queryAllSchema = z.function().returns(z.promise(z.array(AoSpecSchema.optional())))
 
 const queryRelatedSchema = z
   .function()
   .args(z.string())
-  .returns(z.promise(z.array(AoSpecSchema)))
+  .returns(z.promise(z.array(AoSpecSchema.optional())))
 
 const uploadSchema = z
   .function()
