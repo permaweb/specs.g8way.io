@@ -14,6 +14,23 @@ const SpecSchema = z.object({
   variant: z.string().optional()
 })
 
+const AoSpecSchema = z.object({
+  Authors: z.string(),
+  BlockHeight: z.number(),
+  ContentType: z.string(),
+  DataProtocol: z.string(),
+  Description: z.string(),
+  Forks: z.string(),
+  GroupId: z.string(),
+  Owner: z.string(),
+  RenderWith: z.string(),
+  Timestamp: z.union([z.number(), z.string()]),
+  Title: z.string(),
+  Topics: z.string(),
+  Type: z.string(),
+  Variant: z.string(),
+  id: z.string()
+})
 const getActiveAddressSchema = z.function().returns(z.promise(z.string()))
 
 const gqlSchema = z
@@ -59,14 +76,14 @@ const registerSchema = z
     )
   )
 
-const querySchema = z.function().args(z.string()).returns(z.promise(SpecSchema))
+const querySchema = z.function().args(z.string()).returns(z.promise(AoSpecSchema))
 
-const queryAllSchema = z.function().returns(z.promise(z.array(SpecSchema)))
+const queryAllSchema = z.function().returns(z.promise(z.array(AoSpecSchema)))
 
 const queryRelatedSchema = z
   .function()
   .args(z.string())
-  .returns(z.promise(z.array(SpecSchema)))
+  .returns(z.promise(z.array(AoSpecSchema)))
 
 const uploadSchema = z
   .function()

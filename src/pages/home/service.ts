@@ -10,9 +10,10 @@ const api = Api.init(services)
 const machine = createMachine({
   loading: invoke(
     async (ctx: HomeMachineContext) => {
+      const specs = await api.list().toPromise()
       return {
         ...ctx,
-        specs: await api.list().toPromise()
+        specs
       }
     },
     transition(
