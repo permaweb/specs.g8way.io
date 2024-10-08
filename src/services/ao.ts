@@ -86,7 +86,7 @@ export const query = async (tx: string) => {
     ],
   }
   const result = await dryrun(args)
-  const data: Spec = JSON.parse(result.Output.data)
+  const data = JSON.parse(result.Output.data)
 
   return data
 }

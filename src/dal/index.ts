@@ -54,15 +54,6 @@ const isVouchedSchema = z
   .args(z.string())
   .returns(z.promise(z.boolean()))
 
-const registerSchema = z
-  .function()
-  .args(z.string())
-  .returns(
-    z.promise(
-      z.object({ contractTxId: z.string(), srcTxId: z.string().optional() })
-    )
-  )
-
 const querySchema = z.function().args(z.string()).returns(z.promise(z.array(AoSpecSchema.optional())))
 
 const queryAllSchema = z.function().returns(z.promise(z.array(AoSpecSchema.optional())))
@@ -91,7 +82,6 @@ type Services = {
   stampCounts: z.infer<typeof stampCountsSchema>
   stamp: z.infer<typeof stampSchema>
   stampCount: z.infer<typeof stampCountSchema>
-  register: z.infer<typeof registerSchema>
   query: z.infer<typeof querySchema>
   queryAll: z.infer<typeof queryAllSchema>
   queryRelated: z.infer<typeof queryRelatedSchema>
@@ -107,7 +97,6 @@ export {
   stampCountsSchema,
   stampSchema,
   stampCountSchema,
-  registerSchema,
   querySchema,
   queryAllSchema,
   queryRelatedSchema,
