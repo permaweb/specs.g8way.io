@@ -85,7 +85,7 @@ const machine = createMachine({
   ),
 })
 
-const useFormService = () => useMachine(machine, () => null) as [FormMachineCurrent, FormMachineSend]
+const useFormService = (): [FormMachineCurrent, FormMachineSend] => useMachine(machine, () => null)
 export default useFormService
 
 function template() {

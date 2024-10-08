@@ -80,5 +80,5 @@ const machine = createMachine({
   exit: state(),
 })
 
-const useHomeService = () => useMachine(machine, () => null) as [HomeMachineCurrent, HomeMachineSend]
+const useHomeService = (): [HomeMachineCurrent, HomeMachineSend] => useMachine(machine, () => null)
 export default useHomeService

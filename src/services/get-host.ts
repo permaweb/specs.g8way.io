@@ -10,9 +10,9 @@ import {
   identity,
 } from "ramda";
 
-export function getHost(): string {
+export function getHost() {
   return compose(
-    cond([
+    cond<string[], string>([
       [equals("gitpod.io"), always("arweave.net")],
       [equals("arweave.dev"), always("arweave.net")],
       [equals("localhost"), always("arweave.net")],
@@ -21,5 +21,5 @@ export function getHost(): string {
     join("."),
     takeLast(2),
     split("."),
-  )(location.hostname) as string;
+  )(location.hostname);
 }
