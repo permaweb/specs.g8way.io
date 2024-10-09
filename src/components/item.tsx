@@ -20,9 +20,10 @@ const Asset = ({
   stamps = 0,
   onClick
 }: AssetProps) => {
+  console.log({ Timestamp })
   const date = 
     typeof Timestamp === 'string' && +Timestamp > 0
-      ? format(fromUnixTime(Math.floor(Number(Timestamp) / 1000)), 'M/d/yyyy')
+      ? format(fromUnixTime(Math.floor(Number(Timestamp))), 'M/d/yyyy')
       : 'pending'
   return (
     <div className="pt-4 border-b-2 border-black-500 hover:bg-gray-100" onClick={onClick}>

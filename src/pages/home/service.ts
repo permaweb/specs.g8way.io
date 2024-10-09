@@ -10,9 +10,10 @@ const api = Api.init(services)
 const machine = createMachine({
   loading: invoke(
     async (ctx: HomeMachineContext) => {
+      const specs = await api.list().toPromise()
       return {
         ...ctx,
-        specs: await api.list().toPromise()
+        specs
       }
     },
     transition(
@@ -74,10 +75,9 @@ const machine = createMachine({
     transition("learn", "learn"),
   ),
   learn: state(transition("back", "ready")),
-  error: state(), // TODO: handle errors
-
+  error: state(),
   exit: state(),
 })
 
-const useHomeService = () => useMachine(machine, () => null) as [HomeMachineCurrent, HomeMachineSend]
+const useHomeService = (): [HomeMachineCurrent, HomeMachineSend] => useMachine(machine, () => null)
 export default useHomeService

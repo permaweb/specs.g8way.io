@@ -29,5 +29,5 @@ const machine = createMachine({
   error: state(),
 })
 
-const useRelatedService = () => useMachine(machine, () => null) as [RelatedMachineCurrent, RelatedMachineSend]
+const useRelatedService = (): [RelatedMachineCurrent, RelatedMachineSend] => useMachine(machine, () => null)
 export default useRelatedService

@@ -1,22 +1,13 @@
-import Arweave from "arweave";
 import Stamps from "@permaweb/stampjs";
-import { WarpFactory } from "warp-contracts";
 import { prop } from "ramda";
-import { getHost } from "./get-host";
 
-const arweave = Arweave.init({ host: getHost(), port: 443, protocol: "https" });
-// TODO: ao-ify
-const stamps = Stamps.init({
-  warp: WarpFactory.forMainnet(),
-  arweave,
-  dre: "https://dre-1.warp.cc/contract",
-  wallet: "use_wallet"
-});
+const stamps = Stamps.init({});
 
 export const stampCounts = (txs: string[]) => stamps.counts(txs);
 
 export const stamp = (tx: string) =>
   stamps.hasStamped(tx).then((s) => {
+    console.log({ s })
     return !s
       ? stamps
           .stamp(tx)

@@ -1,5 +1,4 @@
-import { queryRelated } from './../services/ao';
-import { Async } from "crocks"
+import { of, fromPromise, Rejected, Resolved } from "hyper-async"
 import fm from "front-matter"
 import { marked } from "marked"
 import { validateAttrs } from "./attrs"
@@ -13,28 +12,48 @@ import {
   over,
   lensProp,
   append,
-  path,
   sortWith,
   ascend,
   descend,
   uniqBy,
-  reduce,
   concat,
   Ord,
   isNotEmpty,
 } from "ramda"
-import { Metadata, Spec } from "src/types/Spec"
-
-const { of, fromPromise } = Async
+import { Metadata } from "src/types/Spec"
+import {
+  getActiveAddressSchema,
+  getSchema,
+  isVouchedSchema,
+  queryAllSchema,
+  queryRelatedSchema,
+  querySchema,
+  Services,
+  stampCountsSchema,
+  stampSchema,
+  uploadSchema
+} from '../dal'
 
 export default {
-  init: (services) => {
+  init: (services: Services) => {
+    const connect = fromPromise(getActiveAddressSchema.implement(services.connect))
+    const upload = fromPromise(uploadSchema.implement(services.upload))
+    const get = fromPromise(getSchema.implement(services.get))
+    const queryAll = fromPromise(queryAllSchema.implement(services.queryAll))
+    const query = fromPromise(querySchema.implement(services.query))
+    const queryRelated = fromPromise(queryRelatedSchema.implement(services.queryRelated))
+    const stamp = fromPromise(stampSchema.implement(services.stamp))
+    const stampCounts = fromPromise(stampCountsSchema.implement(services.stampCounts))
+
+    // const stamp = fromPromise(services.stamp)
+
     const isVouched = (addr) =>
-      Async.fromPromise(services.isVouched)(addr).chain((res) =>
+      fromPromise(isVouchedSchema.implement(services.isVouched))(addr).chain((res) =>
         res
-          ? Async.Resolved(addr)
-          : Async.Rejected(new Error("MUST be vouched!")),
+          ? Resolved(addr)
+          : Rejected(new Error("MUST be vouched!")),
       )
+
     return {
       save: (md: string) =>
         of(md)
@@ -64,20 +83,18 @@ export default {
           )
           // connect wallet
           .chain((txInfo) =>
-            fromPromise(services.connect)()
-              // .chain(isVouched) // isVouched // TODO: add back
+            connect()
               .map(always(txInfo)),
           )
           // dispatch
-          .chain(fromPromise(services.upload)) // Goes to arweave
+          .chain(upload) // Goes to arweave
           // .chain(({ id }) => Async.fromPromise(services.register)(id)) // Remove this
           // .chain where we send the tx-id and the metadata to the AO process
       ,
       list: () => {
-        // services.queryAll()
-        return fromPromise(services.queryAll)()
+        return queryAll()
           .chain((specs) =>
-            fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
+            stampCounts(map(prop("id"), specs)).map(
               (results) => {
                 return map(
                   (s) => assoc("stamps", results[s.id]?.vouched || 0, s),
@@ -87,7 +104,6 @@ export default {
             ),
           )
           .map((specs) => {
-            // TODO: ramda-fy
             const newSpecs = specs.map((spec) => {
               const Topics =  spec.Topics.split(',').filter(isNotEmpty)
               const Authors =  spec.Authors.split(',').filter(isNotEmpty)
@@ -97,7 +113,7 @@ export default {
           })
           .map(
             sortWith([
-              ascend(prop("GroupId") as () => Ord), // TODO: fix this
+              ascend(prop("GroupId") as () => Ord),
               descend(prop("Stamps") as () => Ord),
               descend(prop("BlockHeight") as () => Ord),
             ]),
@@ -111,19 +127,19 @@ export default {
           )
       },
       get: (tx: string, {isMarked}: {isMarked: boolean}) => {
-         return fromPromise(services.query)(tx)
+         return query(tx)
           .chain((specs) =>
-            fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
+            stampCounts(map(prop("id"), specs)).map(
               (results) => {
                 return map(
                   (s) => assoc("stamps", results[s.id]?.vouched || 0, s),
                    specs,
                 )
               }
-            ),
+            )
           )
           .chain((specs) => {
-            return fromPromise(services.get)(map(prop("id"), specs)).map(
+            return get(map(prop("id"), specs)).map(
               (results) => {
                 const { body } = fm(results)
                 const val = isMarked ? marked(body) : body
@@ -135,10 +151,10 @@ export default {
             )
           })
         },
-      related: (tx) => {
-        return fromPromise(services.queryRelated)(tx)
+      related: (tx: string) => {
+        return queryRelated(tx)
           .chain((specs) =>
-            fromPromise(services.stampCounts)(map(prop("id"), specs)).map(
+            stampCounts(map(prop("id"), specs)).map(
               (results) =>
                 map(
                   (s) => assoc("stamps", results[s.id]?.vouched || 0, s),
@@ -152,14 +168,13 @@ export default {
               ascend(prop("Title") as () => Ord)
             ])
           )
-          .map(uniqBy(prop("id"))) as Spec[]
+          .map(uniqBy(prop("id")))
         },
-      stamp: (tx) => 
-        fromPromise(services.connect)()
+      stamp: (tx: string) => 
+        connect()
           //.chain(isVouched) // isVouched
           .chain(
-            (addr) => fromPromise(services.stamp)(tx, addr),
-            //.map(x => (console.log(x), x))
+            (addr: string) => stamp(tx, addr)
           ),
     }
   },

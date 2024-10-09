@@ -35,7 +35,7 @@ const App = () => {
         <Match path="/view/:tx">
           {({ matches, url }) => {
             if (matches) {
-              const tx = url.match(/\/view\/([a-zA-Z0-9_-]+)/)?.[1] as string;
+              const tx: string = url.match(/\/view\/([a-zA-Z0-9_-]+)/)?.[1];
               return <ShowPage tx={tx} />;
             }
             return <div className="text-4xl">Not Found</div>;
@@ -44,7 +44,7 @@ const App = () => {
         <Match path="/related/:tx">
           {({ matches, url }) => {
             if (matches) {
-              const tx = url.match(/\/related\/([a-zA-Z0-9_-]+)/)?.[1] as string;
+              const tx: string = url.match(/\/related\/([a-zA-Z0-9_-]+)/)?.[1];
               return <RelatedPage tx={tx} />;
             }
             return <div className="text-4xl">Not Found</div>;
