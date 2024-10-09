@@ -84,7 +84,6 @@ export default {
           // connect wallet
           .chain((txInfo) =>
             connect()
-              // .chain(isVouched) // isVouched // TODO: add back
               .map(always(txInfo)),
           )
           // dispatch
@@ -105,7 +104,6 @@ export default {
             ),
           )
           .map((specs) => {
-            // TODO: ramda-fy
             const newSpecs = specs.map((spec) => {
               const Topics =  spec.Topics.split(',').filter(isNotEmpty)
               const Authors =  spec.Authors.split(',').filter(isNotEmpty)
@@ -115,7 +113,7 @@ export default {
           })
           .map(
             sortWith([
-              ascend(prop("GroupId") as () => Ord), // TODO: fix this
+              ascend(prop("GroupId") as () => Ord),
               descend(prop("Stamps") as () => Ord),
               descend(prop("BlockHeight") as () => Ord),
             ]),

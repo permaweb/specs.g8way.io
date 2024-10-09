@@ -80,7 +80,7 @@ const HomePage = () => {
                       )}
                     </button>
                     <button className="btn btn-outline btn-primary" onClick={() => send('stamp')}>
-                      TODO: ({context.selected?.stamps})
+                      Stamp: ({context.selected?.stamps})
                     </button>
                   </div>
                 )}

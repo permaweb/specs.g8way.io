@@ -57,7 +57,6 @@ const machine = createMachine(
       transition(
         "done",
         "ready",
-        // TODO: fx type after typing api
         reduce((ctx: ShowMachineContext, ev: { data: number }) => {
           return set(lensPath(["spec", "stamps"]), ev.data, ctx)
         }),

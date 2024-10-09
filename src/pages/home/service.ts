@@ -75,8 +75,7 @@ const machine = createMachine({
     transition("learn", "learn"),
   ),
   learn: state(transition("back", "ready")),
-  error: state(), // TODO: handle errors
-
+  error: state(),
   exit: state(),
 })
 

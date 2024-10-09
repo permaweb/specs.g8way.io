@@ -35,6 +35,7 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
     route("/", true)
   }
 
+  console.log({ context })
   return (
     <>
       {current === 'loading' ? (
