@@ -1,6 +1,6 @@
 import { createDataItemSigner, dryrun, message } from "@permaweb/aoconnect"
 import { Spec } from "src/types/Spec"
-// const SPEC_PID = "6x68KURcD4ySOslFCxiIorjsbpzNy6WD4joH6C8VHgg"
+const SPEC_PID = "6x68KURcD4ySOslFCxiIorjsbpzNy6WD4joH6C8VHgg"
 
 export const upload = async (md: {
   data: string
@@ -13,7 +13,7 @@ export const upload = async (md: {
     md.tags.find(tag => tag.name === n)?.value
 
   const args = {
-    process: "6x68KURcD4ySOslFCxiIorjsbpzNy6WD4joH6C8VHgg",
+    process: SPEC_PID,
     tags: [
       {
         name: "Action",
@@ -73,7 +73,7 @@ export const upload = async (md: {
 }
 export const query = async (tx: string) => {
   const args = {
-    process: "6x68KURcD4ySOslFCxiIorjsbpzNy6WD4joH6C8VHgg",
+    process: SPEC_PID,
     tags: [
       {
         name: "Action",
@@ -92,7 +92,7 @@ export const query = async (tx: string) => {
 }
 export const queryAll = async () => {
   const args = {
-    process: "6x68KURcD4ySOslFCxiIorjsbpzNy6WD4joH6C8VHgg",
+    process: SPEC_PID,
     tags: [
       {
         name: "Action",
@@ -108,7 +108,7 @@ export const queryAll = async () => {
 
 export const queryRelated = async (tx: string) => {
   const args = {
-    process: "6x68KURcD4ySOslFCxiIorjsbpzNy6WD4joH6C8VHgg",
+    process: SPEC_PID,
     tags: [
       {
         name: "Action",

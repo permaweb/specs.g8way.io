@@ -5,6 +5,7 @@ import { getHost } from "./get-host";
 const info = { host: getHost(), port: 443, protocol: "https" };
 const arweave = Arweave.init(info);
 
+
 export const gql = async (query: string, variables = {}) =>
   fetch("https://arweave-search.goldsky.com/graphql", {
     method: "POST",

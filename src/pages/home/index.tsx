@@ -33,6 +33,11 @@ const HomePage = () => {
     window.navigator.clipboard.writeText(spec)
   }
 
+  const handleStamp = () => {
+    console.log('stamping disabled')
+    // send('stamp')
+  }
+
   return (
     <div className="drawer drawer-mobile lg:drawer-open">
       <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
@@ -79,8 +84,9 @@ const HomePage = () => {
                         </svg>
                       )}
                     </button>
-                    <button className="btn btn-outline btn-primary" onClick={() => send('stamp')}>
-                      Stamp: ({context.selected?.stamps})
+                    <button className="btn btn-outline btn-primary cursor-not-allowed opacity-50" onClick={handleStamp}>
+                      stamping disabled
+                      {/* Stamp: ({context.selected?.stamps}) */}
                     </button>
                   </div>
                 )}

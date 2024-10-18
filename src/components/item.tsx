@@ -20,7 +20,7 @@ const Asset = ({
   stamps = 0,
   onClick
 }: AssetProps) => {
-  console.log({ Timestamp })
+
   const date = 
     typeof Timestamp === 'string' && +Timestamp > 0
       ? format(fromUnixTime(Math.floor(Number(Timestamp))), 'M/d/yyyy')
@@ -80,7 +80,7 @@ const Asset = ({
           >
             <span className="hidden md:block flex items-end">{shortHash(id)}</span>
           </a>
-          <span className="flex items-end">Stamps: ({stamps})</span>
+          {/* <span className="flex items-end">Stamps: ({stamps})</span> */}
           <span className="flex space-x-2 items-end">
             Date: {date}
           </span>
