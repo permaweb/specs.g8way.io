@@ -1,7 +1,7 @@
-import Stamps from "@permaweb/stampjs";
-import { prop } from "ramda";
+// import Stamps from "@permaweb/stampjs";
+// import { prop } from "ramda";
 
-const stamps = Stamps.init({});
+// const stamps = Stamps.init({});
 
 export const stampCounts = (txs: string[]) => {
   return Promise.resolve(txs.map(tx => ({ tx: { total: 0, vouched: 0 }})))
