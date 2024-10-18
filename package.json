@@ -11,7 +11,8 @@
     "lint": "eslint src",
     "test": "jest",
     "tw:build": "npx tailwindcss -i src/tailwind.css -c tailwind.config.js -o src/index.css",
-    "tw:watch": "npx tailwindcss -i src/tailwind.css -c tailwind.config.js -o src/index.css --watch"
+    "tw:watch": "npx tailwindcss -i src/tailwind.css -c tailwind.config.js -o src/index.css --watch",
+    "deploy-main": "tw:build && vite build && permaweb-deploy --ant-process <<ANT_PROCESS>>"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
@@ -36,6 +37,7 @@
     "hyper-async": "^1.1.2",
     "js-yaml": "^4.1.0",
     "marked": "^14.1.2",
+    "permaweb-deploy": "^1.1.8",
     "preact": "^10.10.0",
     "preact-render-to-string": "^5.2.1",
     "preact-robot": "^0.3.0",
