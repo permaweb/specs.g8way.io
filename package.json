@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "preact-specs",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -12,7 +12,7 @@
     "test": "jest",
     "tw:build": "npx tailwindcss -i src/tailwind.css -c tailwind.config.js -o src/index.css",
     "tw:watch": "npx tailwindcss -i src/tailwind.css -c tailwind.config.js -o src/index.css --watch",
-    "deploy-main": "tw:build && vite build && permaweb-deploy --ant-process 4bKkvG1AvzX6Ks2vjopkZQwvxUT0-jvvgAD3Xa0JDVs"
+    "deploy-main": "npm run tw:build && vite build && permaweb-deploy --ant-process 4bKkvG1AvzX6Ks2vjopkZQwvxUT0-jvvgAD3Xa0JDVs"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",
