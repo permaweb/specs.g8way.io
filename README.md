@@ -1,4 +1,4 @@
-# specs
+# specs.
 
 Where permaweb standards evolve!
 
@@ -51,6 +51,3 @@ Contributions are welcome, use the issues to create an issue and then a branch t
 If you need help contributing, feel free to connect to our discord server and get help in the #dev channel.
 
 https://discord.gg/kyzkeF2qs8
-
-
-

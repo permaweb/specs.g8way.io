@@ -1,0 +1,25 @@
+name: publish specs
+
+on:
+  push:
+    branches:
+      - "main"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: ⎔ Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.x
+      - name: 📦 Install deps
+        run: npm install
+      - name: 🚀 Deploy
+        run: npm run deploy-main
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
