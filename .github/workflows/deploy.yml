@@ -1,9 +1,7 @@
 name: publish specs
 
 on:
-  push:
-    branches:
-      - "main"
+  workflow_dispatch
 
 jobs:
   publish:
@@ -17,7 +15,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 18.x
-      - name: 📦 Install deps
+      - name: 📦 Install dependecies
         run: npm install
       - name: 🚀 Deploy
         run: npm run deploy-main
