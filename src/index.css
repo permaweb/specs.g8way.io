@@ -3151,10 +3151,6 @@ html:has(.drawer-toggle:checked){
   flex: 1 1 0%;
 }
 
-.table-auto{
-  table-layout: auto;
-}
-
 .cursor-not-allowed{
   cursor: not-allowed;
 }
