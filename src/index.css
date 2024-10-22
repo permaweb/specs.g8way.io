@@ -3151,10 +3151,6 @@ html:has(.drawer-toggle:checked){
   flex: 1 1 0%;
 }
 
-.cursor-not-allowed{
-  cursor: not-allowed;
-}
-
 .flex-col{
   flex-direction: column;
 }
@@ -3435,10 +3431,6 @@ html:has(.drawer-toggle:checked){
 .text-success{
   --tw-text-opacity: 1;
   color: var(--fallback-su,oklch(var(--su)/var(--tw-text-opacity)));
-}
-
-.opacity-50{
-  opacity: 0.5;
 }
 
 .filter{

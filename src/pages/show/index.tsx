@@ -27,9 +27,7 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
   }, [])
   
   const handleStamp = () => {
-    console.log('stamping disabled')
-    // TODO: add stamp logic
-    // send('stamp')
+    send('stamp')
   }
 
   const handleReset = async () => {
@@ -37,7 +35,6 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
     route("/", true)
   }
 
-  console.log({ context })
   return (
     <>
       {current === 'loading' ? (
@@ -54,9 +51,8 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
                   <nav className="flex py-4 px-4 sticky top-0 items-center justify-between">
                     {!parent && (
                       <>
-                        <button className="btn btn-outline opacity-50 cursor-not-allowed" onClick={handleStamp}>
-                          stamping disabled
-                          {/* stamp ({context?.spec?.stamps}) */}
+                        <button className="btn btn-outline" onClick={handleStamp}>
+                          stamp ({context?.spec?.stamps})
                         </button>
                         <label for="my-drawer-2" className="btn btn-ghost text-lg drawer-button">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-6 h-6">
@@ -103,10 +99,10 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
                           <th>Topics</th>
                           <td>{context?.spec?.Topics}</td>
                         </tr>
-                        {/* <tr>
+                        <tr>
                           <th>Stamps</th>
                           <td>{context?.spec?.stamps}</td>
-                        </tr> */}
+                        </tr>
                         <tr>
                           <th>Height</th>
                           <td>{context?.spec?.BlockHeight}</td>
@@ -127,7 +123,7 @@ const ShowPage = ({ tx, parent = false }: { tx: string, parent?: boolean }) => {
                 <div className="card">
                   <div className="card-body">
                     <div className="card-title">Actions</div>
-                    <button className="btn btn-sm btn-outline cursor-not-allowed opacity-50" onClick={handleStamp}>stamping disabled</button>
+                    <button className="btn btn-sm btn-outline" onClick={handleStamp}>STAMP</button>
                     <a href={`/related/${tx}`} className="btn btn-sm btn-outline">View Related</a>
                     <a href={`/remix/${tx}`} className="btn btn-sm btn-outline">Remix</a>
                     <a href={`https://microscope.g8way.io/?tx=${tx}`} className="btn btn-sm btn-outline">Microscope</a>
