@@ -45,15 +45,6 @@ export default {
     const stamp = fromPromise(stampSchema.implement(services.stamp))
     const stampCounts = fromPromise(stampCountsSchema.implement(services.stampCounts))
 
-    // const stamp = fromPromise(services.stamp)
-
-    const isVouched = (addr) =>
-      fromPromise(isVouchedSchema.implement(services.isVouched))(addr).chain((res) =>
-        res
-          ? Resolved(addr)
-          : Rejected(new Error("MUST be vouched!")),
-      )
-
     return {
       save: (md: string) =>
         of(md)

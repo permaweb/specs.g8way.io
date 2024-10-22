@@ -67,6 +67,7 @@ export const upload = async (md: {
     data: md.data,
     signer: createDataItemSigner(window.arweaveWallet)
   }
+
   const result = await message(args)
 
   return result
