@@ -21,9 +21,11 @@ const Asset = ({
   onClick
 }: AssetProps) => {
 
+  // TODO: timestamps for old vs new are different - fix
+  const timestamp = typeof Timestamp === 'string' && +Timestamp > 2000000000 ? Math.floor(Number(Timestamp) / 1000) : Math.floor(Number(Timestamp))
   const date = 
     typeof Timestamp === 'string' && +Timestamp > 0
-      ? format(fromUnixTime(Math.floor(Number(Timestamp))), 'M/d/yyyy')
+      ? format(fromUnixTime(timestamp), 'M/d/yyyy')
       : 'pending'
   return (
     <div className="pt-4 border-b-2 border-black-500 hover:bg-gray-100" onClick={onClick}>

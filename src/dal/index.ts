@@ -68,7 +68,7 @@ const uploadSchema = z
   .args(
     z.object({
       data: z.string(),
-      tags: z.array(z.object({ name: z.string(), value: z.string() }))
+      tags: z.array(z.object({ name: z.string(), value: z.union([z.string(), z.array(z.string())]) }))
     })
   )
   .returns(z.promise(z.string()))
