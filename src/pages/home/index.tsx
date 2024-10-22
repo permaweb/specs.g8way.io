@@ -34,8 +34,7 @@ const HomePage = () => {
   }
 
   const handleStamp = () => {
-    console.log('stamping disabled')
-    // send('stamp')
+    send('stamp')
   }
 
   return (
@@ -84,9 +83,8 @@ const HomePage = () => {
                         </svg>
                       )}
                     </button>
-                    <button className="btn btn-outline btn-primary cursor-not-allowed opacity-50" onClick={handleStamp}>
-                      stamping disabled
-                      {/* Stamp: ({context.selected?.stamps}) */}
+                    <button className="btn btn-outline btn-primary" onClick={handleStamp}>
+                      Stamp ({context.selected?.stamps})
                     </button>
                   </div>
                 )}
