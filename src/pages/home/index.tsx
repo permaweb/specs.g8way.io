@@ -154,7 +154,6 @@ const HomePage = () => {
             <button
               className="btn btn-outline btn-block"
               onClick={() => {
-                // TODO: make profile ID
                 window.open('https://vouch-portal.arweave.net/#/intent/vouch-goal?value=2&currency=USD&profileId=L3jAPxvy_3GnFCS_TYVPpfqdw7usO5QsDzDNZmIFVg8&appLink=https%3A%2F%2Fspecs.arweave.net%2F', '_blank')
                 send('reset')
                 setShowVouchModal(false)

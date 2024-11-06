@@ -122,10 +122,11 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   };
 
   useEffect(() => {
-    if (current === "ready" && !loaded && context.spec && context.spec[0]) {
+    console.log(2, { current, loaded, context })
+    if (current === "ready" && !loaded && context.spec) {
       setLoaded(true);
   
-      const specData = context.spec[0];
+      const specData = context.spec;
   
       setSpecMeta({
         Title: specData.Title,
@@ -138,7 +139,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
       });
   
       if (editor && editor.value() === "") {
-        editor.value(specData.html)
+        editor.value(specData.body)
       }
     }
   

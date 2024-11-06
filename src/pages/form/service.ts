@@ -33,7 +33,7 @@ const machine = createMachine({
       "done",
       "ready",
       reduce((ctx: FormMachineContext, ev: FormMachineEvent) => {
-        return { ...ctx, spec: ev.data }
+        return { ...ctx, spec: ev.data[0] ? { ...ev.data[0], body: ev.data[0].html } : ev.data }
       }),
     ),
   ),
