@@ -43,6 +43,7 @@ export default {
     const query = fromPromise(querySchema.implement(services.query))
     const queryRelated = fromPromise(queryRelatedSchema.implement(services.queryRelated))
     const stamp = fromPromise(stampSchema.implement(services.stamp))
+    const isVouched = fromPromise(isVouchedSchema.implement(services.isVouched))
     const stampCounts = fromPromise(stampCountsSchema.implement(services.stampCounts))
 
     return {
@@ -161,12 +162,22 @@ export default {
           )
           .map(uniqBy(prop("id")))
         },
-      stamp: (tx: string) => 
-        connect()
-          //.chain(isVouched) // isVouched
-          .chain(
-            (addr: string) => stamp(tx, addr)
-          ),
+      stamp: (tx: string) => {
+        return connect()
+          .chain(isVouched) 
+          .chain(({ addr, vouched }) => {
+            if (vouched) {
+              return Resolved({ addr })
+            }
+            return Rejected('Not Vouched')
+          })
+          .bichain(
+            Rejected,
+            ({ addr }) => {
+              return stamp(tx, addr)
+            },
+          )
+        }
     }
   },
 }

@@ -52,7 +52,7 @@ const stampCountSchema = z.function().args(z.string())
 const isVouchedSchema = z
   .function()
   .args(z.string())
-  .returns(z.promise(z.boolean()))
+  .returns(z.promise(z.object({ addr: z.string(), vouched: z.boolean() })))
 
 const querySchema = z.function().args(z.string()).returns(z.promise(z.array(AoSpecSchema.optional())))
 
