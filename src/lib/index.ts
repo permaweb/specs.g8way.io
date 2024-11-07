@@ -171,8 +171,7 @@ export default {
             }
             return Rejected('Not Vouched')
           })
-          .bichain(
-            Rejected,
+          .chain(
             ({ addr }) => {
               return stamp(tx, addr)
             },

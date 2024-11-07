@@ -9,16 +9,17 @@ export const stampCounts = (txs: string[]) => {
 
 export const stamp = (tx: string) => {
   return stamps.hasStamped(tx).then((s) => {
-    return !s
-      ? stamps
-          .stamp(tx)
-          .then(() => new Promise((r) => setTimeout(r, 500)))
-          .then(() => stamps.count(tx).then(prop("vouched")))
-      : Promise.reject("Already Stamped!")
+    if (s) {
+      return Promise.reject('Already Stamped!')
     }
-  )
+    const addOne = (n: number) => n + 1
+    const count = stampCount(tx).then(addOne)
+    return stamps
+      .stamp(tx)
+      .then(() => count)
+  })
 }
 
-export const stampCount = (tx) => {
+export const stampCount = (tx: string) => {
   return stamps.count(tx).then(prop("vouched"));
 }

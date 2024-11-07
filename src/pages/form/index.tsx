@@ -122,7 +122,6 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   };
 
   useEffect(() => {
-    console.log(2, { current, loaded, context })
     if (current === "ready" && !loaded && context.spec) {
       setLoaded(true);
   
@@ -194,7 +193,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
               </p>
             </div>
             <button class="btn btn-outline btn-block btn-error" onClick={() => {
-              route("/", true)
+              route(`/view/${context.txId}`)
             }}>
               ok
             </button>

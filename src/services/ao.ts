@@ -10,6 +10,7 @@ const VOUCHER_WHITELIST = [
   "3y0YE11i21hpP8UY0Z1AVhtPoJD4V_AbEBx-g0j9wRc", // Vouch-wAR-Stake
 ]
 const MIN_VOUCH_SCORE = 2
+const getFirstMessage = compose(head, propOr([], 'Messages'))
 export const upload = async (md: {
   data: string
   tags: {
@@ -17,9 +18,10 @@ export const upload = async (md: {
     value: string
   }[]
 }) => {
-  const getTag = (n: string): string | undefined => 
-    md.tags.find(tag => tag.name === n)?.value
+  const getTag = (tags: Array<{ name: string, value: string }>) => (n: string): string | undefined => 
+    tags.find(tag => tag.name === n)?.value
 
+  const getMetadataTag = getTag(md.tags)
   const args = {
     process: SPEC_PID,
     tags: [
@@ -29,56 +31,62 @@ export const upload = async (md: {
       },
       {
         name: "Spec-DataProtocol",
-        value: getTag('Data-Protocol')
+        value: getMetadataTag('Data-Protocol')
       },
       {
         name: "Spec-GroupId",
-        value: getTag('GroupId')
+        value: getMetadataTag('GroupId')
       },
       {
         name: "Spec-Variant",
-        value: getTag('Variant')
+        value: getMetadataTag('Variant')
       },
       {
         name: "Spec-Title",
-        value: getTag('Title')
+        value: getMetadataTag('Title')
       },
       {
         name: "Spec-Description",
-        value: getTag('Description')
+        value: getMetadataTag('Description')
       },
       {
         name: "Spec-Topics",
-        value: getTag('Topics').toString()
+        value: getMetadataTag('Topics').toString()
       },
       {
         name: "Spec-Authors",
-        value: getTag('Authors').toString()
+        value: getMetadataTag('Authors').toString()
       },
       {
         name: "Spec-Type",
-        value: getTag('Type')
+        value: getMetadataTag('Type')
       },
       {
         name: "Spec-Forks",
-        value: getTag('Forks')
+        value: getMetadataTag('Forks')
       },
       {
         name: "Spec-Content-Type",
-        value: getTag('Content-Type')
+        value: getMetadataTag('Content-Type')
       },
       {
         name: "Spec-Render-With",
-        value: getTag('Render-With')
+        value: getMetadataTag('Render-With')
       },
     ],
     data: md.data,
     signer: createDataItemSigner(window.arweaveWallet)
   }
 
-  const result = await message(args)
+  const messageId = await message(args)
+  const messageResult = await result({ process: SPEC_PID, message: messageId })
+  const tags = compose(
+    propOr([], 'Tags'),
+    getFirstMessage
+  )(messageResult) as Array<{ name: string, value: string }>
 
-  return result
+  const getResultTag = getTag(tags)
+  return { status: getResultTag('Result'), error: getResultTag('Error'), txId: getResultTag('ID') }
 }
 
 export const query = async (tx: string) => {
@@ -165,8 +173,7 @@ export const isVouched = async (tx: string) => {
     propOr({}, 'Vouchers'),
     JSON.parse,
     propOr('{}', 'Data'),
-    head,
-    propOr([], 'Messages')
+    getFirstMessage
   )(messageResult)
 
   let vouchScore = 0
@@ -177,6 +184,7 @@ export const isVouched = async (tx: string) => {
       if (vouchFor != tx) {
         throw new Error('Vouch has Vouch-For mismatch')
       }
+      // The value is a string like "4.5-USD" or "5-USD". We want to match the number.
       const valueStr = vouch['Value'].match(/^(\d+\.\d+)|(\d+)/g)?.[0] ?? "0"
       const value = parseFloat(valueStr)
       if (valueStr == null || value == null) {
@@ -185,5 +193,5 @@ export const isVouched = async (tx: string) => {
       vouchScore += value
     }
   }
-  return { addr: tx, vouched: Boolean(vouchScore > MIN_VOUCH_SCORE) }
+  return { addr: tx, vouched: vouchScore > MIN_VOUCH_SCORE }
 }

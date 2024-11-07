@@ -10,6 +10,7 @@ import yaml from 'js-yaml'
 import services from "../../services"
 import Api from "../../lib"
 import { FormMachineContext, FormMachineCurrent, FormMachineEvent, FormMachineSend } from "./types"
+import { ZodError } from "zod"
 
 const api = Api.init(services)
 
@@ -60,17 +61,22 @@ const machine = createMachine({
 
   ${ctx.md}`,
         )
-        // add saved doc to local cache -- hold for now...
-        //.map(({ id }) => (cache.update(assoc(id, ctx.md)), { id }))
-        .map(({ id }) => ({ ...ctx, id }))
         .toPromise()
       },
-    transition("done", "confirm"),
+    transition(
+      "done",
+      "confirm",
+      reduce((ctx: FormMachineContext, ev: FormMachineEvent) => {
+        const { txId } = ev.data as { txId?: string }
+        return { ...ctx, txId }
+      }),
+    ),
     transition(
       "error",
       "ready",
       reduce((ctx: FormMachineContext, ev: FormMachineEvent) => {
-        return { ...ctx, error: ev.error }
+        const { error } = ev.data as { error?: string }
+        return { ...ctx, saveError: error }
       }),
     ),
   ),

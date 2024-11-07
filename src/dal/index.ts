@@ -71,7 +71,13 @@ const uploadSchema = z
       tags: z.array(z.object({ name: z.string(), value: z.union([z.string(), z.array(z.string())]) }))
     })
   )
-  .returns(z.promise(z.string()))
+  .returns(z.promise(
+      z.object({
+        status: z.string(),
+        error: z.string().nullish(),
+        txId: z.string().nullish()
+    })
+  ))
 
 type Services = {
   connect: z.infer<typeof getActiveAddressSchema>
