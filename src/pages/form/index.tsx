@@ -122,10 +122,10 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
   };
 
   useEffect(() => {
-    if (current === "ready" && !loaded && context.spec && context.spec[0]) {
+    if (current === "ready" && !loaded && context.spec) {
       setLoaded(true);
   
-      const specData = context.spec[0];
+      const specData = context.spec;
   
       setSpecMeta({
         Title: specData.Title,
@@ -138,7 +138,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
       });
   
       if (editor && editor.value() === "") {
-        editor.value(specData.html)
+        editor.value(specData.body)
       }
     }
   
@@ -193,7 +193,7 @@ const EditorComponent: preact.FunctionComponent<Props> = ({ tx }) => {
               </p>
             </div>
             <button class="btn btn-outline btn-block btn-error" onClick={() => {
-              route("/", true)
+              route(`/view/${context.txId}`)
             }}>
               ok
             </button>

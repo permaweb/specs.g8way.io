@@ -52,7 +52,7 @@ const stampCountSchema = z.function().args(z.string())
 const isVouchedSchema = z
   .function()
   .args(z.string())
-  .returns(z.promise(z.boolean()))
+  .returns(z.promise(z.object({ addr: z.string(), vouched: z.boolean() })))
 
 const querySchema = z.function().args(z.string()).returns(z.promise(z.array(AoSpecSchema.optional())))
 
@@ -71,7 +71,13 @@ const uploadSchema = z
       tags: z.array(z.object({ name: z.string(), value: z.union([z.string(), z.array(z.string())]) }))
     })
   )
-  .returns(z.promise(z.string()))
+  .returns(z.promise(
+      z.object({
+        status: z.string(),
+        error: z.string().nullish(),
+        txId: z.string().nullish()
+    })
+  ))
 
 type Services = {
   connect: z.infer<typeof getActiveAddressSchema>

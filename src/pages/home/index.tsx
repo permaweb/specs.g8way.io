@@ -9,6 +9,7 @@ import Loading from '../../components/loading'
 
 const HomePage = () => {
   const [showError, setShowError] = useState(false)
+  const [showVouchModal, setShowVouchModal] = useState(false)
   const [copying, setCopying] = useState(false)
   
   const s = useHomeService()
@@ -16,7 +17,11 @@ const HomePage = () => {
   const send = s[1]
   const context = useMemo(() => {
     if (s[0].context?.error) {
-      setShowError(true)
+      if (s[0].context.error.message === 'Not Vouched') {
+        setShowVouchModal(true)
+      } else {
+        setShowError(true)
+      }
     }
     return s[0].context
   }, [s])
@@ -121,7 +126,7 @@ const HomePage = () => {
           tx={context?.selected?.id}
         />
       </div>
-
+      <input type="checkbox" id="error-modal" checked={showError} className="modal-toggle" onChange={() => setShowError(!showError)} />
       {showError && (
         <div className="modal">
           <div className="modal-box w-[300px] px-8 py-16 mx-4 space-y-8">
@@ -135,6 +140,34 @@ const HomePage = () => {
               send('reset')
               setShowError(false)
             }}>
+              close
+            </button>
+          </div>
+        </div>
+      )}
+      <input type="checkbox" id="vouch-modal" checked={showVouchModal} className="modal-toggle" onChange={() => setShowVouchModal(!showVouchModal)} />
+      {showVouchModal && (
+        <div className="modal">
+          <div className="modal-box w-[600px] px-8 py-8 mx-4 space-y-8">
+            <h3 className="text-xl">You are not vouched!</h3>
+            <div className="text-md">You must be vouched to stamp Specs.</div>
+            <button
+              className="btn btn-outline btn-block"
+              onClick={() => {
+                window.open('https://vouch-portal.arweave.net/#/intent/vouch-goal?value=2&currency=USD&profileId=L3jAPxvy_3GnFCS_TYVPpfqdw7usO5QsDzDNZmIFVg8&appLink=https%3A%2F%2Fspecs.arweave.net%2F', '_blank')
+                send('reset')
+                setShowVouchModal(false)
+              }}
+            >
+              get vouched
+            </button>
+            <button
+              className="btn btn-outline btn-block"
+              onClick={() => {
+                send('reset')
+                setShowVouchModal(false)
+              }}
+            >
               close
             </button>
           </div>
